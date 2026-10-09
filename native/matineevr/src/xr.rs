@@ -19,6 +19,7 @@ pub fn run(options: &Options) -> Result<()> {
         session.create_reference_space(xr::ReferenceSpaceType::LOCAL, xr::Posef::IDENTITY)?;
     let view_config = xr::ViewConfigurationType::PRIMARY_STEREO;
     let mut app = App::new(options);
+    let store_mode = std::env::var("HALCYON_FRAME_STORE").as_deref() == Ok("1");
     let mut handoff = crate::frame_playback::FramePlayback::new(&mut app)?;
     let mut video = Video::new(graphics.clone(), &instance, system, &session)?;
     video.renderer.stats = options.stats.then(Statistics::default);
@@ -100,7 +101,17 @@ pub fn run(options: &Options) -> Result<()> {
             Default::default()
         };
         handoff.observe(&app);
-        app.update(controls);
+        let in_store = store_mode && app.playback.is_none() && !app.stopping();
+        if in_store && controls.b {
+            performance.empty(&mut stream, timing.predicted_display_time)?;
+            break;
+        }
+        if video.update_store(in_store, controls, if focused { input.aim_poses } else { [None; 2] }) {
+            if let Some(path) = std::env::var_os("HALCYON_FRAME_STORE_SAMPLE") {
+                app.queue_store_movie(path.into());
+            }
+        }
+        app.update(if in_store { Default::default() } else { controls });
         if options.stats
             && let Some(player) = &mut app.playback
         {
@@ -155,7 +166,8 @@ pub fn run(options: &Options) -> Result<()> {
                 overlay_started.unwrap().elapsed().as_secs_f64() * 1000.0,
             );
         }
-        let quads = overlays.layers(&space, input.panel_poses, timing.predicted_display_time);
+        let quads = if in_store { Vec::new() }
+            else { overlays.layers(&space, input.panel_poses, timing.predicted_display_time) };
         timed(performance.stats.as_mut(), "xr_end_ms", || {
             crate::swapchains::submit(
                 &mut stream,

@@ -11,6 +11,8 @@ mod alignment;
 mod navigation;
 #[path = "app_presentation.rs"]
 mod presentation;
+#[path = "app_store.rs"]
+mod store;
 
 pub struct App {
     pub browser: Browser,

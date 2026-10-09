@@ -23,6 +23,27 @@ as `native-player/controller-mesh.bin` in the installation root before launching
 the player. `HALCYON_FRAME_CONTROLLER_MESH` selects its location.
 
 The release build and hardware H.264/Vulkan render probe passed on the Frame.
+HTTP MP4 and HLS hardware render probes also passed. The owner verified a real
+Jellyfin movie handoff after decoder URL handling was corrected.
+
+## Native store foundation
+
+`store_geometry.rs` and `store_scene.rs` add a native room with shelves and six
+test cases, using the existing Vulkan mesh pipeline. OpenXR aim poses drive
+visible controller pointers and case hover outlines. Trigger selection starts
+the local sample in the same OpenXR session; B during playback or movie completion
+returns to the room. B in the room exits the prototype. A also starts the sample.
+Dynamic pointer buffers use the existing frame fences before writes, and room
+geometry and controllers share the same depth pass.
+
+`store-launch.sh` starts `native-player/halcyon-frame-player-store` through Steam.
+`register-native.py` registers “Devkit Game: HalcyonFrameStore” alongside the
+working library and cinema entries. The owner verified the room, controllers,
+trigger selection, sample playback and return to the room on the headset.
+This is a native interaction prototype: the six cases are sample placeholders,
+not Jellyfin titles. Catalog artwork, details, search and comfort locomotion
+are not implemented in this native room yet. The ordinary library retains
+verified Jellyfin browsing and playback while that native interface is built.
 
 Building on the headset requires Rust, glslc, a working C compiler, FFmpeg
 and PulseAudio development headers. The upstream build uses a
@@ -40,4 +61,4 @@ passes an opaque localhost media URL and an initial resume position. The player
 writes position, pause and completion snapshots without credentials; the runner
 reports them to the local library server. B and natural completion exit the
 cinema helper. The relay and native URL restrictions have automated coverage,
-but a real Jellyfin movie handoff still needs headset verification.
+and a real Jellyfin movie handoff was verified by the owner.

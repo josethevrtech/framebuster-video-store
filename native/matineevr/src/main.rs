@@ -39,6 +39,8 @@ mod shortcut_tests;
 mod shortcuts;
 mod snapshot;
 mod startup;
+mod store_geometry;
+mod store_scene;
 mod swapchains;
 mod thumbnail;
 mod xr;

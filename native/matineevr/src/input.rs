@@ -25,6 +25,9 @@ pub struct Input {
     poses: [xr::Action<xr::Posef>; 2],
     hands: [xr::Space; 2],
     controller_spaces: [xr::Space; 2],
+    aims: [xr::Action<xr::Posef>; 2],
+    aim_spaces: [xr::Space; 2],
+    pub aim_poses: [Option<xr::Posef>; 2],
     pub controller_poses: [Option<xr::Posef>; 2],
     pub panel_poses: [Option<xr::Posef>; 2],
     triggers: [xr::Action<f32>; 2],
@@ -71,6 +74,10 @@ impl Input {
             poses[0].create_space(session, xr::Path::NULL, offset)?,
             poses[1].create_space(session, xr::Path::NULL, offset)?,
         ];
+        let aims = [set.create_action::<xr::Posef>("left_aim", "Left pointer", &[])?,
+            set.create_action::<xr::Posef>("right_aim", "Right pointer", &[])?];
+        let aim_spaces = [aims[0].create_space(session, xr::Path::NULL, xr::Posef::IDENTITY)?,
+            aims[1].create_space(session, xr::Path::NULL, xr::Posef::IDENTITY)?];
         let triggers = [
             set.create_action("left_adjust", "Orientation / Zoom", &[])?,
             set.create_action("right_adjust", "Stereo / Position", &[])?,
@@ -89,6 +96,7 @@ impl Input {
             bindings.extend([
                 xr::Binding::new(&grips[hand], path("squeeze/value")?),
                 xr::Binding::new(&poses[hand], path("grip/pose")?),
+                xr::Binding::new(&aims[hand], path("aim/pose")?),
                 xr::Binding::new(&triggers[hand], path("trigger/value")?),
                 xr::Binding::new(&sticks[hand], path("thumbstick")?),
             ]);
@@ -109,6 +117,7 @@ impl Input {
             poses,
             hands,
             controller_spaces,
+            aims, aim_spaces, aim_poses: [None; 2],
             controller_poses: [None; 2],
             panel_poses: [None; 2],
             triggers,
@@ -141,6 +150,8 @@ impl Input {
                 &self.poses[hand], session, &self.hands[hand], base, time)?;
             self.controller_poses[hand] = crate::input_tracking::locate(
                 &self.poses[hand], session, &self.controller_spaces[hand], base, time)?;
+            self.aim_poses[hand] = crate::input_tracking::locate(
+                &self.aims[hand], session, &self.aim_spaces[hand], base, time)?;
             *held =
                 state.is_active && state.current_state > 0.0 && self.panel_poses[hand].is_some();
         }

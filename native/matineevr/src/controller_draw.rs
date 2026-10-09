@@ -14,6 +14,7 @@ pub struct ControllerDraw {
     mesh: ControllerMesh,
     device: Rc<Graphics>,
     sequence: usize,
+    pub store: Option<crate::store_scene::StoreScene>,
 }
 
 impl ControllerDraw {
@@ -21,15 +22,21 @@ impl ControllerDraw {
         Ok(Self {
             commands: (0..IN_FLIGHT).map(|_| Commands::new(device.clone())).collect::<Result<_>>()?,
             pipeline: ControllerPipeline::new(device.clone())?, targets: HashMap::new(),
-            mesh: ControllerMesh::new(device.clone())?, device, sequence: 0,
+            mesh: ControllerMesh::new(device.clone())?,
+            store: if std::env::var("HALCYON_FRAME_STORE").as_deref() == Ok("1") {
+                Some(crate::store_scene::StoreScene::new(device.clone())?) } else { None },
+            device, sequence: 0,
         })
     }
 
     pub fn draw(&mut self, target: Target, view: &xr::View,
         hands: [Option<xr::Posef>; 2]) -> Result<()> {
-        if hands.iter().all(Option::is_none) { return Ok(()); }
-        let commands = &mut self.commands[self.sequence % IN_FLIGHT];
+        let room = self.store.as_ref().filter(|s| s.active);
+        if room.is_none() && hands.iter().all(Option::is_none) { return Ok(()); }
+        let slot = self.sequence % IN_FLIGHT;
+        let commands = &mut self.commands[slot];
         commands.collect()?;
+        let dynamic = room.map(|s| s.upload(slot)).transpose()?.unwrap_or(0);
         if let std::collections::hash_map::Entry::Vacant(entry) = self.targets.entry(target.image) {
             entry.insert((Image::borrowed(self.device.clone(), vk::Image::from_raw(target.image), FORMAT)?,
                 ControllerDepth::new(self.device.clone(), target.size)?));
@@ -67,6 +74,17 @@ impl ControllerDraw {
                 width: target.size.0 as f32, height: -(target.size.1 as f32), min_depth: 0.0, max_depth: 1.0 }]);
             d.cmd_set_scissor(command, 0, &[area]);
             d.cmd_bind_pipeline(command, vk::PipelineBindPoint::GRAPHICS, self.pipeline.handle);
+            if let Some(room) = room {
+                let parameters = parameters(view, &xr::Posef::IDENTITY);
+                let bytes = std::slice::from_raw_parts(parameters.as_ptr() as *const u8, 80);
+                d.cmd_push_constants(command, self.pipeline.layout, vk::ShaderStageFlags::VERTEX, 0, bytes);
+                d.cmd_bind_vertex_buffers(command, 0, &[room.room.handle], &[0]);
+                d.cmd_draw(command, room.count, 1, 0, 0);
+                if dynamic > 0 {
+                    d.cmd_bind_vertex_buffers(command, 0, &[room.frames[slot].handle], &[0]);
+                    d.cmd_draw(command, dynamic, 1, 0, 0);
+                }
+            }
             d.cmd_bind_vertex_buffers(command, 0, &[self.mesh.buffer.handle], &[0]);
             for (hand, pose) in hands.iter().enumerate() {
                 let Some(pose) = pose else { continue; };

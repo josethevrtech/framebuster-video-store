@@ -20,6 +20,10 @@ pub struct Video {
 }
 
 impl Video {
+    pub fn update_store(&mut self, active: bool, controls: crate::input::Controls,
+        aims: [Option<xr::Posef>; 2]) -> bool {
+        self.controllers.store.as_mut().is_some_and(|s| s.update(active, controls, aims))
+    }
     pub fn new(
         device: Rc<Graphics>,
         instance: &xr::Instance,

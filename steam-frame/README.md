@@ -4,8 +4,8 @@ This fork targets rendering and serving Halcyon entirely on Steam Frame.
 It is a prototype under active testing on the owner's headset. Native
 OpenXR/Vulkan playback through MatineeVR has been verified with an H.264/AAC
 sample: video, sound, correct 16:9 mono presentation and button controls.
-The Jellyfin library bridge is implemented and installed for headset testing;
-an actual Jellyfin movie handoff has not yet been verified.
+The owner verified Jellyfin sign-in, library browsing and a real movie handoff
+to the native cinema. A separate native 3D store room prototype is also verified.
 
 ## Runtime
 
@@ -66,10 +66,18 @@ scanning is not implemented. Subscriptions remain provider link-outs.
   and grips show shortcut panels. The cinema helper exits when playback ends.
 - Native Steam Frame 3D controller models passed the release build and owner
   visual verification. The original and icon binaries are preserved separately.
-- Library playback and resume need real-server headset verification. Native
+- Library playback passed real-server headset verification; resume and progress
+  still need further checks. Native
   subtitle selection, store comfort and modern pointing controls need more
   implementation and testing. This is not a
   complete standalone release yet.
+
+The new native store prototype is “Devkit Game: HalcyonFrameStore”. It renders
+its room and shelves directly through Vulkan/OpenXR, with Frame controller aim
+pointers and trigger selection. Its six test cases play the local sample;
+B returns from the movie to the room without changing apps. Jellyfin cases,
+artwork, search and comfort locomotion remain future work in this native room.
+The browser's 3D store remains disabled on Frame.
 
 ## Native player source
 
