@@ -21,8 +21,11 @@ pub struct Video {
 
 impl Video {
     pub fn update_store(&mut self, active: bool, controls: crate::input::Controls,
-        aims: [Option<xr::Posef>; 2]) -> bool {
-        self.controllers.store.as_mut().is_some_and(|s| s.update(active, controls, aims))
+        aims: [Option<xr::Posef>; 2]) -> Option<usize> {
+        self.controllers.store.as_mut().and_then(|s| s.update(active, controls, aims))
+    }
+    pub fn store_pose(&self) -> xr::Posef {
+        self.controllers.store.as_ref().map_or(xr::Posef::IDENTITY, |s| s.navigation.pose)
     }
     pub fn new(
         device: Rc<Graphics>,

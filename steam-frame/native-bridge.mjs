@@ -25,9 +25,9 @@ export function createNativeBridge(config, { env = process.env, launch, fetchImp
     const source = current.source && new URL(current.source);
     const token = current.token;
     current.source = null; current.token = null;
-    if (source?.pathname.endsWith('.m3u8') && source.searchParams.get('DeviceId') === 'halcyon-frame-native') {
+    if (source?.pathname.endsWith('.m3u8') && ['halcyon-frame-native', 'framebuster-native'].includes(source.searchParams.get('DeviceId'))) {
       const stop = new URL(`${config.jellyfin.url.replace(/\/+$/, '')}/Videos/ActiveEncodings`);
-      stop.searchParams.set('DeviceId', 'halcyon-frame-native');
+      stop.searchParams.set('DeviceId', source.searchParams.get('DeviceId'));
       stop.searchParams.set('PlaySessionId', source.searchParams.get('PlaySessionId') || '');
       void fetchImpl(stop.href, { method: 'DELETE', headers: { 'X-Emby-Token': token },
         redirect: 'manual', signal: AbortSignal.timeout(5000) }).then(r => r.body?.cancel()).catch(() => {});

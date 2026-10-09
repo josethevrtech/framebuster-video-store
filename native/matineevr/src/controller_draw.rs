@@ -75,7 +75,7 @@ impl ControllerDraw {
             d.cmd_set_scissor(command, 0, &[area]);
             d.cmd_bind_pipeline(command, vk::PipelineBindPoint::GRAPHICS, self.pipeline.handle);
             if let Some(room) = room {
-                let parameters = parameters(view, &xr::Posef::IDENTITY);
+                let parameters = parameters(view, &room.navigation.pose);
                 let bytes = std::slice::from_raw_parts(parameters.as_ptr() as *const u8, 80);
                 d.cmd_push_constants(command, self.pipeline.layout, vk::ShaderStageFlags::VERTEX, 0, bytes);
                 d.cmd_bind_vertex_buffers(command, 0, &[room.room.handle], &[0]);

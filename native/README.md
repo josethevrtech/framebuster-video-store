@@ -1,4 +1,10 @@
-# Halcyon Frame native playback
+# FrameBuster Video Store native source
+
+The primary app now builds as `framebuster-video-store`. Its source directory
+retains the MatineeVR name for provenance, and the Rust library keeps that name
+to preserve its internal module imports. [Native architecture](../docs/native-architecture.md)
+describes native Jellyfin sign-in, catalog/artwork, Linux dialogs and playback.
+The new launch path does not use a browser or the Halcyon web server.
 
 The `matineevr` directory is adapted from the source archive distributed
 with MatineeVR 0.0.10 by embedding-shapes. Original GPL-3.0-only licensing
@@ -40,10 +46,11 @@ geometry and controllers share the same depth pass.
 `register-native.py` registers “Devkit Game: HalcyonFrameStore” alongside the
 working library and cinema entries. The owner verified the room, controllers,
 trigger selection, sample playback and return to the room on the headset.
-This is a native interaction prototype: the six cases are sample placeholders,
-not Jellyfin titles. Catalog artwork, details, search and comfort locomotion
-are not implemented in this native room yet. The ordinary library retains
-verified Jellyfin browsing and playback while that native interface is built.
+That original entry is a sample interaction prototype. The separate FrameBuster
+entry now pairs natively with Jellyfin and loads actual titles, poster artwork,
+details, search, paging and comfort movement. Sign-in and catalog loading passed
+on the headset. The shared shelf atlas and full native movie selection flow are
+still undergoing visual verification. The ordinary library remains a fallback.
 
 Building on the headset requires Rust, glslc, a working C compiler, FFmpeg
 and PulseAudio development headers. The upstream build uses a

@@ -21,7 +21,7 @@ impl Graphics {
         entry
             .create_instance(
                 &xr::ApplicationInfo {
-                    application_name: "MatineeVR",
+                    application_name: "FrameBuster Video Store",
                     ..Default::default()
                 },
                 &extensions,

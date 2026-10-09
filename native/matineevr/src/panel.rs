@@ -1,5 +1,5 @@
 use crate::hud_text::WIDTH;
-use anyhow::{Result, ensure};
+use anyhow::{Context, Result, ensure};
 use ash::vk::{self, Handle};
 use matineevr::{vk_pipeline::FORMAT, vk_transfer::Upload};
 use openxr as xr;
@@ -35,7 +35,7 @@ impl Panel {
             face_count: 1,
             array_size: 1,
             mip_count: 1,
-        })?;
+        }).context("Create native panel swapchain")?;
         let images = chain.enumerate_images()?;
         Ok(Self {
             chain,

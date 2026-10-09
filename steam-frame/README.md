@@ -1,4 +1,14 @@
-# Halcyon Frame standalone prototype
+# FrameBuster Steam Frame runtime
+
+The primary application is now **FrameBuster Video Store**, a native OpenXR/Vulkan
+store and cinema with its own Jellyfin companion. Launch
+`Devkit Game: FrameBusterVideoStore` in Steam. It does not require Chrome,
+the browser build, or the Halcyon web server. See
+[native architecture and installation](../docs/native-architecture.md) for the
+current runtime, controls, requirements, and verification status.
+
+The sections below document the earlier Halcyon browser prototype, retained
+as a development fallback.
 
 This fork targets rendering and serving Halcyon entirely on Steam Frame.
 It is a prototype under active testing on the owner's headset. Native

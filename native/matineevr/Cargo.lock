@@ -50,7 +50,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "matineevr"
+name = "framebuster-video-store"
 version = "0.1.0"
 dependencies = [
  "anyhow",

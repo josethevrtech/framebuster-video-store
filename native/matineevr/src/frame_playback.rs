@@ -31,8 +31,8 @@ impl FramePlayback {
     pub fn report(&mut self, app: &App, force: bool) -> Result<()> {
         let Some(path) = &self.path else { return Ok(()); };
         if !force && Instant::now() < self.next { return Ok(()); }
-        let data = format!("{{\"position\":{},\"paused\":{},\"ended\":{},\"error\":{}}}",
-            self.position, self.paused, app.completed, app.failed);
+        let data = format!("{{\"position\":{},\"paused\":{},\"ended\":{},\"error\":{},\"running\":{}}}",
+            self.position, self.paused, app.completed, app.failed, app.playback.is_some());
         std::fs::write(path, data)?;
         self.next = Instant::now() + Duration::from_secs(1);
         Ok(())

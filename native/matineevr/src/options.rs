@@ -37,19 +37,19 @@ impl Options {
         while let Some(arg) = args.next() {
             match arg.as_str() {
                 "--version" | "-V" => {
-                    println!("matineevr {}", env!("MATINEEVR_VERSION"));
+                    println!("FrameBuster Video Store {}", env!("MATINEEVR_VERSION"));
                     return Ok(None);
                 }
                 "--help" | "-h" => {
                     println!(
-                        "matineevr [FILE|DIRECTORY] [--projection flat|180|360|fisheye|fisheye190] [--stereo mono|sbs|tb]\n\
+                        "framebuster-video-store [FILE|DIRECTORY] [--projection flat|180|360|fisheye|fisheye190] [--stereo mono|sbs|tb]\n\
                         [--sbs-format full|half] [--tb-format full|half] [--probe | --render-probe] [--seconds N] [--snapshot FILE.ppm]\n\
                         [--hud] [--hud-snapshot FILE.ppm] [--stats] [--version]\n\
                         No file: browse ~/Videos. D-pad: navigate/open. A: open. B: parent folder.\n\
                         Playback: X: pause. Y: HUD. A: recenter. B: stop and browse.\n\
                         Hold left grip: browser. Hold right grip: video settings.\n\
                         Settings: stick up/down selects; left/right changes.\n\
-                        This minimal version plays video without audio."
+                        FrameBuster Video Store: native Steam Frame OpenXR video and audio."
                     );
                     return Ok(None);
                 }

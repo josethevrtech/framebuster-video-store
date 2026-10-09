@@ -12,6 +12,7 @@ pub struct StoreScene {
     dynamic: Vec<Vertex>,
     held: [bool; 2],
     selected: Option<usize>,
+    pub navigation: crate::store_navigation::StoreNavigation,
 }
 
 impl StoreScene {
@@ -21,17 +22,19 @@ impl StoreScene {
         upload(&room, &vertices)?;
         Ok(Self { active: true, room, count: vertices.len() as u32,
             frames: (0..IN_FLIGHT).map(|_| Buffer::new(device.clone(), 64 * 1024)).collect::<Result<_>>()?,
-            dynamic: Vec::new(), held: [false; 2], selected: None })
+            dynamic: Vec::new(), held: [false; 2], selected: None, navigation: Default::default() })
     }
 
-    pub fn update(&mut self, active: bool, controls: Controls, aims: [Option<xr::Posef>; 2]) -> bool {
+    pub fn update(&mut self, active: bool, controls: Controls, aims: [Option<xr::Posef>; 2]) -> Option<usize> {
         self.active = active;
         self.dynamic.clear();
         let mut launch = false;
+        if active { self.navigation.update(controls); }
         for (hand, pose) in aims.into_iter().enumerate() {
             let pressed = controls.triggers[hand] > 0.65;
             if active && let Some(pose) = pose {
                 let (origin, direction) = ray(pose);
+                let (origin, direction) = self.navigation.inverse_ray(origin, direction);
                 let hit = CARDS.iter().enumerate().filter_map(|(i, center)|
                     hit_card(origin, direction, *center).map(|t| (i, t)))
                     .min_by(|a, b| a.1.total_cmp(&b.1));
@@ -45,7 +48,7 @@ impl StoreScene {
             self.held[hand] = pressed;
         }
         if active && let Some(i) = self.selected { outline(&mut self.dynamic, CARDS[i], [0.2, 1.0, 0.4]); }
-        active && (launch || controls.a)
+        (active && (launch || controls.a)).then_some(self.selected.unwrap_or(0))
     }
 
     pub fn upload(&self, slot: usize) -> Result<u32> {

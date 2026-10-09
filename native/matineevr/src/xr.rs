@@ -12,6 +12,7 @@ pub fn run(options: &Options) -> Result<()> {
     let instance = Graphics::instance()?;
     eprintln!("OpenXR: {}", instance.properties()?.runtime_name);
     let system = instance.system(xr::FormFactor::HEAD_MOUNTED_DISPLAY)?;
+    eprintln!("OpenXR layer limit: {}", instance.system_properties(system)?.graphics_properties.max_layer_count);
     let graphics = Graphics::new(&instance, system)?;
     let (session, mut waiter, mut stream) = graphics.session(&instance, system)?;
     let mut input = Input::new(&instance, &session, Overlays::hand_offset())?;
@@ -22,6 +23,7 @@ pub fn run(options: &Options) -> Result<()> {
     let store_mode = std::env::var("HALCYON_FRAME_STORE").as_deref() == Ok("1");
     let mut handoff = crate::frame_playback::FramePlayback::new(&mut app)?;
     let mut video = Video::new(graphics.clone(), &instance, system, &session)?;
+    let mut store = crate::store_runtime::StoreRuntime::new(&session, graphics.clone())?;
     video.renderer.stats = options.stats.then(Statistics::default);
     let mut overlays = Overlays::new(&session, graphics.clone())?;
     let mut performance = Performance::new(options.stats);
@@ -102,14 +104,10 @@ pub fn run(options: &Options) -> Result<()> {
         };
         handoff.observe(&app);
         let in_store = store_mode && app.playback.is_none() && !app.stopping();
-        if in_store && controls.b {
+        if crate::store_runtime::update(&mut store, &mut app, &mut video, controls,
+            if focused { input.aim_poses } else { [None; 2] }, in_store)? {
             performance.empty(&mut stream, timing.predicted_display_time)?;
             break;
-        }
-        if video.update_store(in_store, controls, if focused { input.aim_poses } else { [None; 2] }) {
-            if let Some(path) = std::env::var_os("HALCYON_FRAME_STORE_SAMPLE") {
-                app.queue_store_movie(path.into());
-            }
         }
         app.update(if in_store { Default::default() } else { controls });
         if options.stats
@@ -166,7 +164,7 @@ pub fn run(options: &Options) -> Result<()> {
                 overlay_started.unwrap().elapsed().as_secs_f64() * 1000.0,
             );
         }
-        let quads = if in_store { Vec::new() }
+        let quads = if in_store { store.as_ref().map_or_else(Vec::new, |s| s.layers(&space, video.store_pose())) }
             else { overlays.layers(&space, input.panel_poses, timing.predicted_display_time) };
         timed(performance.stats.as_mut(), "xr_end_ms", || {
             crate::swapchains::submit(

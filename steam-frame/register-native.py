@@ -8,11 +8,11 @@ sys.path.insert(0, "/usr/share/steamos-devkit/hooks")
 import devkit_utils as steam
 
 
-def register(base: Path, media=None, store=False):
-    game = "HalcyonFrameStore" if store else "HalcyonFrameCinema" if media else "HalcyonFrame"
+def register(base: Path, media=None, store=False, framebuster=False):
+    game = "FrameBusterVideoStore" if framebuster else "HalcyonFrameStore" if store else "HalcyonFrameCinema" if media else "HalcyonFrame"
     directory = Path.home() / "devkit-game" / game
     directory.mkdir(parents=True, exist_ok=True)
-    launcher = base / "steam-frame" / ("store-launch.sh" if store else "native-launch.sh" if media else "launch.sh")
+    launcher = base / "steam-frame" / ("framebuster-launch.sh" if framebuster else "store-launch.sh" if store else "native-launch.sh" if media else "launch.sh")
     if not launcher.is_file() or media and not media.is_file():
         raise ValueError("Native launcher and sample media must exist")
     steam.validate_steam_client()
@@ -32,6 +32,10 @@ def register(base: Path, media=None, store=False):
 
 if __name__ == "__main__":
     base = Path(__file__).resolve().parent.parent
-    register(base, base / "media" / "sample-h264.mp4")
-    register(base)
-    register(base, store=True)
+    if sys.argv[1:] == ["--framebuster-only"]:
+        register(base, framebuster=True)
+    else:
+        register(base, base / "media" / "sample-h264.mp4")
+        register(base)
+        register(base, store=True)
+        register(base, framebuster=True)

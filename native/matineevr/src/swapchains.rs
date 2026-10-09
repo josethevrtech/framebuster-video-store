@@ -1,4 +1,4 @@
-use anyhow::{Result, ensure};
+use anyhow::{Context, Result, ensure};
 use openxr as xr;
 
 pub struct Eye {
@@ -43,7 +43,7 @@ pub fn submit(
         .views(&views);
     let mut layers: Vec<&xr::CompositionLayerBase<'_, xr::Vulkan>> = vec![&projection];
     layers.extend(quads.iter().map(|quad| &**quad));
-    stream.end(time, xr::EnvironmentBlendMode::OPAQUE, &layers)?;
+    stream.end(time, xr::EnvironmentBlendMode::OPAQUE, &layers).context("Submit native OpenXR layers")?;
     Ok(())
 }
 
