@@ -1,4 +1,5 @@
 import { CLERK_IDENTITY_SETTING } from './cast-catalog';
+import { isFrameLibrary } from './frame-platform';
 import { organizeSetting } from './settings-navigation';
 import { REEL_MODE_KEY } from './reel-profile';
 import { STEAM_REVIEW_TIERS } from './steam-catalog';
@@ -177,6 +178,7 @@ export function visibleGroups(): SettingGroup[] {
  * present, otherwise the declared default. Toggles are stored as '1'/'0'.
  */
 export function getSetting<T = unknown>(key: string): T {
+  if (key === 'bb_render_mode' && isFrameLibrary()) return 'flat' as T;
   const def = registry.get(key);
   if (typeof localStorage !== 'undefined') {
     const raw = localStorage.getItem(key);
@@ -1015,7 +1017,7 @@ export function registerCoreSettings(): void {
     label: 'Render Mode',
     kind: 'cycle',
     group: 'Performance',
-    values: [
+    values: isFrameLibrary() ? [{ id: 'flat', label: 'Frame Library' }] : [
       { id: '3d', label: '3D Store' },
       { id: 'flat', label: '2.5D Shelf' }
     ],
@@ -1025,7 +1027,7 @@ export function registerCoreSettings(): void {
     // rebuilds the incoming one from the loaded catalog — same path the diegetic
     // manager-terminal / flat-menu switches use (switchRenderMode in main.ts).
     applyMode: 'rebuild-scene',
-    hint: 'Full 3D store, or a flat shelf UI for low-power clients.',
+    hint: isFrameLibrary() ? 'Browse here and use Watch in VR for the native cinema.' : 'Full 3D store, or a flat shelf UI for low-power clients.',
     // Also switchable diegetically (power menu, counter CRT, flat menu); this
     // row exists so the mode is FINDABLE where users look for it (UX pass
     // 2026-08: performance controls must live on the couch tree).

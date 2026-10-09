@@ -37,6 +37,9 @@ The Frame library boots directly into the HTML shelf view and disables browser
 GPU rendering because the hardware renderer produced corrupted squares on
 this headset. It does not require WebGL. Native cinema
 playback continues to use Vulkan and hardware video decoding.
+The Frame profile fixes the effective render mode to the shelf view and omits
+the 3D store menu option. Library browsing and Jellyfin sign-in are owner-verified;
+the browser's 3D store is not supported by this profile.
 
 The bridge keeps Jellyfin credentials in memory and relays only the selected
 movie through an opaque localhost URL. Native playback reports position and
