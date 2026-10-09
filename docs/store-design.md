@@ -22,6 +22,15 @@ The room does not fetch BingeBrowse or require an external theme service.
 Movie streaming and fresh Jellyfin catalogue artwork still require the server;
 downloaded movie playback and a persistent offline catalogue are not implemented.
 
+The checkout-side wall now has two 6.3-metre window banks with narrow dark
+aluminium mullions and a central double-door entrance. Actual wall openings
+reveal a local dusk strip-mall scene: pavement, a curb, parking stripes, lamps
+and neighbouring storefronts. Sparse highlights suggest glazing without an opaque
+pane blocking the view. A striped entrance mat and a physical returns cabinet
+complete the entrance. These features use the room's depth-tested mesh pass,
+not additional OpenXR quad layers. The exterior is scenery, not a navigable area;
+dynamic reflections, sunlight and shadows are not implemented.
+
 The room uses physical metre dimensions without rescaling controller tracking.
 On the tested Frame, STAGE exposed a zero head height, so treating it as a
 calibrated floor shrank the room incorrectly. Store sessions now use LOCAL;

@@ -2,13 +2,11 @@ use crate::store_geometry::{Vertex, box_mesh};
 
 pub fn shop(v: &mut Vec<Vertex>) {
     let blue = [0.035, 0.10, 0.22];
-    let gold = [0.85, 0.56, 0.12];
     let wood = [0.035, 0.035, 0.04];
     crate::store_carpet::carpet(v);
     for (p, size) in [([0.0, 0.25, -5.0], [16.0, 3.5, 0.15]),
         ([-8.0, 0.25, 4.0], [0.15, 3.5, 18.0]),
-        ([8.0, 0.25, 4.0], [0.15, 3.5, 18.0]),
-        ([0.0, 0.25, 13.0], [16.0, 3.5, 0.15])] {
+        ([8.0, 0.25, 4.0], [0.15, 3.5, 18.0])] {
         box_mesh(v, p, size, blue);
         let side = size[0] < size[2];
         let band = if side { [p[0] - p[0].signum() * 0.11, 1.35, p[2]] }
@@ -61,6 +59,5 @@ pub fn shop(v: &mut Vec<Vertex>) {
             box_mesh(v, [x, 1.91, z], [1.5, 0.055, 0.35], [0.82, 0.87, 0.96]);
         }
     }
-    box_mesh(v, [0.0, -0.15, 12.9], [1.8, 2.7, 0.08], [0.08, 0.24, 0.34]);
-    box_mesh(v, [0.7, -0.15, 12.83], [0.04, 0.35, 0.08], gold);
+    crate::store_frontage::append(v);
 }

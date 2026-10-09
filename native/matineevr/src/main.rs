@@ -43,6 +43,7 @@ mod store_geometry;
 mod store_display;
 mod store_capture;
 mod store_fixtures;
+mod store_frontage;
 mod store_scale;
 mod store_signs;
 mod store_endcaps;
