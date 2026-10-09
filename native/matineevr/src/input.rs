@@ -9,6 +9,7 @@ pub struct Controls {
     pub a: bool,
     pub b: bool,
     pub y: bool,
+    pub sprint: bool,
     pub grips: [bool; 2],
     pub triggers: [f32; 2],
     pub sticks: [[f32; 2]; 2],
@@ -20,7 +21,7 @@ pub struct Controls {
 
 pub struct Input {
     set: xr::ActionSet,
-    actions: [xr::Action<bool>; 8],
+    actions: [xr::Action<bool>; 9],
     grips: [xr::Action<f32>; 2],
     poses: [xr::Action<xr::Posef>; 2],
     hands: [xr::Space; 2],
@@ -51,6 +52,7 @@ impl Input {
             set.create_action("down", "Down", &[])?,
             set.create_action("left", "Parent folder / Previous value", &[])?,
             set.create_action("right", "Open / Next value", &[])?,
+            set.create_action("sprint", "Run in store", &[])?,
         ];
         let paths = [
             "/user/hand/right/input/x/click",
@@ -61,6 +63,7 @@ impl Input {
             "/user/hand/left/input/dpad_down/click",
             "/user/hand/left/input/dpad_left/click",
             "/user/hand/left/input/dpad_right/click",
+            "/user/hand/right/input/thumbstick/click",
         ];
         let grips = [
             set.create_action("left_shortcut", "Left shortcut panel", &[])?,
@@ -133,15 +136,15 @@ impl Input {
         time: xr::Time,
     ) -> Result<Controls> {
         session.sync_actions(&[(&self.set).into()])?;
-        let mut pressed = [false; 8];
-        let mut held = [false; 8];
+        let mut pressed = [false; 9];
+        let mut held = [false; 9];
         for ((action, pressed), held) in self.actions.iter().zip(&mut pressed).zip(&mut held) {
             let state = action.state(session, xr::Path::NULL)?;
             *held = state.is_active && state.current_state;
             *pressed = *held && state.changed_since_last_sync;
         }
-        let [x, a, b, y, up, down, left, right] = pressed;
-        let [_, _, _, _, held_up, held_down, held_left, held_right] = held;
+        let [x, a, b, y, up, down, left, right, _] = pressed;
+        let [_, _, _, _, held_up, held_down, held_left, held_right, sprint] = held;
         let mut grips = [false; 2];
         self.panel_poses = [None; 2];
         for (hand, (action, held)) in self.grips.iter().zip(&mut grips).enumerate() {
@@ -173,6 +176,7 @@ impl Input {
             a,
             b,
             y,
+            sprint,
             grips,
             triggers,
             sticks,

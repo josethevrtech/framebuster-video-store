@@ -1,12 +1,10 @@
-use crate::{app::App, graphics::Graphics, hud_text::WIDTH, input::Controls,
-    panel::Panel, store_catalog::{self, Movie}};
+use crate::{app::App, graphics::Graphics, input::Controls, store_catalog::{self, Movie}};
 use anyhow::Result;
 use openxr as xr;
 use std::{fs, path::PathBuf, rc::Rc, time::{Duration, Instant}};
 
 pub struct StoreRuntime {
     directory: PathBuf,
-    posters: Panel,
     movies: Vec<Movie>,
     selected: Option<usize>,
     catalog_path: String,
@@ -20,8 +18,9 @@ pub struct StoreRuntime {
 pub fn update(runtime: &mut Option<StoreRuntime>,
     app: &mut App, video: &mut crate::xr_draw::Video, controls: Controls,
     aims: [Option<xr::Posef>; 2], hands: [Option<xr::Posef>; 2], dt: f32, active: bool) -> Result<bool> {
+    let controls = crate::store_controls::normalize(controls);
     let selected = video.update_store(active, controls, aims, hands, dt);
-    if let Some(runtime) = runtime { return runtime.update(app, controls, selected, active); }
+    if let Some(runtime) = runtime { return runtime.update(app, video, controls, selected, active); }
     if active && controls.b { return Ok(true); }
     if selected.is_some() && let Some(path) = std::env::var_os("HALCYON_FRAME_STORE_SAMPLE") {
         app.queue_store_movie(path.into());
@@ -30,10 +29,10 @@ pub fn update(runtime: &mut Option<StoreRuntime>,
 }
 
 impl StoreRuntime {
-    pub fn new(session: &xr::Session<xr::Vulkan>, device: Rc<Graphics>) -> Result<Option<Self>> {
+    pub fn new(_session: &xr::Session<xr::Vulkan>, _device: Rc<Graphics>) -> Result<Option<Self>> {
         let Some(directory) = std::env::var_os("HALCYON_FRAME_STORE_IPC") else { return Ok(None); };
         Ok(Some(Self { directory: directory.into(),
-            posters: Panel::new(session, device.clone(), [1440, 3240])?, movies: Vec::new(), selected: None,
+            movies: Vec::new(), selected: None,
             catalog_path: String::new(), request: String::new(), next: Instant::now(), sequence: 0,
             stick: false, resume: None }))
     }
@@ -44,7 +43,7 @@ impl StoreRuntime {
         Ok(())
     }
 
-    pub fn update(&mut self, app: &mut App,
+    pub fn update(&mut self, app: &mut App, video: &mut crate::xr_draw::Video,
         controls: Controls, selection: Option<usize>, active: bool) -> Result<bool> {
         if active {
             if let Some(index) = selection.filter(|i| *i < self.movies.len()) {
@@ -74,8 +73,7 @@ impl StoreRuntime {
         if let Ok(path) = fs::read_to_string(self.directory.join("catalog-path")) {
             if path != self.catalog_path && PathBuf::from(&path).parent() == Some(self.directory.as_path()) {
                 let movies = store_catalog::read(std::path::Path::new(&path))?;
-                let canvas = crate::store_poster::atlas(&movies);
-                self.posters.upload(&canvas.pixels)?;
+                video.store_covers(&movies)?;
                 self.movies = movies; self.catalog_path = path; self.selected = None;
             }
         }
@@ -92,30 +90,5 @@ impl StoreRuntime {
             }
         }
         Ok(false)
-    }
-
-    pub fn layers<'a>(&'a self, space: &'a xr::Space, room: xr::Posef, scale: f32) -> Vec<xr::CompositionLayerQuad<'a, xr::Vulkan>> {
-        let transform = |p: [f32; 3], yaw: f32| {
-            let p = crate::store_scale::point(p, scale);
-            let q = room.orientation;
-            let c = 1.0 - 2.0 * q.y * q.y; let s = 2.0 * q.y * q.w;
-            let angle = s.atan2(c) + yaw;
-            xr::Posef { orientation: xr::Quaternionf { x: 0.0, y: (angle / 2.0).sin(), z: 0.0, w: (angle / 2.0).cos() }, position: xr::Vector3f {
-                x: c * p[0] + s * p[2] + room.position.x, y: p[1] + room.position.y,
-                z: -s * p[0] + c * p[2] + room.position.z } }
-        };
-        let mut layers = Vec::new();
-        for bank in 0..crate::store_display::BAYS.len() {
-            let section = bank % 3;
-            if section * 18 >= self.movies.len() { continue; }
-            let (p, yaw) = crate::store_geometry::bank_pose(bank);
-            layers.push(self.posters.region_layer(space, transform(p, yaw),
-                1.62 * scale * WIDTH as f32 / 1440.0, section * 1080, [1440, 1080]));
-        }
-        for (index, &(p, yaw)) in crate::store_endcaps::POSTERS.iter().enumerate().take(self.movies.len()) {
-            layers.push(self.posters.crop_layer(space, transform(p, yaw),
-                0.70 * scale * WIDTH as f32 / 192.0, 24 + index * 240, 56, [192, 288]));
-        }
-        layers
     }
 }

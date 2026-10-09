@@ -74,17 +74,20 @@ the isolated three-bay arrangement. The replacement has six adjacent wall
 bays and two double-sided freestanding racks, with 180 physical case slots.
 Up to 54 distinct Jellyfin entries repeat through these displays, like rental
 copies; each visible case selects the same catalog entry as its artwork.
-One shared display-pose definition positions cases, shelf meshes, cover quads
+One shared display-pose definition positions cases, shelf meshes, cover meshes
 and pointer hit testing. Four browsing-rack ends have black physical panels
 with Jellyfin poster artwork. Floating status, details, generated cover captions
 and hanging text signs have been removed. Previous sign asset files are preserved
 but are not loaded. Account pairing uses a native Linux dialog outside the room.
 
-Artwork upload flips bottom-up canvas rows into Vulkan image rows. Region
-selection must therefore use `atlas_height - bottom - region_height`; the
-previous offset selected another bank's titles. A regression test covers the
-three region offsets. The store uses up to 15 total composition layers, below the observed limit of 16. Native visual verification of
-this complete display arrangement is still pending.
+Artwork upload flips bottom-up canvas rows into Vulkan image rows. Cover UVs
+therefore use the atlas height minus each artwork's bottom offset. The same
+catalog index drives both case selection and UVs; tests cover all 180 case
+instances. Previously, OpenXR cover quads always composited over the projection
+and showed through fixtures. They are now sampled by a Vulkan cover pipeline
+inside the same depth-tested room pass. All shelf and rack-end artwork is part
+of the stereo projection; no additional artwork composition layers are needed.
+Headset confirmation of the new depth behavior is pending.
 
 Offline furniture includes a vintage TV, potted plant and cushioned chair from
 [Kenney Furniture Kit](https://kenney.nl/assets/furniture-kit), under **CC0**.

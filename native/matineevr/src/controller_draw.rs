@@ -44,6 +44,8 @@ impl ControllerDraw {
         let (image, depth) = &self.targets[&target.image];
         commands.begin()?;
         let command = commands.command;
+        if let Some(room) = self.store.as_mut().filter(|s| s.active) { room.covers.prepare(command); }
+        let room = self.store.as_ref().filter(|s| s.active);
         let d = &self.device.api;
         unsafe {
             let barriers = [vk::ImageMemoryBarrier::default().image(image.handle)
@@ -94,6 +96,7 @@ impl ControllerDraw {
                 d.cmd_draw(command, self.mesh.counts[hand], 1,
                     if hand == 0 { 0 } else { self.mesh.counts[0] }, 0);
             }
+            if let Some(room) = room { room.covers.draw(command,parameters(view,&room.navigation.pose)); }
             d.cmd_end_rendering(command);
         }
         commands.timestamp(2);

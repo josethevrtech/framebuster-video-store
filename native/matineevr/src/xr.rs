@@ -167,7 +167,7 @@ pub fn run(options: &Options) -> Result<()> {
                 overlay_started.unwrap().elapsed().as_secs_f64() * 1000.0,
             );
         }
-        let quads = if in_store { store.as_ref().map_or_else(Vec::new, |s| s.layers(&space, video.store_pose(), video.store_scale())) }
+        let quads = if in_store { Vec::new() }
             else { overlays.layers(&space, input.panel_poses, timing.predicted_display_time) };
         timed(performance.stats.as_mut(), "xr_end_ms", || {
             crate::swapchains::submit(

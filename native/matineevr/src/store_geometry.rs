@@ -1,9 +1,5 @@
 pub type Vertex = [[f32; 4]; 3];
 
-pub fn bank_pose(bank: usize) -> ([f32; 3], f32) {
-    crate::store_display::BAYS[bank]
-}
-
 pub fn box_mesh(vertices: &mut Vec<Vertex>, center: [f32; 3], size: [f32; 3], color: [f32; 3]) {
     for axis in 0..3 {
         let a = (axis + 1) % 3;

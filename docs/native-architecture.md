@@ -18,13 +18,16 @@ on disk for diagnostics; they contain titles and artwork, not credentials.
 
 The companion writes bounded binary catalog records and status text. Rust checks
 record counts, text lengths, image dimensions and payload lengths before upload.
-54 covers without generated title captions share one transparent atlas and swapchain.
-Three atlas regions repeat across six wall bays and four freestanding rack faces.
-Display poses are shared with geometry and pointer selection. Ten shelf faces
-and four browsing-rack end posters use at most fourteen quad layers plus the
-projection layer. The room has no floating status/details panels or text signs;
-status files remain diagnostic data. The room and
-tracked Valve controller meshes share the depth-tested Vulkan mesh pass.
+54 covers without generated captions share one 1440×3240 sampled Vulkan atlas.
+Each physical case and rack-end panel has a small textured triangle mesh with
+UVs derived from the same catalog entry used by selection. The cover pipeline
+shares the room's D32 depth attachment, with depth test/write enabled. Solid
+shelves, counter, controller models and covers therefore occlude one another;
+the old OpenXR artwork quad layers have been removed. The store submits only
+its stereo projection layer. Catalog changes wait for outstanding GPU work,
+upload the atlas, update the mesh, and transition the image for shader sampling.
+The room has no floating status/details panels or text signs; status files remain
+diagnostic data. The cinema's own HUD uses its existing composition path.
 
 Native selection writes a numbered command. The companion prepares Jellyfin
 H.264/AAC HLS and an opaque localhost media URL. Rust opens it without treating
@@ -46,7 +49,9 @@ The cinema retains its Iris decoder library and Turnip Vulkan driver settings.
 
 Right-stick up/down pages shelves; left/right turns continuously around the
 tracked head position, with a radial dead zone and a maximum 90 degrees/second.
-Y searches. Left-stick walking is controller-directed with a 12% radial dead
+The Frame stick-axis correction is applied only to store controls. Holding the
+right thumbstick click enables 3.8 m/s running, with the same swept collision
+checks; releasing returns to the selected walk/glide speed. Y searches. Left-stick walking is controller-directed with a 12% radial dead
 zone and fast smoothed response. X switches walk mode (1.9 m/s, prompt braking)
 and glide mode (3 m/s, damped coasting). Both allow grip dragging anywhere:
 holding a grip anchors the hand in world space, and hand displacement moves

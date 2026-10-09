@@ -57,7 +57,8 @@ impl StoreNavigation {
                 forward = [-2.0*(q.x*q.z+q.w*q.y),-1.0+2.0*(q.x*q.x+q.y*q.y)];
             }
             let length = forward[0].hypot(forward[1]).max(0.001);
-            let speed = ((magnitude-0.12)/0.88).clamp(0.0,1.0)*if self.grab_mode { 3.0 } else { 1.9 };
+            let top_speed = if controls.sprint { 3.8 } else if self.grab_mode { 3.0 } else { 1.9 };
+            let speed = ((magnitude-0.12)/0.88).clamp(0.0,1.0)*top_speed;
             let stick = if magnitude > 0.12 { [x/magnitude,y/magnitude] } else { [0.0;2] };
             let world = [(forward[0]*stick[1]-forward[1]*stick[0])*speed/length,
                 (forward[1]*stick[1]+forward[0]*stick[0])*speed/length];
@@ -150,5 +151,20 @@ mod tests {
         hand.orientation = xr::Quaternionf { x:0.5f32.sqrt(),y:0.0,z:0.0,w:0.5f32.sqrt() };
         for _ in 0..72 { n.update(c,xr::Posef::IDENTITY,[Some(hand),None],1.0/72.0); }
         assert!(n.pose.position.z > 1.7);
+    }
+    #[test]
+    fn held_sprint_is_faster_and_still_stops_at_shelves() {
+        let mut walk = StoreNavigation::default(); let mut run = StoreNavigation::default();
+        let mut c = Controls::default(); c.sticks[0][1] = 1.0;
+        for _ in 0..72 {
+            walk.update(c,xr::Posef::IDENTITY,[None;2],1.0/72.0);
+            c.sprint = true; run.update(c,xr::Posef::IDENTITY,[None;2],1.0/72.0); c.sprint = false;
+        }
+        assert!(run.pose.position.z > walk.pose.position.z*1.8);
+        c.sprint = true;
+        for _ in 0..144 { run.update(c,xr::Posef::IDENTITY,[None;2],1.0/72.0); }
+        let head = run.inverse_ray([0.0;3],[0.0;3]).0;
+        assert!(crate::store_layout::free(head,0.20));
+        assert!(head[2] > -4.21);
     }
 }

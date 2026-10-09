@@ -12,6 +12,12 @@ pub struct ControllerPipeline {
 
 impl ControllerPipeline {
     pub fn new(device: Rc<Graphics>) -> Result<Self> {
+        Self::create(device, None)
+    }
+    pub fn textured(device: Rc<Graphics>, layout: vk::DescriptorSetLayout) -> Result<Self> {
+        Self::create(device, Some(layout))
+    }
+    fn create(device: Rc<Graphics>, texture: Option<vk::DescriptorSetLayout>) -> Result<Self> {
         let mut p = Self { handle: vk::Pipeline::null(), layout: vk::PipelineLayout::null(),
             shaders: Vec::new(), device };
         unsafe {
@@ -19,11 +25,16 @@ impl ControllerPipeline {
             let ranges = [vk::PushConstantRange::default()
                 .stage_flags(vk::ShaderStageFlags::VERTEX).size(80)];
             p.layout = d.create_pipeline_layout(
-                &vk::PipelineLayoutCreateInfo::default().push_constant_ranges(&ranges), None)?;
-            for code in [
+                &vk::PipelineLayoutCreateInfo::default().push_constant_ranges(&ranges)
+                    .set_layouts(&texture.into_iter().collect::<Vec<_>>()), None)?;
+            let code = if texture.is_some() { [
+                include_bytes!(concat!(env!("OUT_DIR"), "/store_cover.vert.spv")).as_slice(),
+                include_bytes!(concat!(env!("OUT_DIR"), "/store_cover.frag.spv")).as_slice(),
+            ] } else { [
                 include_bytes!(concat!(env!("OUT_DIR"), "/controller.vert.spv")).as_slice(),
                 include_bytes!(concat!(env!("OUT_DIR"), "/controller.frag.spv")).as_slice(),
-            ] {
+            ] };
+            for code in code {
                 let words = ash::util::read_spv(&mut Cursor::new(code))?;
                 p.shaders.push(d.create_shader_module(
                     &vk::ShaderModuleCreateInfo::default().code(&words), None)?);

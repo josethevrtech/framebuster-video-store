@@ -21,13 +21,15 @@ pub struct Video {
 }
 
 impl Video {
+    pub fn store_covers(&mut self, movies: &[crate::store_catalog::Movie]) -> Result<()> {
+        if let Some(store) = &mut self.controllers.store { store.covers.update(movies)?; }
+        Ok(())
+    }
     pub fn calibrate_store(&mut self, views: &[xr::View]) -> Result<()> {
         if let Some(store) = &mut self.controllers.store { store.calibrate(views[0].pose.position.y)?; }
         Ok(())
     }
-    pub fn store_scale(&self) -> f32 {
-        self.controllers.store.as_ref().map_or(1.0, |s| s.scale)
-    }
+
     pub fn store_floor(&mut self, offset: f32) {
         if let Some(store) = &mut self.controllers.store { store.navigation.pose.position.y = offset; }
     }
@@ -36,9 +38,7 @@ impl Video {
         let head = self.views.first().map(|v| v.pose);
         self.controllers.store.as_mut().and_then(|s| s.update(active, controls, aims, hands, head, dt))
     }
-    pub fn store_pose(&self) -> xr::Posef {
-        self.controllers.store.as_ref().map_or(xr::Posef::IDENTITY, |s| s.navigation.pose)
-    }
+
     pub fn new(
         device: Rc<Graphics>,
         instance: &xr::Instance,

@@ -15,6 +15,7 @@ pub struct StoreScene {
     pub scale: f32,
     calibrated: bool,
     pub navigation: crate::store_motion::StoreNavigation,
+    pub covers: crate::store_covers::StoreCovers,
 }
 
 impl StoreScene {
@@ -26,7 +27,8 @@ impl StoreScene {
         Ok(Self { active: true, room, count: vertices.len() as u32,
             frames: (0..IN_FLIGHT).map(|_| Buffer::new(device.clone(), 64 * 1024)).collect::<Result<_>>()?,
             dynamic: Vec::new(), held: [false; 2], selected: None, navigation: Default::default(),
-            scale: crate::store_scale::SCALE, calibrated: false })
+            scale: crate::store_scale::SCALE, calibrated: false,
+            covers: crate::store_covers::StoreCovers::new(device)? })
     }
 
     pub fn calibrate(&mut self, head_y: f32) -> Result<()> {
