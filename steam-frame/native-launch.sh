@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+base=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
+export LD_LIBRARY_PATH="$base/matineevr/ffmpeg:/opt/steamvr/bin/linuxarm64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export XR_RUNTIME_JSON=/opt/steamvr/steamxr_linuxarm64.json
+export VK_DRIVER_FILES="$base/matineevr/mesa/freedreno_icd.aarch64.json"
+ulimit -c 0
+app_key="steam.app.${SteamAppId:?Launch Halcyon Frame from Steam}"
+manifest="$base/native-player/halcyon-frame.vrmanifest"
+printf '{"applications":[{"app_key":"%s","launch_type":"url","url":"steam://rungameid/%s","strings":{"en_us":{"name":"Halcyon Frame"}}}]}\n' \
+    "$app_key" "${SteamGameId:?Missing Steam game ID}" > "$manifest"
+vrcmd=/opt/steamvr/bin/linuxarm64/vrcmd
+"$vrcmd" --background --appmanifest "$manifest"
+result=$("$vrcmd" --background --prelaunch "$app_key")
+case "$result" in
+    *' return VRApplicationError_None') ;;
+    *) printf 'SteamVR prelaunch failed: %s\n' "$result" >&2; exit 1 ;;
+esac
+exec "$base/native-player/halcyon-frame-player" "$@"

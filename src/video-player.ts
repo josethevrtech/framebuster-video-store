@@ -3,6 +3,7 @@ import { isStreamCopyUrl } from './jellyfin';
 import { currentTranscodeSessionId, stopTranscodeSession } from './playback-routing';
 import { keyboardOwnedByControl } from './text-entry-focus';
 import { getSegmentFixLoader } from './hls-segment-fix';
+import { VRCinema } from './vr-cinema';
 
 let HlsMod: typeof import('hls.js').default | null = null;
 async function loadHls() {
@@ -151,6 +152,8 @@ interface MenuRow {
  * like browsing and watching on Netflix rather than handing off to mpv.
  */
 export class VideoPlayer {
+  private cinema = new VRCinema();
+  private cinemaBtn: HTMLElement;
   private overlay: HTMLElement;
   private video: HTMLVideoElement;
   private titleEl: HTMLElement;
@@ -267,6 +270,17 @@ export class VideoPlayer {
   constructor() {
     this.overlay = document.getElementById('video-player-overlay')!;
     this.video = document.getElementById('vp-video') as HTMLVideoElement;
+    this.video.crossOrigin = 'anonymous';
+    this.cinemaBtn = document.getElementById('vp-vr')!;
+    navigator.xr?.isSessionSupported('immersive-vr').then(supported => {
+      this.cinemaBtn.hidden = !supported;
+    }).catch(() => {});
+    this.cinemaBtn.addEventListener('click', () => {
+      if (!this._isOpen) return;
+      void this.cinema.enter(this.video, this).catch(() => {
+        this.mediaStatusEl.textContent = 'VR cinema could not start. Check SteamVR and try again.';
+      });
+    });
     this.titleEl = document.getElementById('vp-title')!;
     this.mediaStatusEl = document.getElementById('vp-media-status')!;
     this.playPauseBtn = document.getElementById('vp-playpause')!;
@@ -320,6 +334,7 @@ export class VideoPlayer {
     // and hls.js instance must be torn down or they'd keep running behind
     // the new title — the "doubled stream" failure mode.
     if (this._isOpen) {
+      this.cinema.stop();
       this.stopCurrentEncode();
       this.teardownPlayback();
     }
@@ -561,6 +576,7 @@ export class VideoPlayer {
 
   close(): void {
     if (!this._isOpen) return;
+    this.cinema.stop();
     this.exitConfirmEl.hidden = true;
     const ticks = this.currentPositionTicks();
     const onClose = this.opts?.onClose;
@@ -635,7 +651,7 @@ export class VideoPlayer {
     // arrow-key focus appears to skip/teleport between buttons.
     return [
       this.backBtn, this.back10Btn, this.playPauseBtn, this.fwd10Btn,
-      this.muteBtn, this.tracksBtn, this.subtitlesBtn, this.fullscreenBtn,
+      this.muteBtn, this.tracksBtn, this.subtitlesBtn, this.cinemaBtn, this.fullscreenBtn,
     ].filter((el) => !el.hasAttribute('hidden'));
   }
 

@@ -26,6 +26,8 @@ export async function createFrameServer({ dist = join(root, '../dist'), env = pr
   const base = await realpath(dist);
   const config = readOperatorEnv(env);
   const proxy = createIntegrationProxy(config, { env });
+  let lastReport = null;
+  let lastActive = null;
   return createServer(async (req, res) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Referrer-Policy', 'no-referrer');
@@ -39,7 +41,34 @@ export async function createFrameServer({ dist = join(root, '../dist'), env = pr
     } catch { return reply(res, 403, { error: 'Local access only' }); }
     try {
       if (url.pathname === '/dev-proxy') return await proxy(req, res, () => reply(res, 404, { error: 'Not found' }));
+      if (url.pathname === '/__frame/report' && req.method === 'POST') {
+        let body = '';
+        for await (const chunk of req) {
+          body += chunk;
+          if (body.length > 8192) return reply(res, 413, { error: 'Report too large' });
+        }
+        let report;
+        try { report = JSON.parse(body); } catch { return reply(res, 400, { error: 'Invalid report' }); }
+        if (!report || typeof report !== 'object' || Array.isArray(report)) return reply(res, 400, { error: 'Invalid report' });
+        lastReport = { secure: report.secure === true, xr: report.xr === true,
+          immersive: report.immersive === true, session: report.session === true,
+          tracked: report.tracked === true,
+          mode: ['store', 'cinema'].includes(report.mode) ? report.mode : 'tracking',
+          fault: ['getViewSubImage', 'getViewerPose', 'XRWebGLBinding', 'getVideoPlaybackQuality', 'framebuffer', 'matrixWorld', 'createProjectionLayer', 'TypeError', 'Error', 'InvalidStateError', 'SecurityError', 'NotSupportedError'].includes(report.fault) ? report.fault : null,
+          fps: Number.isFinite(report.fps) ? Math.max(0, Math.min(240, report.fps)) : 0,
+          videoReady: report.videoReady === true,
+          videoFrames: Number.isSafeInteger(report.videoFrames) ? Math.max(0, report.videoFrames) : 0,
+          droppedVideoFrames: Number.isSafeInteger(report.droppedVideoFrames) ? Math.max(0, report.droppedVideoFrames) : 0,
+          controllers: Array.isArray(report.controllers) ? report.controllers.slice(0, 4).map(c => ({
+            hand: ['left', 'right', 'none'].includes(c?.hand) ? c.hand : 'none',
+            buttons: Number.isInteger(c?.buttons) ? Math.max(0, Math.min(64, c.buttons)) : 0,
+            axes: Number.isInteger(c?.axes) ? Math.max(0, Math.min(64, c.axes)) : 0,
+          })) : [], timestamp: new Date().toISOString() };
+        if (lastReport.session) lastActive = lastReport;
+        return reply(res, 200, { ok: true });
+      }
       if (!['GET', 'HEAD'].includes(req.method)) return reply(res, 405, { error: 'Method not allowed' });
+      if (url.pathname === '/__frame/report') return reply(res, 200, lastReport ? { ...lastReport, lastActive } : null);
       if (url.pathname === '/__halcyon/config') return reply(res, 200, publicOperatorDefaults(config));
       if (url.pathname === '/__frame/health') return reply(res, 200, { app: 'halcyon-frame', standalone: true });
       // The diagnostic page is shipped separately from the app bundle.

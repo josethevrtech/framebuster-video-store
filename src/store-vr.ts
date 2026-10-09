@@ -56,6 +56,8 @@ import type { StoreScene } from './three-scene';
 import { resolveWalkRaycastHit, walkTakeSlot } from './store-walk';
 import { _checkoutStand } from './scene-shared';
 import { XR_METRES_TO_STORE_FEET } from './vr-units';
+import { reportFrame } from './frame-diagnostics';
+import { controllerVisual, disposeControllerVisual } from './vr-controller-visual';
 
 const VR_RENDER_SCALE_KEY = 'bb_vr_render_scale';
 
@@ -83,6 +85,7 @@ interface VRState {
   lastTime: number;
   near: number;
   far: number;
+  visuals: THREE.Group[];
   // One-shot hand-off run at the END of cleanupAfterSession (issue #97's
   // VR checkout confirm): stashed by confirmCheckoutInVR right before it
   // triggers the normal exit-VR path, so the sale completes (and starts
@@ -122,7 +125,7 @@ function getOrCreateState(scene: StoreScene): VRState {
   // Convert both tracked head and controller translations into scene units.
   rig.scale.setScalar(XR_METRES_TO_STORE_FEET);
   scene.scene.add(rig);
-  const state: VRState = { rig, raycaster: new THREE.Raycaster(), session: null, pending: false, snapReady: true, lastTime: 0, near: scene.camera.near, far: scene.camera.far, onExited: null };
+  const state: VRState = { rig, raycaster: new THREE.Raycaster(), session: null, pending: false, snapReady: true, lastTime: 0, near: scene.camera.near, far: scene.camera.far, visuals: [], onExited: null };
   vrStates.set(scene, state);
 
   // Both controllers get the SAME two bindings — handedness only matters for
@@ -130,6 +133,8 @@ function getOrCreateState(scene: StoreScene): VRState {
   // frame.session.inputSources[i].handedness, not through these groups).
   for (let i = 0; i < 2; i++) {
     const controller = scene.renderer.xr.getController(i);
+    const visual = controllerVisual(i);
+    controller.add(visual); state.visuals.push(visual);
     controller.addEventListener('selectstart', () => onSelectStart(scene, state, controller));
     controller.addEventListener('squeezestart', () => onSqueezeStart(scene, state));
     rig.add(controller);
@@ -387,6 +392,7 @@ function onXRFrame(scene: StoreScene, state: VRState, time: number, frame: XRFra
   // called inside this render() call) — see the module header for why this
   // deliberately bypasses three-scene.ts's EffectComposer chain.
   scene.renderer.render(scene.scene, scene.camera);
+  reportFrame(frame.session, time, true, 'store');
 
   // Keep the flat walk state live for anything that reads it off-loop — e.g.
   // store-walk.ts's walkInspectSlot() snapshots currentCameraPos/yaw/pitch
@@ -403,6 +409,7 @@ function onXRFrame(scene: StoreScene, state: VRState, time: number, frame: XRFra
 
 function cleanupAfterSession(scene: StoreScene, state: VRState): void {
   if (!state.session) return; // stray sessionend with nothing of ours active
+  reportFrame(null, performance.now(), false, 'store');
   state.session = null;
 
   scene.renderer.setAnimationLoop(null);
@@ -452,6 +459,7 @@ export function disposeVR(scene: StoreScene): void {
   disposedScenes.add(scene);
   const state = vrStates.get(scene);
   if (state) {
+    state.visuals.forEach(disposeControllerVisual);
     if (state.session) {
       void state.session.end().catch(() => { /* already dead — nothing to clean up */ });
       state.session = null;

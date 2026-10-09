@@ -1,0 +1,16 @@
+[package]
+name = "matineevr"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+publish = false
+
+[dependencies]
+anyhow = "=1.0.104"
+openxr = "=0.21.1"
+
+ash = "=0.38.0"
+
+[profile.release]
+strip = "debuginfo"
+lto = "thin"

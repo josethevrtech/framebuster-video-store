@@ -38,6 +38,21 @@ test('standalone server serves the app and media ranges, without exposing runtim
     assert.equal((await fetch(`${base}/dev-proxy`, { headers: { 'x-proxy-target': 'http://unconfigured.local/api/v1/movie' } })).status, 403);
     assert.equal((await fetch(base, { method: 'POST' })).status, 405);
     assert.match(await (await fetch(`${base}/frame-check.html`)).text(), /isSessionSupported/);
+    const reportUrl = `${base}/__frame/report`;
+    assert.equal((await fetch(reportUrl, { method: 'POST', body: 'not json' })).status, 400);
+    assert.equal((await fetch(reportUrl, { method: 'POST', body: '[]' })).status, 400);
+    assert.equal((await fetch(reportUrl, { method: 'POST', body: 'x'.repeat(8200) })).status, 413);
+    assert.equal((await fetch(reportUrl, { method: 'POST', headers: { Origin: 'https://attacker.example' }, body: '{}' })).status, 403);
+    await fetch(reportUrl, { method: 'POST', body: JSON.stringify({ session: true, tracked: true,
+      mode: 'cinema', fps: 72, videoFrames: 120, serverToken: 'secret',
+      controllers: [{ hand: 'left', buttons: -8, axes: 400, token: 'secret' }] }) });
+    const report = await (await fetch(reportUrl)).json();
+    assert.equal(report.session, true);
+    assert.equal(report.mode, 'cinema');
+    assert.equal(report.fps, 72);
+    assert.equal(report.videoFrames, 120);
+    assert.deepEqual(report.controllers, [{ hand: 'left', buttons: 0, axes: 64 }]);
+    assert.equal(JSON.stringify(report).includes('secret'), false);
   } finally {
     await new Promise(resolve => server.close(resolve));
     await rm(dist, { recursive: true, force: true });

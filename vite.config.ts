@@ -589,6 +589,7 @@ export default defineConfig(async () => ({
         assetviewer: path.join(import.meta.dirname, "asset-viewer.html"),
         remote: path.join(import.meta.dirname, "remote.html"),
         companionapprove: path.join(import.meta.dirname, "companion-approve.html"),
+        framecinema: path.join(import.meta.dirname, "frame-cinema.html"),
       }).filter(([, f]) => fs.existsSync(f))),
     },
   },

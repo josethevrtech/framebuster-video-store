@@ -1,0 +1,24 @@
+--- a/src/vulkan/meson.build
++++ b/src/vulkan/meson.build
+@@ -15,7 +15,7 @@
+ else
+   vulkan_icd_symbols = files('vulkan-icd-symbols.txt')
+   if with_ld_version_script
+-    vulkan_icd_link_args += ['-Wl,--version-script', join_paths(meson.current_source_dir(), 'vulkan.sym')]
++    vulkan_icd_link_args += ['-Wl,--version-script=' + join_paths(meson.current_source_dir(), 'vulkan.sym')]
+     vulkan_icd_link_depends += files('vulkan.sym')
+   endif
+ endif
+--- a/bin/meson.build
++++ b/bin/meson.build
+@@ -16,9 +16,5 @@
+   '--libname-suffix', libname_suffix,
+ ]
+ 
+-configure_file(
+-  input: 'drm-shim.py',
+-  output: 'drm-shim',
+-  copy: true
+-)
++fs.copyfile('drm-shim.py', 'drm-shim')
+ devenv.prepend('PATH', meson.current_build_dir())

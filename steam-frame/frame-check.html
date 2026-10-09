@@ -4,12 +4,60 @@
 <body><h1>Halcyon Frame</h1><p>Your video store, running on this headset.</p><p id="status" role="status">Checking VR support…</p>
 <ul><li>Left stick: walk</li><li>Right stick: turn in 45° steps</li><li>Trigger: select a case or confirm at the counter</li><li>Grip: leave VR</li></ul>
 <a href="/?frame=1">Open your store</a><a href="/?frame=1&amp;demo=1">Try the demo store</a>
+<button id="test-vr" disabled>Test headset tracking</button>
+<a href="/frame-cinema.html?frame=1">Try the headset cinema</a>
 <p><small id="details"></small></p>
 <script type="module">
 const status=document.getElementById('status');
+const report={secure:window.isSecureContext,xr:!!navigator.xr,immersive:false,session:false,controllers:[]};
 try {
   const supported=!!navigator.xr && await navigator.xr.isSessionSupported('immersive-vr');
+  report.immersive=supported;
+  document.getElementById('test-vr').disabled=!supported;
   status.textContent=supported ? 'VR is available. Open the store, then choose Enter VR.' : 'This browser cannot enter VR. You can open the store in a panel, but an immersive WebXR browser is needed to walk inside it.';
 } catch { status.textContent='VR could not be checked. Make sure SteamVR is running, then reopen Halcyon Frame.'; }
 document.getElementById('details').textContent='No PC is used to render or serve this app. A connected media library still needs to be reachable over your network.';
+const send=()=>fetch('/__frame/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(report)}).catch(()=>{});
+send();
+document.getElementById('test-vr').onclick=async()=>{
+  let session;
+  const canvas=document.createElement('canvas');
+  try {
+    session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor']});
+    const gl=canvas.getContext('webgl',{xrCompatible:true});
+    if(!gl) throw new Error('WebGL unavailable');
+    session.updateRenderState({baseLayer:new XRWebGLLayer(session,gl)});
+    const space=await session.requestReferenceSpace('local-floor').catch(()=>session.requestReferenceSpace('local'));
+    const shader=(type,source)=>{const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error('Shader failed');return s;};
+    const program=gl.createProgram();
+    const vs=shader(gl.VERTEX_SHADER,'attribute vec3 p; uniform mat4 projection; uniform mat4 view; uniform vec3 center; varying vec3 color; void main(){color=p+0.5;gl_Position=projection*view*vec4(p*0.5+center,1.0);}');
+    const fs=shader(gl.FRAGMENT_SHADER,'precision mediump float;varying vec3 color;void main(){gl_FragColor=vec4(color,1.0);}');
+    gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);gl.useProgram(program);
+    const points=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+    const indices=[0,1,2,0,2,3,4,6,5,4,7,6,0,4,5,0,5,1,3,2,6,3,6,7,1,5,6,1,6,2,0,3,7,0,7,4];
+    const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(indices.flatMap(i=>points[i])),gl.STATIC_DRAW);
+    const attribute=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(attribute);gl.vertexAttribPointer(attribute,3,gl.FLOAT,false,0,0);
+    const projection=gl.getUniformLocation(program,'projection'),viewMatrix=gl.getUniformLocation(program,'view'),center=gl.getUniformLocation(program,'center');
+    gl.enable(gl.DEPTH_TEST);
+    let aligned=false,lastReport=0;
+    report.session=true;send();
+    session.addEventListener('end',()=>{report.session=false;send();gl.deleteBuffer(buffer);gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);status.textContent='Tracking test ended. Open the demo store to try walking inside.';},{once:true});
+    session.addEventListener('squeezestart',()=>session.end());
+    const render=(time,frame)=>{
+      if(session.visibilityState==='hidden'){session.requestAnimationFrame(render);return;}
+      const pose=frame.getViewerPose(space);
+      report.tracked=!!pose;
+      if(pose){
+        if(!aligned){const p=pose.transform.position;gl.uniform3f(center,p.x,p.y,p.z-2);aligned=true;}
+        gl.bindFramebuffer(gl.FRAMEBUFFER,session.renderState.baseLayer.framebuffer);
+        gl.clearColor(0.035,0.045,0.08,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+        for(const view of pose.views){const viewport=session.renderState.baseLayer.getViewport(view);gl.viewport(viewport.x,viewport.y,viewport.width,viewport.height);gl.uniformMatrix4fv(projection,false,view.projectionMatrix);gl.uniformMatrix4fv(viewMatrix,false,view.transform.inverse.matrix);gl.drawArrays(gl.TRIANGLES,0,36);}
+      }
+      if(time-lastReport>1000){lastReport=time;report.controllers=Array.from(session.inputSources,s=>({hand:s.handedness,buttons:s.gamepad?.buttons.length??0,axes:s.gamepad?.axes.length??0}));send();}
+      session.requestAnimationFrame(render);
+    };
+    session.requestAnimationFrame(render);
+    status.textContent='Tracking test running. Look around the coloured cube. Squeeze a grip to return.';
+  }catch{await session?.end().catch(()=>{});status.textContent='The VR test could not start. Reopen Halcyon Frame and try again.';}
+};
 </script></body></html>
