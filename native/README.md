@@ -48,7 +48,7 @@ working library and cinema entries. The owner verified the room, controllers,
 trigger selection, sample playback and return to the room on the headset.
 That original entry is a sample interaction prototype. The separate FrameBuster
 entry now pairs natively with Jellyfin and loads actual titles, poster artwork,
-details, search, paging and comfort movement. Sign-in and catalog loading passed
+rack-end artwork, native search, paging and comfort movement. Sign-in and catalog loading passed
 on the headset, as did posters and real movie selection/playback. The latest
 eye-relative origin, compact black shelves and three-bay atlas and episode navigation still need visual
 verification. The ordinary library remains a fallback. CC0 Kenney prop meshes

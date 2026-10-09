@@ -11,10 +11,6 @@ pub fn compose(movie: &Movie) -> Canvas {
             canvas.pixels[target..target + 4].copy_from_slice(&movie.pixels[source..source + 4]);
         }
     }
-    let title: Vec<_> = movie.title.chars().take(60).collect();
-    for (row, letters) in title.chunks(30).enumerate() {
-        canvas.line(29 + row, &letters.iter().collect::<String>(), [255, 235, 170, 255]);
-    }
     canvas
 }
 
@@ -39,8 +35,8 @@ pub fn atlas(movies: &[Movie]) -> Canvas {
 mod tests {
     use super::*;
     #[test]
-    fn poster_has_room_for_a_long_title_and_keeps_artwork_opaque() {
-        let movie = Movie { title: "A".repeat(80), overview: String::new(), size: [192, 288],
+    fn poster_keeps_artwork_opaque_without_text_captions() {
+        let movie = Movie { size: [192, 288],
             pixels: [12, 34, 56, 255].repeat(192 * 288) };
         let canvas = compose(&movie);
         assert_eq!(canvas.pixels.len(), 384 * 656 * 4);

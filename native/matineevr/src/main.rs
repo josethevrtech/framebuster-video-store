@@ -45,6 +45,7 @@ mod store_capture;
 mod store_fixtures;
 mod store_scale;
 mod store_signs;
+mod store_endcaps;
 mod store_carpet;
 mod store_props;
 mod store_scene;

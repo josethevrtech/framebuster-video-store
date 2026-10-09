@@ -70,10 +70,6 @@ impl StoreScene {
         upload(&self.frames[slot], &self.dynamic)?;
         Ok(self.dynamic.len() as u32)
     }
-
-    pub fn selection_pose(&self) -> ([f32;3], f32) {
-        crate::store_display::BAYS[self.selected.unwrap_or(0)/18]
-    }
 }
 
 fn upload(buffer: &Buffer, vertices: &[Vertex]) -> Result<()> {

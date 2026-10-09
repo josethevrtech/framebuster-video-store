@@ -2,8 +2,6 @@ use anyhow::{Result, ensure};
 use std::{fs, path::Path};
 
 pub struct Movie {
-    pub title: String,
-    pub overview: String,
     pub size: [usize; 2],
     pub pixels: Vec<u8>,
 }
@@ -20,12 +18,12 @@ pub fn read(path: &Path) -> Result<Vec<Movie>> {
     let mut movies = Vec::new();
     for _ in 0..count {
         ensure!(reader.take(32)?.iter().all(u8::is_ascii_hexdigit), "Invalid movie identity");
-        let title = reader.text(1024)?;
-        let overview = reader.text(12000)?;
+        reader.text(1024)?;
+        reader.text(12000)?;
         let size = [reader.number()?, reader.number()?];
         ensure!(size[0] == 192 && size[1] == 288, "Invalid artwork size");
         let pixels = reader.take(size[0] * size[1] * 4)?.to_vec();
-        movies.push(Movie { title, overview, size, pixels });
+        movies.push(Movie { size, pixels });
     }
     ensure!(reader.0.is_empty(), "Unexpected catalog data");
     Ok(movies)

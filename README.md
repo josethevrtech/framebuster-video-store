@@ -1,20 +1,20 @@
 # FrameBuster Video Store
 
-A native video store and cinema for **Steam Frame**, built around **OpenXR, Vulkan and the Frame controllers**. Browse your Jellyfin collection on shelves, inspect movie details, and watch in VR in the same native application. The runtime runs entirely on the headset; your Jellyfin server must remain reachable.
+A native video store and cinema for **Steam Frame**, built around **OpenXR, Vulkan and the Frame controllers**. Browse your Jellyfin collection on shelves, select cases, and watch in VR in the same native application. The runtime runs entirely on the headset; your Jellyfin server must remain reachable.
 
 This is an actively tested prototype, not a finished release. Native room rendering, controller pointers, sample selection, return from cinema, and the earlier real Jellyfin cinema handoff are headset-verified. The new browser-free account/catalog interface is undergoing headset verification.
 
 ## Native application
 
-- Rust renders the room, tracked controllers, movie details and cinema through SteamVR OpenXR/Vulkan.
+- Rust renders the room, tracked controllers, shelf artwork and cinema through SteamVR OpenXR/Vulkan.
 - A headless Node companion handles Jellyfin device sign-in, catalog/artwork loading, restricted localhost media relay, resume and progress reporting. It opens no web interface.
 - Jellyfin Quick Connect pairs the app without putting passwords into the VR UI. Its device account is saved in a private local file.
 - FFmpeg uses the Frame's Iris hardware video decoder, with H.264/AAC HLS requested for Jellyfin playback.
-- Native Linux dialogs provide server-address entry and title search. The signed-in runtime does not require Chrome or a development server.
+- Native Linux dialogs provide server-address entry, Quick Connect pairing and title search. The signed-in runtime does not require Chrome or a development server.
 
-Launch **Devkit Game: FrameBusterVideoStore** in Steam. Trigger selects a case and opens details on its shelf; A plays, resumes, or opens a series' episodes. B returns from a movie, closes details, or returns from episodes to the main store. Exit through Steam's menu. Right stick changes pages; Y opens native search. Left stick provides bounded step movement and 30-degree snap turns. The room fits its scale to measured headset height while controllers retain physical scale.
+Launch **Devkit Game: FrameBusterVideoStore** in Steam. Trigger selects a case; A plays, resumes, or opens a series' episodes. B returns from a movie, clears selection, or returns from episodes to the main store. Exit through Steam's menu. Right stick changes pages; Y opens native search. Left stick provides bounded step movement and 30-degree snap turns. The room preserves physical scale and anchors its starting eye height to the headset pose.
 
-The store shows 54 movies/series or episodes across a continuous wall and double-sided racks. Posters and movie playback are owner-verified; the corrected eye-relative scale is owner-verified; the latest continuous display layout, atlas correction and episode navigation need headset verification. Unicode text rendering, subtitle selection, a polished VR keyboard, configurable comfort controls and a complete installer remain unfinished. Valve controller assets are prepared from installed SteamVR files and are not redistributed. Offline shop props include CC0 Kenney furniture; see [store design and asset credits](docs/store-design.md).
+The room has no floating status, details, section sign or generated case captions. Four browsing-rack ends display Jellyfin posters on black panels. The store shows up to 54 movies/series or episodes across a continuous wall and double-sided racks. Posters and movie playback are owner-verified; the corrected eye-relative scale is owner-verified; the latest continuous display layout, atlas correction and episode navigation need headset verification. Unicode text rendering, subtitle selection, a polished VR keyboard, configurable comfort controls and a complete installer remain unfinished. Valve controller assets are prepared from installed SteamVR files and are not redistributed. Offline shop props include CC0 Kenney furniture; see [store design and asset credits](docs/store-design.md).
 
 ## Source and development
 
