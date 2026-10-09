@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Halcyon Frame</title>
+<style>body{background:#15192a;color:#f5f2e8;font:20px system-ui;max-width:680px;margin:8vh auto;padding:24px}h1{color:#ffd582}li{margin:18px 0}a,button{display:inline-block;background:#ffd582;color:#171b29;padding:16px 24px;border:0;border-radius:10px;font:inherit;text-decoration:none;margin:12px 12px 12px 0}button:disabled{opacity:.45}#status{line-height:1.5}small{color:#bbc2d2}</style></head>
+<body><h1>Halcyon Frame</h1><p>Your video store, running on this headset.</p><p id="status" role="status">Checking VR support…</p>
+<ul><li>Left stick: walk</li><li>Right stick: turn in 45° steps</li><li>Trigger: select a case or confirm at the counter</li><li>Grip: leave VR</li></ul>
+<a href="/?frame=1">Open your store</a><a href="/?frame=1&amp;demo=1">Try the demo store</a>
+<p><small id="details"></small></p>
+<script type="module">
+const status=document.getElementById('status');
+try {
+  const supported=!!navigator.xr && await navigator.xr.isSessionSupported('immersive-vr');
+  status.textContent=supported ? 'VR is available. Open the store, then choose Enter VR.' : 'This browser cannot enter VR. You can open the store in a panel, but an immersive WebXR browser is needed to walk inside it.';
+} catch { status.textContent='VR could not be checked. Make sure SteamVR is running, then reopen Halcyon Frame.'; }
+document.getElementById('details').textContent='No PC is used to render or serve this app. A connected media library still needs to be reachable over your network.';
+</script></body></html>

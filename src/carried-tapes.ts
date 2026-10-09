@@ -111,6 +111,7 @@ export class CarriedTapes {
   private entries: Entry[] = [];
   private outbound: Entry[] = []; // put-back flights (already off the list)
   private holder = new THREE.Group();
+  private trackingRoot = new THREE.Group();
   private checkout: CheckoutRun | null = null;
   // Keeps isAnimating() truthy through the short re-stack settle after a
   // removal without measuring per-mesh distances every frame.
@@ -139,7 +140,10 @@ export class CarriedTapes {
     this.holder.position.set(HOLDER_X, HOLDER_Y, HOLDER_Z);
     this.holder.rotation.set(-1.22, 0.30, 0.08);
     this.holder.scale.setScalar(HOLDER_SCALE);
-    camera.add(this.holder);
+    // This wrapper keeps authored feet-sized cases unchanged when the XR
+    // camera's parent converts tracked metre poses into the feet-sized store.
+    this.trackingRoot.add(this.holder);
+    camera.add(this.trackingRoot);
   }
 
   get count(): number {
@@ -148,6 +152,11 @@ export class CarriedTapes {
 
   get capacity(): number {
     return this._capacity;
+  }
+
+  /** Keep the feet-authored viewmodel independent of the XR tracking scale. */
+  setTrackingScale(scale: number): void {
+    this.trackingRoot.scale.setScalar(1 / scale);
   }
 
   /**
@@ -517,7 +526,7 @@ export class CarriedTapes {
   /** Scene teardown: release GPU resources but keep `bb_carried` for reboot. */
   dispose(): void {
     this.clearAll(false);
-    this.camera.remove(this.holder);
+    this.camera.remove(this.trackingRoot);
   }
 
   // ── Internals ──────────────────────────────────────────────────────────────
