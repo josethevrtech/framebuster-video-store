@@ -30,6 +30,7 @@ pub fn room() -> Vec<Vertex> {
     crate::store_signs::signs(&mut v);
     crate::store_props::append(&mut v);
     crate::store_display::shelves(&mut v);
+    crate::store_layout::append(&mut v);
     v
 }
 

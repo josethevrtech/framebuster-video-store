@@ -32,8 +32,9 @@ impl Video {
         if let Some(store) = &mut self.controllers.store { store.navigation.pose.position.y = offset; }
     }
     pub fn update_store(&mut self, active: bool, controls: crate::input::Controls,
-        aims: [Option<xr::Posef>; 2]) -> Option<usize> {
-        self.controllers.store.as_mut().and_then(|s| s.update(active, controls, aims))
+        aims: [Option<xr::Posef>; 2], hands: [Option<xr::Posef>; 2], dt: f32) -> Option<usize> {
+        let head = self.views.first().map(|v| v.pose);
+        self.controllers.store.as_mut().and_then(|s| s.update(active, controls, aims, hands, head, dt))
     }
     pub fn store_pose(&self) -> xr::Posef {
         self.controllers.store.as_ref().map_or(xr::Posef::IDENTITY, |s| s.navigation.pose)

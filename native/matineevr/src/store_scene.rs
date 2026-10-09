@@ -14,7 +14,7 @@ pub struct StoreScene {
     selected: Option<usize>,
     pub scale: f32,
     calibrated: bool,
-    pub navigation: crate::store_navigation::StoreNavigation,
+    pub navigation: crate::store_motion::StoreNavigation,
 }
 
 impl StoreScene {
@@ -38,11 +38,15 @@ impl StoreScene {
         Ok(())
     }
 
-    pub fn update(&mut self, active: bool, controls: Controls, aims: [Option<xr::Posef>; 2]) -> Option<usize> {
+    pub fn update(&mut self, active: bool, controls: Controls, aims: [Option<xr::Posef>; 2],
+        hands: [Option<xr::Posef>; 2], head: Option<xr::Posef>, dt: f32) -> Option<usize> {
         self.active = active;
         self.dynamic.clear();
         let mut launch = false;
-        if active { self.navigation.update(controls); }
+        if active && let Some(head) = head {
+            self.navigation.update(controls, head, hands, dt);
+            crate::store_body::append(&mut self.dynamic, &self.navigation, head, hands);
+        } else { self.navigation.reset(); }
         for (hand, pose) in aims.into_iter().enumerate() {
             let pressed = controls.triggers[hand] > 0.65;
             if active && let Some(pose) = pose {

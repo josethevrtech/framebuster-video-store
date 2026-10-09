@@ -19,8 +19,8 @@ pub struct StoreRuntime {
 
 pub fn update(runtime: &mut Option<StoreRuntime>,
     app: &mut App, video: &mut crate::xr_draw::Video, controls: Controls,
-    aims: [Option<xr::Posef>; 2], active: bool) -> Result<bool> {
-    let selected = video.update_store(active, controls, aims);
+    aims: [Option<xr::Posef>; 2], hands: [Option<xr::Posef>; 2], dt: f32, active: bool) -> Result<bool> {
+    let selected = video.update_store(active, controls, aims, hands, dt);
     if let Some(runtime) = runtime { return runtime.update(app, controls, selected, active); }
     if active && controls.b { return Ok(true); }
     if selected.is_some() && let Some(path) = std::env::var_os("HALCYON_FRAME_STORE_SAMPLE") {
@@ -56,9 +56,9 @@ impl StoreRuntime {
                 self.command("play", index)?;
                 self.selected = None;
             } else if controls.y { self.command("search", 0)?; }
-            let pressed = controls.sticks[1][0].abs() > 0.65;
+            let pressed = controls.sticks[1][1].abs() > 0.65;
             if pressed && !self.stick {
-                self.command(if controls.sticks[1][0] < 0.0 { "previous" } else { "page" }, 1)?;
+                self.command(if controls.sticks[1][1] > 0.0 { "previous" } else { "page" }, 1)?;
                 self.selected = None;
             }
             self.stick = pressed;

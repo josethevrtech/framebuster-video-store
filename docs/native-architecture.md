@@ -44,10 +44,15 @@ system FFmpeg with inherited decoder/preload libraries cleared: the cinema's
 patched FFmpeg codec library is incompatible with the system image converter.
 The cinema retains its Iris decoder library and Turnip Vulkan driver settings.
 
-Right stick pages shelves; Y searches. Left stick provides bounded steps of
-0.6 metres times the room scale,
-steps and 30-degree snap turns on stick edges, without continuously sliding the
-view. Trigger selects a case; A plays/resumes or opens a series' episodes. B clears
+Right-stick up/down pages shelves; left/right snap-turns 30 degrees around the
+tracked head position. Y searches. Left-stick walking is head-directed, with a
+radial dead zone, smoothed velocity and a 1.4 m/s speed limit. X switches to
+surface-grip movement: only hands near fixtures can acquire anchors; planar
+pulling is limited to 2 m/s, followed by exponentially damped coasting on release.
+Loss of focus releases anchors and stops locomotion. Artificial movement uses a
+22 cm horizontal collision radius around shelves, counter and room boundaries;
+physical room-scale head movement is not constrained. Trigger selects a case;
+A plays/resumes or opens a series' episodes. B clears
 selection, stops playback, or returns from episodes to the main shelves.
 The original library/cinema/store-test entries remain separate development
 fallbacks. The primary entry is `Devkit Game: FrameBusterVideoStore`.

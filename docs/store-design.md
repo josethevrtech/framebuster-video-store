@@ -31,6 +31,20 @@ complete the entrance. These features use the room's depth-tested mesh pass,
 not additional OpenXR quad layers. The exterior is scenery, not a navigable area;
 dynamic reflections, sunlight and shadows are not implemented.
 
+Six additional double-sided black rental racks fill the rear aisles; these
+new racks are empty display fixtures for now. Their shared layout definitions
+also supply locomotion collision and grip-surface bounds. Existing selectable
+cases and rack-end posters continue to use the owner's Jellyfin artwork.
+External decorative movie catalogs are not yet connected.
+
+The first body-presence pass renders a torso and two-segment arms estimated
+from the tracked headset and controllers. Reachable elbow poses use two-bone
+inverse kinematics; longer reaches stretch to keep wrists at the controllers.
+This is not full-body tracking or a reproduction of Lone Echo's body system.
+Legs, foot planting, calibrated arm lengths, torso yaw filtering and physical
+case grabbing remain future work. Grip locomotion stays on the floor rather
+than introducing zero-gravity movement into the shop.
+
 The room uses physical metre dimensions without rescaling controller tracking.
 On the tested Frame, STAGE exposed a zero head height, so treating it as a
 calibrated floor shrank the room incorrectly. Store sessions now use LOCAL;

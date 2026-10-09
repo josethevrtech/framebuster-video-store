@@ -105,7 +105,9 @@ pub fn run(options: &Options) -> Result<()> {
         handoff.observe(&app);
         let in_store = store_mode && app.playback.is_none() && !app.stopping();
         if crate::store_runtime::update(&mut store, &mut app, &mut video, controls,
-            if focused { input.aim_poses } else { [None; 2] }, in_store)? {
+            if focused { input.aim_poses } else { [None; 2] },
+            if focused { input.controller_poses } else { [None; 2] },
+            timing.predicted_display_period.as_nanos() as f32 / 1e9, in_store && focused)? {
             performance.empty(&mut stream, timing.predicted_display_time)?;
             break;
         }

@@ -153,7 +153,7 @@ impl Input {
             self.aim_poses[hand] = crate::input_tracking::locate(
                 &self.aims[hand], session, &self.aim_spaces[hand], base, time)?;
             *held =
-                state.is_active && state.current_state > 0.0 && self.panel_poses[hand].is_some();
+                state.is_active && state.current_state > 0.55 && self.panel_poses[hand].is_some();
         }
         let mut triggers = [0.0; 2];
         let mut sticks = [[0.0; 2]; 2];
