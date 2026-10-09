@@ -89,15 +89,24 @@ with manifest.open('x') as log, tarfile.open(fileobj=sys.stdin.buffer,mode='r|')
   source=archive.extractfile(member)
   record=json.loads(member.pax_headers['framebuster.metadata'])
   if target.is_symlink(): raise RuntimeError('Existing library file is a symbolic link: '+member.name)
+  digest=hashlib.sha256()
+  existing=0
   if target.exists():
-   if not target.is_file() or target.stat().st_size!=member.size: raise RuntimeError('Existing file has a different size: '+member.name)
-   record['result']='preserved existing'
-  else:
-   digest=hashlib.sha256()
-   with target.open('xb') as output:
+   if not target.is_file() or target.stat().st_size>member.size: raise RuntimeError('Existing file has a different size: '+member.name)
+   existing=target.stat().st_size
+   with target.open('rb') as previous:
+    remaining=existing
+    while remaining:
+     chunk=source.read(min(1024*1024,remaining))
+     if not chunk or previous.read(len(chunk))!=chunk: raise RuntimeError('Existing content differs: '+member.name)
+     digest.update(chunk); remaining-=len(chunk)
+  record['result']='preserved existing' if existing==member.size else 'resumed' if existing else 'copied'
+  if existing<member.size:
+   with target.open('ab' if target.exists() else 'xb') as output:
     for chunk in iter(lambda:source.read(1024*1024),b''):
      output.write(chunk); digest.update(chunk)
-   record.update(result='copied',sha256=digest.hexdigest())
+  if target.stat().st_size!=member.size: raise RuntimeError('Incomplete transfer: '+member.name)
+  record['sha256']=digest.hexdigest()
   log.write(json.dumps(record)+'\\n'); log.flush()
   count+=1
   if count%20==0: print('Imported entries:',count,file=sys.stderr,flush=True)
@@ -109,7 +118,8 @@ def transfer(source, selection, key, host):
  process=subprocess.Popen(['ssh','-i',str(key),'-o','BatchMode=yes',host,
   'python3 -c "import base64;exec(base64.b64decode(\''+encoded+'\'))"'],stdin=subprocess.PIPE)
  try:
-  with tarfile.open(fileobj=process.stdin,mode='w|',format=tarfile.PAX_FORMAT) as stream:
+  with tarfile.open(fileobj=process.stdin,mode='w|',format=tarfile.PAX_FORMAT,
+                    bufsize=1024*1024,copybufsize=1024*1024) as stream:
    for item in selection['files']:
     with ZipFile(source/item['archive']) as outer:
      if 'inner' in item:

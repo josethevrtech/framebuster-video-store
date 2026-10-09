@@ -102,3 +102,31 @@ with `--projection flat --stereo mono`; the upstream defaults are VR180 SBS.
 Local verification: `node --test tests/frame-server.test.ts tests/frame-native.test.ts tests/vr-units.test.ts`.
 
 Official platform setup: https://partner.steamgames.com/doc/steamhardware/steamframe/setup
+
+
+## Current native store and music
+
+See the repository README for the current FrameBuster runtime; the historical
+browser experiments above are preserved as development records. The enlarged
+native store has a CRT corner and hanging TVs. Store music uses Jellyfin audio
+items with ProductionYear before 1999 and pauses while watching a movie.
+The headset must have its native `ffplay` available. The native companion never
+passes Jellyfin tokens in audio-player command arguments.
+
+## Private retro-library import
+
+`import-retro-library.py` uses only Python's standard library and SSH. Supply
+`--source` for the owner's ZIP collection, `--metadata` for Libretro's
+`metadat/releaseyear` DAT files, and `--plan` for a new JSON plan path. Review
+that plan before adding `--copy --key <SSH key>`. The PS1 collection's shared
+ScreenScraper gamelist is used across both archive halves. Unmatched release
+years are skipped; titles from 1999 are eligible, while music's cutoff excludes
+1999. Imported files and hashes are recorded under the headset's private
+`~/.local/share/halcyon-frame/game-library` directory. Existing data is verified
+and preserved; matching partial transfers can resume by appending only the
+remaining bytes. A conflicting file fails without overwriting it.
+
+The importer prepares a library, not a compatibility certification. Actual
+native CRT game playback, N64/Dreamcast performance testing and the separate
+checked-out/home room still require emulator integration. ROMs, BIOS files and
+private import plans are not committed to this public repository.

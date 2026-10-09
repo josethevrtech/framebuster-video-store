@@ -55,6 +55,7 @@ try {
   const refresh = async () => {
     await status('Loading your movie shelves...');
     catalog = await loadCatalog(api, directory, page, search, ++revision, series);
+    console.log(`Catalog: ${series ? 'episodes' : 'store'}, ${catalog.items.length} entries, page ${page + 1}`);
     await showCatalog();
   };
   const returnToStore = async () => {
@@ -79,6 +80,7 @@ try {
     if (command === lastCommand) continue;
     lastCommand = command;
     const [, action, value] = command.split('\n');
+    console.log(`Store command: ${action}, index ${value}`);
     try {
       if (action === 'play' && catalog.items[Number(value)]) {
         const item = catalog.items[Number(value)];
@@ -96,7 +98,11 @@ try {
         let text = ''; dialog.stdout.on('data', bytes => { text += bytes; });
         if (await new Promise(resolve => dialog.once('exit', resolve)) === 0) { search = text.trim().slice(0, 200); series = null; page = 0; await refresh(); }
       }
-    } catch (error) { await status(error.message); }
+    } catch (error) {
+      console.error(`Store command failed: ${error.message}`);
+      if (action === 'play' && series) await returnToStore();
+      await status(error.message);
+    }
   }
 } catch (error) { await status(error.message); }
 const code = await exit;

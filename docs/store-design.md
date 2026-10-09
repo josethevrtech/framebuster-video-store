@@ -58,13 +58,18 @@ through 1998. Missing years and 1999-or-newer items are excluded. The companion
 loads all catalog pages, shuffles eligible tracks, authenticates the audio
 stream with request headers and pipes it to the headset's installed ffplay.
 No token appears in the player's arguments. Playback uses a quiet 18% volume;
-background music pauses during cinema playback and resumes on return. No
+background music pauses during cinema playback and resumes on return. The
+owner verified this music handoff. Returning from an episode restores the saved
+main catalog, page and search; the owner verified playback and unchanged covers
+on return after a direct handoff test. Episode browsing uses individual artwork
+with a series-cover fallback. Empty slots are not pointer-selectable, and catalog
+changes clear old case selections. No
 floating music text is added to the room. Server reachability is required.
 
 `steam-frame/import-retro-library.py` reads release-year metadata to prepare
 an import plan, then streams selected ROMs directly from the owner's archive
-to `~/Emulation/roms`. It accepts games through 1999, preserving existing files
-and recording imported entries and SHA-256 hashes in private headset manifests.
+to `~/Emulation/roms`. It accepts games through 1999, verifying and preserving existing files, safely
+resuming matching partial copies, and recording imported entries and SHA-256 hashes in private headset manifests.
 Unsupported platforms and unknown dates are not assumed eligible. Nintendo 64
 and PS1 still require per-game testing; Dreamcast integration is separate.
 

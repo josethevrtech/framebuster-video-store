@@ -19,6 +19,11 @@ pub fn card(index: usize) -> [f32; 3] {
     point([(slot % 6) as f32 * 0.27 - 0.675, (slot / 6) as f32 * 0.405 - 0.405, -0.055], index / 18)
 }
 
+pub fn catalog_index(case: usize, count: usize) -> Option<usize> {
+    let index = case % 54;
+    (case < BAYS.len() * 18 && index < count).then_some(index)
+}
+
 pub fn placed_box(v: &mut Vec<Vertex>, bay: usize, p: [f32; 3], size: [f32; 3], color: [f32; 3]) {
     let start = v.len();
     box_mesh(v, p, size, color);
@@ -78,5 +83,14 @@ mod tests {
             assert!(hit([p[0]+s,p[1],p[2]+c],[s,0.0,c],i).is_none());
             assert!(i%54<54);
         }
+    }
+    #[test]
+    fn incomplete_pages_leave_empty_slots_unselectable() {
+        for count in [0, 6, 28, 42, 54] {
+            for case in 0..BAYS.len()*18 {
+                assert_eq!(catalog_index(case,count), (case%54 < count).then_some(case%54));
+            }
+        }
+        assert_eq!(catalog_index(BAYS.len()*18,54),None);
     }
 }

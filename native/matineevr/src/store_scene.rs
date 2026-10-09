@@ -16,6 +16,7 @@ pub struct StoreScene {
     calibrated: bool,
     pub navigation: crate::store_motion::StoreNavigation,
     pub covers: crate::store_covers::StoreCovers,
+    catalog_count: usize,
 }
 
 impl StoreScene {
@@ -28,7 +29,13 @@ impl StoreScene {
             frames: (0..IN_FLIGHT).map(|_| Buffer::new(device.clone(), 64 * 1024)).collect::<Result<_>>()?,
             dynamic: Vec::new(), held: [false; 2], selected: None, navigation: Default::default(),
             scale: crate::store_scale::SCALE, calibrated: false,
-            covers: crate::store_covers::StoreCovers::new(device)? })
+            covers: crate::store_covers::StoreCovers::new(device)?, catalog_count: 54 })
+    }
+
+    pub fn set_catalog(&mut self, movies: &[crate::store_catalog::Movie]) -> Result<()> {
+        self.covers.update(movies)?;
+        self.catalog_count = movies.len(); self.selected = None;
+        Ok(())
     }
 
     pub fn calibrate(&mut self, head_y: f32) -> Result<()> {
@@ -54,7 +61,8 @@ impl StoreScene {
                 let (origin, direction) = ray(pose);
                 let (origin, direction) = self.navigation.inverse_ray(origin, direction);
                 let (origin, direction) = crate::store_scale::inverse(origin, direction, self.scale);
-                let hit = (0..crate::store_display::BAYS.len()*18).filter_map(|i|
+                let hit = (0..crate::store_display::BAYS.len()*18)
+                    .filter(|i| crate::store_display::catalog_index(*i,self.catalog_count).is_some()).filter_map(|i|
                     crate::store_display::hit(origin, direction, i).map(|t| (i, t)))
                     .min_by(|a, b| a.1.total_cmp(&b.1));
                 let color = if hit.is_some() { [1.0, 0.65, 0.12] } else { [0.25, 0.65, 1.0] };
@@ -68,7 +76,9 @@ impl StoreScene {
         }
         if active && let Some(i) = self.selected { crate::store_display::outline(&mut self.dynamic, i, [0.2, 1.0, 0.4]); }
         crate::store_scale::vertices(&mut self.dynamic, self.scale);
-        (active && (launch || controls.a)).then_some(self.selected.unwrap_or(0) % 54)
+        if active && (launch || controls.a) {
+            self.selected.and_then(|i| crate::store_display::catalog_index(i,self.catalog_count))
+        } else { None }
     }
 
     pub fn upload(&self, slot: usize) -> Result<u32> {

@@ -3,8 +3,7 @@ use crate::{store_display, store_endcaps, store_geometry::Vertex};
 pub fn mesh(count: usize) -> Vec<Vertex> {
     let mut result = Vec::new();
     for case in 0..store_display::BAYS.len()*18 {
-        let index = case%54;
-        if index >= count { continue; }
+        let Some(index) = store_display::catalog_index(case,count) else { continue; };
         let mut p = store_display::card(case); p[1] += 0.0225;
         let yaw = store_display::BAYS[case/18].1;
         let (s,c) = yaw.sin_cos(); p[0] += s*0.055; p[2] += c*0.055;

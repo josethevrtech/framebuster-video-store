@@ -22,7 +22,7 @@ pub struct Video {
 
 impl Video {
     pub fn store_covers(&mut self, movies: &[crate::store_catalog::Movie]) -> Result<()> {
-        if let Some(store) = &mut self.controllers.store { store.covers.update(movies)?; }
+        if let Some(store) = &mut self.controllers.store { store.set_catalog(movies)?; }
         Ok(())
     }
     pub fn calibrate_store(&mut self, views: &[xr::View]) -> Result<()> {

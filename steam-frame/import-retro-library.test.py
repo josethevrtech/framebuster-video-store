@@ -2,6 +2,10 @@ import importlib.util
 import io
 from pathlib import Path
 import tempfile
+import subprocess
+import sys
+import tarfile
+import json
 import unittest
 from zipfile import ZipFile
 
@@ -11,6 +15,31 @@ spec.loader.exec_module(importer)
 
 
 class LibraryImportTest(unittest.TestCase):
+    def transfer_fixture(self, existing):
+        root = Path(tempfile.mkdtemp(prefix='rom-transfer-test-', dir=Path(__file__).resolve().parents[2]))
+        target = root / 'Emulation/roms/nes/game.nes'
+        target.parent.mkdir(parents=True)
+        target.write_bytes(existing)
+        payload = io.BytesIO()
+        with tarfile.open(fileobj=payload, mode='w', format=tarfile.PAX_FORMAT) as archive:
+            entry = tarfile.TarInfo('nes/game.nes')
+            entry.size = 6
+            entry.pax_headers = {'framebuster.metadata': json.dumps({'title': 'Game', 'year': 1990})}
+            archive.addfile(entry, io.BytesIO(b'abcdef'))
+        program = importer.RECEIVER.replace('Path.home()', 'Path(' + repr(root.as_posix()) + ')')
+        result = subprocess.run([sys.executable, '-c', program], input=payload.getvalue(), capture_output=True)
+        return target, result
+
+    def test_partial_copy_resumes_only_after_verifying_existing_content(self):
+        target, result = self.transfer_fixture(b'abc')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(target.read_bytes(), b'abcdef')
+
+    def test_conflicting_existing_content_is_preserved(self):
+        target, result = self.transfer_fixture(b'xyz')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(target.read_bytes(), b'xyz')
+
     def test_release_filter_and_multidisc_integrity(self):
         root = Path(tempfile.mkdtemp(prefix='rom-import-test-', dir=Path(__file__).resolve().parents[2]))
         metadata = root / 'metadata'
