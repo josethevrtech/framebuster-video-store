@@ -43,8 +43,8 @@ scanning is not implemented. Subscriptions remain provider link-outs.
   use the native player for playback.
 - Native sample controls: X pauses, A recenters, B returns to the native
   file browser, right stick seeks, grips show shortcut panels.
-- Native controller icons passed the release build and owner visual
-  verification. The original reference binary is preserved separately.
+- Native Steam Frame 3D controller models passed the release build and owner
+  visual verification. The original and icon binaries are preserved separately.
 - Library playback, resume, subtitles, store comfort and modern pointing
   controls still need integration and headset verification. This is not a
   complete standalone release yet.
@@ -54,7 +54,9 @@ scanning is not implemented. Subscriptions remain provider link-outs.
 `native/matineevr` contains the GPL-3.0-only source supplied with MatineeVR
 0.0.10 by embedding-shapes: https://embedding-shapes.itch.io/matineevr.
 Its original license and attribution are retained. This fork adds tracked
-controller icons using OpenXR composition layers. Launch ordinary movies
+Steam Frame controller meshes using Vulkan. Prepare the headset's installed
+model assets with `prepare-controller-models.py`; they are not bundled here.
+Launch ordinary movies
 with `--projection flat --stereo mono`; the upstream defaults are VR180 SBS.
 
 Local verification: `node --test tests/frame-server.test.ts tests/vr-units.test.ts`.

@@ -5,7 +5,10 @@ mod app_tests;
 mod browser;
 mod browser_repeat;
 mod browser_view;
-mod controller_visuals;
+mod controller_depth;
+mod controller_draw;
+mod controller_mesh;
+mod controller_pipeline;
 mod font;
 #[cfg(test)]
 mod forward_seek_tests;

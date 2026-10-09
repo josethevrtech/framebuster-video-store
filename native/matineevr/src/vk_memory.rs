@@ -34,6 +34,7 @@ impl Buffer {
             result.handle = d.create_buffer(
                 &vk::BufferCreateInfo::default().size(size as u64).usage(
                     vk::BufferUsageFlags::TRANSFER_SRC
+                        | vk::BufferUsageFlags::VERTEX_BUFFER
                         | vk::BufferUsageFlags::TRANSFER_DST
                         | vk::BufferUsageFlags::STORAGE_BUFFER,
                 ),

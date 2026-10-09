@@ -4,6 +4,7 @@ base=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
 export LD_LIBRARY_PATH="$base/matineevr/ffmpeg:/opt/steamvr/bin/linuxarm64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export XR_RUNTIME_JSON=/opt/steamvr/steamxr_linuxarm64.json
 export VK_DRIVER_FILES="$base/matineevr/mesa/freedreno_icd.aarch64.json"
+export HALCYON_FRAME_CONTROLLER_MESH="$base/native-player/controller-mesh.bin"
 ulimit -c 0
 app_key="steam.app.${SteamAppId:?Launch Halcyon Frame from Steam}"
 manifest="$base/native-player/halcyon-frame.vrmanifest"
@@ -16,4 +17,4 @@ case "$result" in
     *' return VRApplicationError_None') ;;
     *) printf 'SteamVR prelaunch failed: %s\n' "$result" >&2; exit 1 ;;
 esac
-exec "$base/native-player/halcyon-frame-player" "$@"
+exec "$base/native-player/halcyon-frame-player-models" "$@"

@@ -14,6 +14,7 @@ pub struct Video {
     pub renderer: Renderer,
     pub eyes: Vec<Eye>,
     pub views: Vec<xr::View>,
+    controllers: crate::controller_draw::ControllerDraw,
     frames: u64,
     captured: bool,
 }
@@ -26,7 +27,8 @@ impl Video {
         session: &xr::Session<xr::Vulkan>,
     ) -> Result<Self> {
         Ok(Self {
-            renderer: Renderer::new(device)?,
+            renderer: Renderer::new(device.clone())?,
+            controllers: crate::controller_draw::ControllerDraw::new(device)?,
             eyes: swapchains::create(instance, system, session)?.1,
             views: Vec::new(),
             frames: 0,
@@ -41,6 +43,7 @@ impl Video {
         yaw: f32,
         ready: bool,
         options: &Options,
+        hands: [Option<xr::Posef>; 2],
     ) -> Result<()> {
         if ready && !self.renderer.ready() {
             return Ok(());
@@ -57,6 +60,7 @@ impl Video {
             };
             self.renderer
                 .draw(target, &views[index], index as i32, presentation, yaw)?;
+            self.controllers.draw(target, &views[index], hands)?;
             if index == 0 && ready && self.frames >= 30 && !self.captured {
                 if let Some(path) = &options.snapshot {
                     self.renderer.finish()?;

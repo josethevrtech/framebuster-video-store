@@ -22,7 +22,6 @@ pub fn run(options: &Options) -> Result<()> {
     let mut video = Video::new(graphics.clone(), &instance, system, &session)?;
     video.renderer.stats = options.stats.then(Statistics::default);
     let mut overlays = Overlays::new(&session, graphics.clone())?;
-    let controllers = crate::controller_visuals::ControllerVisuals::new(&session, graphics.clone())?;
     let mut performance = Performance::new(options.stats);
     let mut hud_snapshot = options.hud_snapshot.clone();
     let mut events = xr::EventDataBuffer::new();
@@ -138,8 +137,8 @@ pub fn run(options: &Options) -> Result<()> {
             let q = views[0].pose.orientation;
             yaw = (2.0 * (q.w * q.y + q.x * q.z)).atan2(1.0 - 2.0 * (q.x * q.x + q.y * q.y));
         }
-        let facing = views[0].pose.orientation;
-        video.draw(views, app.presentation, yaw, video_ready, options)?;
+        video.draw(views, app.presentation, yaw, video_ready, options,
+            if focused { input.controller_poses } else { [None; 2] })?;
         let overlay_started = options.stats.then(Instant::now);
         overlays.update(&session, &graphics, &app, &performance, &mut hud_snapshot)?;
         if let Some(stats) = &mut performance.stats {
@@ -148,10 +147,7 @@ pub fn run(options: &Options) -> Result<()> {
                 overlay_started.unwrap().elapsed().as_secs_f64() * 1000.0,
             );
         }
-        let mut quads = overlays.layers(&space, input.panel_poses, timing.predicted_display_time);
-        if focused {
-            quads.extend(controllers.layers(&space, input.controller_poses, facing));
-        }
+        let quads = overlays.layers(&space, input.panel_poses, timing.predicted_display_time);
         timed(performance.stats.as_mut(), "xr_end_ms", || {
             crate::swapchains::submit(
                 &mut stream,

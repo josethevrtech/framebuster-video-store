@@ -10,13 +10,19 @@ Steam Frame through OpenXR, Vulkan and Iris hardware decoding. The owner
 confirmed sound, functional controls and correct picture after selecting
 flat projection and mono stereo mode explicitly.
 
-Halcyon's additions currently provide blue/amber controller icons at valid
-tracked grip positions. They are billboard icons, not controller meshes.
-They disappear when controller poses are invalid or the session loses focus.
+Halcyon renders Steam's actual Frame controller meshes at tracked grip poses,
+with lighting, vertex colors sampled from the installed textures, and depth
+testing. They disappear when controller poses are invalid or the session loses
+focus. The owner confirmed that the 3D models look good on the headset.
+The prior blue/amber icon binary remains available separately.
+
+`steam-frame/prepare-controller-models.py` reads the models already installed
+by SteamVR, converts their grip offsets and prepares a local mesh cache. Valve's
+controller assets are not redistributed in this repository. Prepare that cache
+as `native-player/controller-mesh.bin` in the installation root before launching
+the player. `HALCYON_FRAME_CONTROLLER_MESH` selects its location.
+
 The release build and hardware H.264/Vulkan render probe passed on the Frame.
-The adapted binary is installed, and the owner confirmed both icons are visible
-while the movie continues to display correctly. Replacing these icons with
-Steam's actual controller models is the next graphics change.
 
 Building on the headset requires Rust, glslc, a working C compiler, FFmpeg
 and PulseAudio development headers. The upstream build uses a
@@ -28,5 +34,6 @@ the wrapper scripts executable before running it. The original toolchain
 scripts describe the upstream cross-build process.
 
 Keep the reference player available while validating the adapted binary.
-Do not replace its executable until the release build and playback checks
-pass. The library bridge and playback progress integration are unfinished.
+The launcher uses `native-player/halcyon-frame-player-models`; the original and
+icon versions are preserved separately. The library bridge and playback
+progress integration are unfinished.
