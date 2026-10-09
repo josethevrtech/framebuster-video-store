@@ -55,10 +55,10 @@ if __name__ == '__main__':
     folder, output = Path(sys.argv[1]), Path(sys.argv[2])
     data = bytearray()
     for name, position, scale, yaw in [
-        ('televisionVintage', (-1.25, -0.075, 6.2), 1.15, math.pi),
-        ('pottedPlant', (-2.7, -1.5, 7.7), 1.3, 0),
-        ('pottedPlant', (2.7, -1.5, 7.7), 1.3, 0),
-        ('chairCushion', (2.9, -1.5, 5.8), 1.2, math.pi / 2),
+        ('televisionVintage', (-1.25, -0.42, 8.0), 1.15, math.pi),
+        ('pottedPlant', (-4.0, -1.5, 11.7), 1.3, 0),
+        ('pottedPlant', (4.0, -1.5, 11.7), 1.3, 0),
+        ('chairCushion', (2.9, -1.5, 9.8), 1.2, math.pi / 2),
     ]:
         data.extend(model(folder, name, position, scale, yaw))
     if not data or len(data) > 4 * 1024 * 1024:

@@ -137,7 +137,7 @@ impl StoreRuntime {
                 x: c * p[0] + s * p[2] + room.position.x, y: p[1] + room.position.y,
                 z: -s * p[0] + c * p[2] + room.position.z } }
         };
-        let mut layers = vec![self.status.layer(space, transform([0.0, 1.35, -2.4], 0.0), 3.4 * scale)];
+        let mut layers = vec![self.status.layer(space, transform([0.0, 1.35, -4.3], 0.0), 3.4 * scale)];
         for bank in 0..self.movies.len().div_ceil(18) {
             let (p, yaw) = crate::store_geometry::bank_pose(bank);
             layers.push(self.posters.region_layer(space, transform(p, yaw),

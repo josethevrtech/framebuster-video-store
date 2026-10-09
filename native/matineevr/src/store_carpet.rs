@@ -13,9 +13,9 @@ fn stripe(v: &mut Vec<Vertex>, a: [f32; 2], b: [f32; 2], color: [f32; 3]) {
 }
 
 pub fn carpet(v: &mut Vec<Vertex>) {
-    box_mesh(v, [0.0, -1.525, 2.5], [12.0, 0.05, 13.0], [0.035, 0.035, 0.09]);
-    for x in -6..6 {
-        for z in -4..9 {
+    box_mesh(v, [0.0, -1.525, 4.0], [16.0, 0.05, 18.0], [0.035, 0.035, 0.09]);
+    for x in -8..8 {
+        for z in -5..13 {
             let color = [[0.28, 0.07, 0.30], [0.06, 0.29, 0.32],
                 [0.31, 0.22, 0.08]][(x + z * 3i32).rem_euclid(3) as usize];
             let p = [x as f32 + 0.15, z as f32 + 0.20];

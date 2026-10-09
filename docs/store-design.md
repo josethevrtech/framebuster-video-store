@@ -33,6 +33,16 @@ black shelf bay holds six columns and three rows. The arcade carpet remains.
 Wall bands sit in front of wall faces rather than on coplanar surfaces.
 Scale and edge shimmer still require owner verification.
 
+The owner confirmed the eye-relative version feels much better. The next
+layout expands the floor to 16 by 18 metres without scaling people, cases,
+controllers or ceiling height. Clear central space separates longer black
+aisle runs. The original Halcyon shield checkout and Blender shelf decks
+are baked from `public/models/` by `prepare-halcyon-fixtures.py`; their
+source models remain in this GPL-3.0 fork. Upstream layouts specify feet,
+so the checkout converts with 0.3048 metres per foot. The imported decks
+retain their bevels and use the requested black finish. These fixtures
+are embedded locally and do not require a browser.
+
 Offline furniture includes a vintage TV, potted plant and cushioned chair from
 [Kenney Furniture Kit](https://kenney.nl/assets/furniture-kit), under **CC0**.
 Original OBJ/MTL source and licence are preserved in `native/matineevr/assets/`.

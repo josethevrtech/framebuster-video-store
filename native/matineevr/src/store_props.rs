@@ -1,7 +1,11 @@
 use crate::store_geometry::Vertex;
 
 pub fn append(vertices: &mut Vec<Vertex>) {
-    let bytes = include_bytes!("../assets/kenney-furniture.bin");
+    decode(vertices, include_bytes!("../assets/kenney-furniture.bin"));
+    decode(vertices, include_bytes!("../assets/halcyon-fixtures.bin"));
+}
+
+fn decode(vertices: &mut Vec<Vertex>, bytes: &[u8]) {
     assert_eq!(&bytes[..8], b"FBPROP01");
     let count = u32::from_le_bytes(bytes[8..12].try_into().unwrap()) as usize;
     assert_eq!(bytes.len(), 12 + count * 48);

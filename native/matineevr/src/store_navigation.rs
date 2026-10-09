@@ -27,8 +27,8 @@ impl StoreNavigation {
             self.pose.position.z += y.signum() * 0.6 * self.scale;
             let (p, _) = self.inverse_ray([0.0; 3], [0.0; 3]);
             let (s, c) = self.yaw.sin_cos();
-            let x = p[0].clamp(-2.3 * self.scale, 2.3 * self.scale);
-            let z = p[2].clamp(-1.3 * self.scale, 4.8 * self.scale);
+            let x = p[0].clamp(-6.8 * self.scale, 6.8 * self.scale);
+            let z = p[2].clamp(-3.6 * self.scale, 11.5 * self.scale);
             self.pose.position.x = -c * x - s * z;
             self.pose.position.z = s * x - c * z;
         }
@@ -52,7 +52,7 @@ mod tests {
         navigation.update(held); navigation.update(held);
         assert!((navigation.pose.position.z - 0.6).abs() < 0.001);
         for _ in 0..10 { navigation.update(Controls::default()); navigation.update(held); }
-        assert!(navigation.pose.position.z <= 1.3);
+        assert!(navigation.pose.position.z <= 3.6);
         let (p, _) = navigation.inverse_ray([0.0, 0.0, navigation.pose.position.z], [0.0, 0.0, -1.0]);
         assert_eq!(p, [0.0, 0.0, 0.0]);
     }
