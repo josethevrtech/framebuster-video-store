@@ -8,7 +8,7 @@ export function playbackTarget(source, configured, itemId) {
   const match = /^\/Videos\/([a-f0-9]{32})\/(?:stream(?:\.[a-z0-9]+)?|(?:master|main)\.m3u8|hls[\w/.-]*\.(?:ts|m3u8|mp4|m4s))$/i.exec(path);
   if (!match || itemId && match[1].toLowerCase() !== itemId.toLowerCase()) return null;
   for (const key of [...url.searchParams.keys()]) {
-    if (/^(api_key|access_token|token)$/i.test(key)) url.searchParams.delete(key);
+    if (/^(api_?key|access_?token|token|x-emby-token)$/i.test(key)) url.searchParams.delete(key);
   }
   return { url: url.href, itemId: match[1].toLowerCase() };
 }

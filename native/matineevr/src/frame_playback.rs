@@ -1,13 +1,7 @@
 use crate::app::App;
 use anyhow::{Result, ensure};
-use std::{path::{Path, PathBuf}, time::{Duration, Instant}};
-
-pub fn is_stream(path: &Path) -> bool {
-    let Some(value) = path.to_str().and_then(|p| p.strip_prefix("http://127.0.0.1:")) else { return false; };
-    let Some((port, route)) = value.split_once('/') else { return false; };
-    port.parse::<u16>().is_ok_and(|port| port >= 1024)
-        && route.starts_with("__frame/media/") && !value.chars().any(char::is_whitespace)
-}
+use std::{path::PathBuf, time::{Duration, Instant}};
+pub use matineevr::stream_path::is_stream;
 
 pub struct FramePlayback {
     path: Option<PathBuf>,
@@ -48,10 +42,14 @@ impl FramePlayback {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::Path;
+    use matineevr::stream_path::decoder_path;
 
     #[test]
     fn only_local_media_relay_urls_are_streams() {
         assert!(is_stream(Path::new("http://127.0.0.1:1420/__frame/media/id/stream")));
+        let relay = Path::new("http://127.0.0.1:1420/__frame/media/id/media.m3u8");
+        assert_eq!(decoder_path(relay).unwrap(), relay);
         for value in ["http://jellyfin.test:8096/Videos/id/stream", "file:///etc/passwd",
             "http://127.0.0.1:1420/__frame/native/request", "http://127.0.0.1:80/__frame/media/id/stream",
             "http://127.0.0.1:1420@evil.test/__frame/media/id/stream"] {

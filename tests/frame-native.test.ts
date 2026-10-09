@@ -12,6 +12,9 @@ test('native playback restricts destinations and removes credentials from relay 
   const target = playbackTarget(source, configured);
   assert.equal(target?.itemId, item);
   assert.equal(target?.url.includes('private-token'), false);
+  const mixed = playbackTarget(source + '&ApiKey=another-secret&AccessToken=third-secret', configured)!;
+  const encoded = relayPath('c'.repeat(32), mixed.url).split('/')[4];
+  assert.equal(Buffer.from(encoded, 'base64url').toString().includes('secret'), false);
   for (const invalid of [source.replace('jellyfin.test', 'evil.test'),
     `${configured}/Users/Me`, `${configured}/Videos/${'b'.repeat(32)}/stream`,
     `${configured}/Videos/${item}/%2e%2e/stream`]) {

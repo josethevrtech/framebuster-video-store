@@ -2,7 +2,7 @@
 mod output;
 pub use output::DmaBuf;
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Result, bail};
 use std::ffi::{CStr, CString, c_char, c_void};
 use std::path::Path;
 
@@ -75,7 +75,7 @@ pub fn supported(path: &Path) -> Result<bool> {
 
 impl Decoder {
     pub fn open(path: &Path) -> Result<Self> {
-        let path = path.canonicalize().context("Resolve local video path")?;
+        let path = crate::stream_path::decoder_path(path)?;
         let path = CString::new(path.as_os_str().as_encoded_bytes())?;
         let mut error = [0; 512];
         let handle = unsafe { media_open(path.as_ptr(), error.as_mut_ptr(), error.len()) };

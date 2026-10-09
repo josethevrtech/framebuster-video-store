@@ -4,6 +4,7 @@ mod audio;
 mod decoder_worker;
 pub mod graphics;
 pub mod media;
+pub mod stream_path;
 mod media_buffer;
 pub mod media_trace;
 pub mod navigation;
