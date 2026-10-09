@@ -28,6 +28,9 @@ impl Video {
     pub fn store_scale(&self) -> f32 {
         self.controllers.store.as_ref().map_or(1.0, |s| s.scale)
     }
+    pub fn store_selection(&self) -> ([f32;3], f32) {
+        self.controllers.store.as_ref().map_or(crate::store_display::BAYS[0], |s| s.selection_pose())
+    }
     pub fn store_floor(&mut self, offset: f32) {
         if let Some(store) = &mut self.controllers.store { store.navigation.pose.position.y = offset; }
     }

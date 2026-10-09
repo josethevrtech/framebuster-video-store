@@ -74,6 +74,11 @@ impl Panel {
 
     pub fn region_layer<'a>(&'a self, space: &'a xr::Space, pose: xr::Posef,
         width: f32, bottom: usize, size: [usize; 2]) -> xr::CompositionLayerQuad<'a, xr::Vulkan> {
+        self.crop_layer(space, pose, width, 0, bottom, size)
+    }
+
+    pub fn crop_layer<'a>(&'a self, space: &'a xr::Space, pose: xr::Posef,
+        width: f32, left: usize, bottom: usize, size: [usize; 2]) -> xr::CompositionLayerQuad<'a, xr::Vulkan> {
         xr::CompositionLayerQuad::new()
             .space(space)
             .eye_visibility(xr::EyeVisibility::BOTH)
@@ -87,7 +92,7 @@ impl Panel {
                 xr::SwapchainSubImage::new()
                     .swapchain(&self.chain)
                     .image_rect(xr::Rect2Di {
-                        offset: xr::Offset2Di { x: 0, y: bottom as i32 },
+                        offset: xr::Offset2Di { x: left as i32, y: region_top(self.size[1], bottom, size[1]) },
                         extent: xr::Extent2Di {
                             width: size[0] as i32,
                             height: size[1] as i32,
@@ -95,6 +100,10 @@ impl Panel {
                     }),
             )
     }
+}
+
+fn region_top(height: usize, bottom: usize, region_height: usize) -> i32 {
+    (height - bottom - region_height) as i32
 }
 
 fn extent(size: [usize; 2], width: f32) -> xr::Extent2Df {
@@ -115,5 +124,13 @@ mod tests {
         let large = extent(panel_size(Browser, false), 1.2);
         assert!((large.width / small.width - 1.0).abs() < 0.0001);
         assert!((large.height / small.height - 4.0).abs() < 0.0001);
+    }
+
+    #[test]
+    fn uploaded_bottom_up_atlas_regions_select_the_correct_shelf() {
+        assert_eq!(region_top(3240, 0, 1080), 2160);
+        assert_eq!(region_top(3240, 1080, 1080), 1080);
+        assert_eq!(region_top(3240, 2160, 1080), 0);
+        assert_eq!(region_top(3240, 0, 3240), 0);
     }
 }

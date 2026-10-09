@@ -9,6 +9,7 @@ pub struct StoreRuntime {
     status: Panel,
     detail: Panel,
     posters: Panel,
+    sign: Panel,
     movies: Vec<Movie>,
     selected: Option<usize>,
     catalog_path: String,
@@ -35,9 +36,11 @@ pub fn update(runtime: &mut Option<StoreRuntime>,
 impl StoreRuntime {
     pub fn new(session: &xr::Session<xr::Vulkan>, device: Rc<Graphics>) -> Result<Option<Self>> {
         let Some(directory) = std::env::var_os("HALCYON_FRAME_STORE_IPC") else { return Ok(None); };
+        let mut sign = Panel::new(session, device.clone(), [960, 240])?;
+        sign.upload(include_bytes!("../assets/movies-series-sign.rgba"))?;
         Ok(Some(Self { directory: directory.into(), status: Panel::new(session, device.clone(), [WIDTH, 144])?,
             detail: Panel::new(session, device.clone(), [WIDTH, 420])?,
-            posters: Panel::new(session, device.clone(), [1440, 3240])?, movies: Vec::new(), selected: None, catalog_path: String::new(),
+            posters: Panel::new(session, device.clone(), [1440, 3240])?, sign, movies: Vec::new(), selected: None, catalog_path: String::new(),
             status_text: String::new(), request: String::new(), next: Instant::now(), sequence: 0,
             stick: false, resume: None }))
     }
@@ -127,7 +130,8 @@ impl StoreRuntime {
         self.detail.upload(&canvas.pixels)
     }
 
-    pub fn layers<'a>(&'a self, space: &'a xr::Space, room: xr::Posef, scale: f32) -> Vec<xr::CompositionLayerQuad<'a, xr::Vulkan>> {
+    pub fn layers<'a>(&'a self, space: &'a xr::Space, room: xr::Posef, scale: f32,
+        selection: ([f32;3], f32)) -> Vec<xr::CompositionLayerQuad<'a, xr::Vulkan>> {
         let transform = |p: [f32; 3], yaw: f32| {
             let p = crate::store_scale::point(p, scale);
             let q = room.orientation;
@@ -138,13 +142,20 @@ impl StoreRuntime {
                 z: -s * p[0] + c * p[2] + room.position.z } }
         };
         let mut layers = vec![self.status.layer(space, transform([0.0, 1.35, -4.3], 0.0), 3.4 * scale)];
-        for bank in 0..self.movies.len().div_ceil(18) {
+        layers.push(self.sign.layer(space, transform([0.0, 1.15, -1.8], 0.0), 2.4 * scale * WIDTH as f32 / 960.0));
+        for bank in 0..crate::store_display::BAYS.len() {
+            let section = bank % 3;
+            if section * 18 >= self.movies.len() { continue; }
             let (p, yaw) = crate::store_geometry::bank_pose(bank);
             layers.push(self.posters.region_layer(space, transform(p, yaw),
-                1.62 * scale * WIDTH as f32 / 1440.0, bank * 1080, [1440, 1080]));
+                1.62 * scale * WIDTH as f32 / 1440.0, section * 1080, [1440, 1080]));
         }
-        if let Some(selected) = self.selected {
-            let (mut p, yaw) = crate::store_geometry::bank_pose(selected / 18);
+        for (index, x) in [-5.8, 5.8].into_iter().enumerate().take(self.movies.len()) {
+            layers.push(self.posters.crop_layer(space, transform([x, 0.15, 12.80], std::f32::consts::PI),
+                1.05 * scale * WIDTH as f32 / 192.0, 24 + index * 240, 56, [192, 288]));
+        }
+        if self.selected.is_some() {
+            let (mut p, yaw) = selection;
             p[0] += yaw.sin() * 0.35; p[2] += yaw.cos() * 0.35;
             layers.push(self.detail.layer(space, transform(p, yaw), 1.8 * scale));
         }

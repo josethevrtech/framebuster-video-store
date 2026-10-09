@@ -1,4 +1,4 @@
-use crate::{graphics::Graphics, input::Controls, store_geometry::{self, Vertex, CARDS}};
+use crate::{graphics::Graphics, input::Controls, store_geometry::{self, Vertex}};
 use anyhow::{Result, ensure};
 use matineevr::{renderer::IN_FLIGHT, vk_memory::Buffer};
 use openxr as xr;
@@ -49,26 +49,30 @@ impl StoreScene {
                 let (origin, direction) = ray(pose);
                 let (origin, direction) = self.navigation.inverse_ray(origin, direction);
                 let (origin, direction) = crate::store_scale::inverse(origin, direction, self.scale);
-                let hit = CARDS.iter().enumerate().filter_map(|(i, center)|
-                    hit_card(origin, direction, *center).map(|t| (i, t)))
+                let hit = (0..crate::store_display::BAYS.len()*18).filter_map(|i|
+                    crate::store_display::hit(origin, direction, i).map(|t| (i, t)))
                     .min_by(|a, b| a.1.total_cmp(&b.1));
                 let color = if hit.is_some() { [1.0, 0.65, 0.12] } else { [0.25, 0.65, 1.0] };
                 store_geometry::beam(&mut self.dynamic, origin, direction, hit.map_or(4.0, |h| h.1), color);
                 if let Some((i, _)) = hit {
-                    outline(&mut self.dynamic, CARDS[i], color);
+                    crate::store_display::outline(&mut self.dynamic, i, color);
                     if pressed && !self.held[hand] { self.selected = Some(i); launch = true; }
                 }
             }
             self.held[hand] = pressed;
         }
-        if active && let Some(i) = self.selected { outline(&mut self.dynamic, CARDS[i], [0.2, 1.0, 0.4]); }
+        if active && let Some(i) = self.selected { crate::store_display::outline(&mut self.dynamic, i, [0.2, 1.0, 0.4]); }
         crate::store_scale::vertices(&mut self.dynamic, self.scale);
-        (active && (launch || controls.a)).then_some(self.selected.unwrap_or(0))
+        (active && (launch || controls.a)).then_some(self.selected.unwrap_or(0) % 54)
     }
 
     pub fn upload(&self, slot: usize) -> Result<u32> {
         upload(&self.frames[slot], &self.dynamic)?;
         Ok(self.dynamic.len() as u32)
+    }
+
+    pub fn selection_pose(&self) -> ([f32;3], f32) {
+        crate::store_display::BAYS[self.selected.unwrap_or(0)/18]
     }
 }
 
@@ -79,52 +83,9 @@ fn upload(buffer: &Buffer, vertices: &[Vertex]) -> Result<()> {
     Ok(())
 }
 
-fn outline(v: &mut Vec<Vertex>, p: [f32; 3], color: [f32; 3]) {
-    let side = p[0].abs() > 3.0;
-    let map = |dx, dy| if side { [p[0] - p[0].signum() * 0.075, p[1] + dy, p[2] + dx] }
-        else { [p[0] + dx, p[1] + dy, p[2] + 0.075] };
-    for x in [-0.116, 0.116] {
-        store_geometry::box_mesh(v, map(x, 0.0), [0.025, 0.385, 0.025], color);
-    }
-    for y in [-0.1925, 0.1925] {
-        store_geometry::box_mesh(v, map(0.0, y),
-            if side { [0.025, 0.025, 0.257] } else { [0.257, 0.025, 0.025] }, color);
-    }
-}
-
 fn ray(p: xr::Posef) -> ([f32; 3], [f32; 3]) {
     let q = p.orientation;
     ([p.position.x, p.position.y, p.position.z],
         [-2.0 * (q.x * q.z + q.w * q.y), 2.0 * (q.w * q.x - q.y * q.z),
             -1.0 + 2.0 * (q.x * q.x + q.y * q.y)])
-}
-
-fn hit_card(origin: [f32; 3], direction: [f32; 3], center: [f32; 3]) -> Option<f32> {
-    if center[0].abs() > 3.0 {
-        let sign = center[0].signum();
-        if direction[0] * sign <= 0.001 { return None; }
-        let t = (center[0] - sign * 0.04 - origin[0]) / direction[0];
-        return (t > 0.0 && (origin[2] + t * direction[2] - center[2]).abs() <= 0.116
-            && (origin[1] + t * direction[1] - center[1]).abs() <= 0.19).then_some(t);
-    }
-    if direction[2] >= -0.001 { return None; }
-    let t = (center[2] + 0.04 - origin[2]) / direction[2];
-    (t > 0.0 && (origin[0] + t * direction[0] - center[0]).abs() <= 0.116
-        && (origin[1] + t * direction[1] - center[1]).abs() <= 0.19).then_some(t)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn pointing_hits_only_cards_in_front() {
-        assert!(hit_card([-0.135, -0.85, 0.0], [0.0, 0.0, -1.0], CARDS[2]).is_some());
-        assert!(hit_card([-0.135, -0.85, 0.0], [0.0, 0.0, 1.0], CARDS[2]).is_none());
-        assert!(hit_card([0.0, 1.5, 0.0], [0.0, 0.0, -1.0], CARDS[2]).is_none());
-        assert!(hit_card([0.0, CARDS[20][1], CARDS[20][2]], [1.0, 0.0, 0.0], CARDS[20]).is_some());
-        assert!(hit_card([0.0, CARDS[38][1], CARDS[38][2]], [-1.0, 0.0, 0.0], CARDS[38]).is_some());
-        let (_, d) = ray(xr::Posef::IDENTITY);
-        assert_eq!(d, [0.0, 0.0, -1.0]);
-        assert!(store_geometry::room().iter().flatten().flatten().all(|v| v.is_finite()));
-    }
 }

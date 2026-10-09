@@ -19,8 +19,10 @@ on disk for diagnostics; they contain titles and artwork, not credentials.
 The companion writes bounded binary catalog records and status text. Rust checks
 record counts, text lengths, image dimensions and payload lengths before upload.
 54 covers with title captions share one transparent atlas and swapchain.
-Three atlas regions face front and side shelf bays. Status, shelf artwork and
-shelf-mounted details use at most five quad layers plus the projection layer. The room and
+Three atlas regions repeat across six wall bays and four freestanding rack faces.
+Display poses are shared with geometry and pointer selection. Status, framed
+Jellyfin posters, the section sign and shelf-mounted details use at most fifteen
+quad layers plus the projection layer. The room and
 tracked Valve controller meshes share the depth-tested Vulkan mesh pass.
 
 Native selection writes a numbered command. The companion prepares Jellyfin
