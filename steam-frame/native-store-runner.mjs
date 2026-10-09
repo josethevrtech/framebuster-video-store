@@ -45,7 +45,7 @@ try {
   const api = new StoreApi(server);
   await writeFile(join(state, 'server'), api.server.href, { mode: 0o600 });
   await connectAccount(api, state, status, () => active);
-  try { music = await createStoreMusic(api); }
+  try { music = await createStoreMusic(api, directory); }
   catch { console.error('Store music unavailable; continuing without background audio'); }
   let returnedFromMovie = false;
   playback = await createStorePlayback(api, directory, status, paused => music?.setPaused(paused),
@@ -82,7 +82,10 @@ try {
     const [, action, value] = command.split('\n');
     console.log(`Store command: ${action}, index ${value}`);
     try {
-      if (action === 'play' && catalog.items[Number(value)]) {
+      if (action === 'music-toggle') music?.toggle();
+      else if (action === 'music-next') music?.next();
+      else if (action === 'music-previous') music?.previous();
+      else if (action === 'play' && catalog.items[Number(value)]) {
         const item = catalog.items[Number(value)];
         if (item.Type === 'Series') { storeContext = { page, search, catalog }; series = item; page = 0; search = ''; await refresh(); }
         else await playback.play(item);

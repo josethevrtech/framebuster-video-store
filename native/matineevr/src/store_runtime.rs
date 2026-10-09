@@ -13,6 +13,7 @@ pub struct StoreRuntime {
     sequence: u64,
     stick: bool,
     resume: Option<(PathBuf, f64)>,
+    music_art: String,
 }
 
 pub fn update(runtime: &mut Option<StoreRuntime>,
@@ -34,7 +35,7 @@ impl StoreRuntime {
         Ok(Some(Self { directory: directory.into(),
             movies: Vec::new(), selected: None,
             catalog_path: String::new(), request: String::new(), next: Instant::now(), sequence: 0,
-            stick: false, resume: None }))
+            stick: false, resume: None,music_art:String::new() }))
     }
 
     fn command(&mut self, action: &str, value: usize) -> Result<()> {
@@ -46,6 +47,7 @@ impl StoreRuntime {
     pub fn update(&mut self, app: &mut App, video: &mut crate::xr_draw::Video,
         controls: Controls, selection: Option<usize>, active: bool) -> Result<bool> {
         if active {
+            if let Some(action)=video.music_action() { self.selected=None; self.command(action,0)?; }
             if let Some(index) = selection.filter(|i| *i < self.movies.len()) {
                 self.selected = Some(index);
             }
@@ -70,6 +72,15 @@ impl StoreRuntime {
         }
         if Instant::now() < self.next { return Ok(false); }
         self.next = Instant::now() + Duration::from_millis(250);
+        let [left,right]=video.store_audio();
+        fs::write(self.directory.join("music-volume"),format!("[{left:.5},{right:.5}]"))?;
+        if let Ok(path)=fs::read_to_string(self.directory.join("music-art-path")) {
+            let file=PathBuf::from(&path);
+            if path!=self.music_art && file.parent()==Some(self.directory.as_path())
+                && fs::metadata(&file).is_ok_and(|m| m.len()==384*384*4) {
+                video.store_music(&file)?; self.music_art=path;
+            }
+        }
         if let Ok(path) = fs::read_to_string(self.directory.join("catalog-path")) {
             if path != self.catalog_path && PathBuf::from(&path).parent() == Some(self.directory.as_path()) {
                 let movies = store_catalog::read(std::path::Path::new(&path))?;

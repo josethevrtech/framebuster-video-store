@@ -12,12 +12,15 @@ pub struct ControllerPipeline {
 
 impl ControllerPipeline {
     pub fn new(device: Rc<Graphics>) -> Result<Self> {
-        Self::create(device, None)
+        Self::create(device, None, false)
     }
     pub fn textured(device: Rc<Graphics>, layout: vk::DescriptorSetLayout) -> Result<Self> {
-        Self::create(device, Some(layout))
+        Self::create(device, Some(layout), false)
     }
-    fn create(device: Rc<Graphics>, texture: Option<vk::DescriptorSetLayout>) -> Result<Self> {
+    pub fn material(device: Rc<Graphics>, layout: vk::DescriptorSetLayout) -> Result<Self> {
+        Self::create(device, Some(layout), true)
+    }
+    fn create(device: Rc<Graphics>, texture: Option<vk::DescriptorSetLayout>, material: bool) -> Result<Self> {
         let mut p = Self { handle: vk::Pipeline::null(), layout: vk::PipelineLayout::null(),
             shaders: Vec::new(), device };
         unsafe {
@@ -27,7 +30,10 @@ impl ControllerPipeline {
             p.layout = d.create_pipeline_layout(
                 &vk::PipelineLayoutCreateInfo::default().push_constant_ranges(&ranges)
                     .set_layouts(&texture.into_iter().collect::<Vec<_>>()), None)?;
-            let code = if texture.is_some() { [
+            let code = if material { [
+                include_bytes!(concat!(env!("OUT_DIR"), "/store_prop.vert.spv")).as_slice(),
+                include_bytes!(concat!(env!("OUT_DIR"), "/store_prop.frag.spv")).as_slice(),
+            ] } else if texture.is_some() { [
                 include_bytes!(concat!(env!("OUT_DIR"), "/store_cover.vert.spv")).as_slice(),
                 include_bytes!(concat!(env!("OUT_DIR"), "/store_cover.frag.spv")).as_slice(),
             ] } else { [

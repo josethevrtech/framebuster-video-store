@@ -26,7 +26,7 @@ fn media_flags(option: &str) -> Vec<String> {
 
 fn main() {
     for shader in ["video.vert", "video.frag", "dmabuf_check.comp", "controller.vert", "controller.frag",
-        "store_cover.vert", "store_cover.frag"] {
+        "store_cover.vert", "store_cover.frag", "store_prop.vert", "store_prop.frag"] {
         let source = format!("shaders/{shader}");
         println!("cargo:rerun-if-changed={source}");
         let output = PathBuf::from(env::var_os("OUT_DIR").unwrap()).join(format!("{shader}.spv"));

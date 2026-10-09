@@ -55,7 +55,6 @@ if __name__ == '__main__':
     folder, output = Path(sys.argv[1]), Path(sys.argv[2])
     data = bytearray()
     for name, position, scale, yaw in [
-        ('televisionVintage', (-1.25, -0.42, 23.0), 1.15, math.pi),
         ('pottedPlant', (-4.0, -1.5, 23.7), 1.3, 0),
         ('pottedPlant', (4.0, -1.5, 23.7), 1.3, 0),
         ('chairCushion', (2.9, -1.5, 21.8), 1.2, math.pi / 2),

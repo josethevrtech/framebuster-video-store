@@ -61,6 +61,10 @@ mod store_controls;
 mod store_layout;
 mod store_decor;
 mod store_arcade;
+mod store_jukebox;
+mod store_audio;
+mod store_music_cover;
+mod store_material_props;
 mod swapchains;
 mod thumbnail;
 mod xr;
@@ -83,3 +87,4 @@ fn main() -> anyhow::Result<()> {
         xr::run(&options)
     }
 }
+mod store_night_frontage;

@@ -14,8 +14,8 @@ pub fn mesh(count: usize) -> Vec<Vertex> {
     }
     for (i,&p) in crate::store_arcade::CEILING_TVS.iter().enumerate() {
         if count == 0 { break; }
-        quad(&mut result,[p[0],p[1]+0.025,p[2]-0.348],std::f32::consts::PI,
-            [0.3067,0.46],i%count);
+        quad(&mut result,[p[0],p[1]+0.09,p[2]-0.285],std::f32::consts::PI,
+            [0.1933,0.29],i%count);
     }
     result
 }

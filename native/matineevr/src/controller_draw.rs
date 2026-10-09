@@ -44,7 +44,11 @@ impl ControllerDraw {
         let (image, depth) = &self.targets[&target.image];
         commands.begin()?;
         let command = commands.command;
-        if let Some(room) = self.store.as_mut().filter(|s| s.active) { room.covers.prepare(command); }
+        if let Some(room) = self.store.as_mut().filter(|s| s.active) {
+            room.covers.prepare(command); room.music_cover.prepare(command);
+            room.material_props.prepare(command);
+            room.jukebox_props.prepare(command);
+        }
         let room = self.store.as_ref().filter(|s| s.active);
         let d = &self.device.api;
         unsafe {
@@ -96,7 +100,12 @@ impl ControllerDraw {
                 d.cmd_draw(command, self.mesh.counts[hand], 1,
                     if hand == 0 { 0 } else { self.mesh.counts[0] }, 0);
             }
-            if let Some(room) = room { room.covers.draw(command,parameters(view,&room.navigation.pose)); }
+            if let Some(room) = room {
+                let p=parameters(view,&room.navigation.pose);
+                room.covers.draw(command,p); room.music_cover.draw(command,p);
+                room.material_props.draw(command,p,&self.device);
+                room.jukebox_props.draw(command,p,&self.device);
+            }
             d.cmd_end_rendering(command);
         }
         commands.timestamp(2);

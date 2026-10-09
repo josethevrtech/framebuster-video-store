@@ -12,6 +12,7 @@ pub fn obstacles() -> Vec<[f32; 4]> {
         [-15.35,-14.2,18.85,21.75],[-13.3,-12.3,19.65,20.85],
         [-4.3,-3.3,21.85,22.75],[3.3,4.3,21.85,22.75]];
     boxes.extend(crate::store_arcade::obstacles());
+    boxes.push(crate::store_jukebox::obstacle());
     for [x, z] in EXTRA_RACKS { boxes.push([x - 1.04, x + 1.04, z - 0.39, z + 0.39]); }
     boxes
 }

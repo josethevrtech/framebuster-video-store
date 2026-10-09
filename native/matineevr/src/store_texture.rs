@@ -16,11 +16,17 @@ pub struct StoreTexture {
 }
 impl StoreTexture {
     pub fn new(device: Rc<Graphics>) -> Result<Self> {
+        Self::with_size(device,(1440,3240))
+    }
+    pub fn with_size(device: Rc<Graphics>,size: (u32,u32)) -> Result<Self> {
+        Self::with_format(device,size,FORMAT)
+    }
+    pub fn with_format(device: Rc<Graphics>,size: (u32,u32),format: vk::Format) -> Result<Self> {
         let mut t = Self { layout:vk::DescriptorSetLayout::null(), descriptor:vk::DescriptorSet::null(),
             pool:vk::DescriptorPool::null(), sampler:vk::Sampler::null(),
-            image:Image::new(device.clone(),(1440,3240),FORMAT,
+            image:Image::new(device.clone(),size,format,
                 vk::ImageUsageFlags::SAMPLED|vk::ImageUsageFlags::TRANSFER_DST|vk::ImageUsageFlags::COLOR_ATTACHMENT)?,
-            upload:Upload::new(device.clone(),(1440,3240))?,dirty:false,device };
+            upload:Upload::new(device.clone(),(size.0 as i32,size.1 as i32))?,dirty:false,device };
         unsafe {
             let d = &t.device.api;
             t.sampler = d.create_sampler(&vk::SamplerCreateInfo::default()

@@ -124,3 +124,31 @@ mesh; no model downloads or converter are needed at launch.
 This remains a prototype environment. Grabbable cases, better text and materials,
 configurable floor/comfort settings
 and an offline media library remain work toward the full video-store experience.
+
+## Licensed props, jukebox and nighttime frontage
+
+Eight CRT bodies now use Poly Haven Television 02 by Benny Weimer (CC0),
+with the original diffuse, normal and ARM maps. The 1K material set is shared
+between all instances. A depth-tested native material shader adds normal-map
+surface detail and roughness-dependent highlights. Movie artwork fits inside
+ceiling screens; these remain scenery, not live emulation displays.
+
+The olesk CC0 jukebox downloaded by the owner replaces the procedural cabinet.
+Its modified materials use Poly Haven Dark Wood photography under CC0.
+Sources and license records live beside the baked assets. The jukebox displays
+the current Jellyfin album cover, with a neutral disc fallback when no artwork
+exists. Physical trigger buttons select previous, pause/resume, and next.
+
+Six mounted speaker fixtures and the jukebox share the source positions used
+for distance attenuation and listener-relative stereo balance. The companion
+adjusts only its owned ffplay sink input, never the system output volume.
+This is stereo proximity audio, not an HRTF renderer or acoustic simulation.
+Cinema playback still pauses store music and returning restores it.
+
+The frontage has a dark nighttime backdrop, no neighboring building meshes,
+a blue sloping awning and warm yellow exterior fixtures. Pavement colors bake
+warm pools beneath lamps. This does not add dynamic shadows or global illumination.
+
+Validation: release build without warnings; 16 native store tests and 10 Node
+playback/catalog/music tests passed. Converted jukebox mesh and UVs were rendered
+locally in Blender for visual inspection. Headset visual acceptance is pending.

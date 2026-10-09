@@ -21,6 +21,16 @@ pub struct Video {
 }
 
 impl Video {
+    pub fn store_music(&mut self,path: &std::path::Path) -> Result<()> {
+        if let Some(store)=&mut self.controllers.store { store.music_cover.update(path)?; }
+        Ok(())
+    }
+    pub fn store_audio(&self) -> [f32;2] {
+        self.controllers.store.as_ref().map_or([0.0;2],|s| s.audio)
+    }
+    pub fn music_action(&mut self) -> Option<&'static str> {
+        self.controllers.store.as_mut().and_then(|s| s.music_action.take())
+    }
     pub fn store_covers(&mut self, movies: &[crate::store_catalog::Movie]) -> Result<()> {
         if let Some(store) = &mut self.controllers.store { store.set_catalog(movies)?; }
         Ok(())
