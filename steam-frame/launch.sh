@@ -35,4 +35,4 @@ for ((attempt=0; attempt<50; attempt++)); do
   sleep 0.1
 done
 if [[ "$READY" != 1 ]]; then echo 'Local server did not become ready.' >&2; exit 1; fi
-exec "$BROWSER" --app="$URL"
+exec "$BROWSER" --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --app="$URL"

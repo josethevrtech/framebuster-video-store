@@ -33,6 +33,9 @@ library and cinema helper. “Watch in VR” launches the helper automatically.
 The separate Cinema entry can also play the diagnostic sample directly.
 The browser wrapper clears Steam's injected graphics layers and preload
 libraries before starting Chrome; those injections crashed its GPU process.
+The library uses ANGLE SwiftShader software rendering because the hardware
+browser renderer produced corrupted squares on this headset. Native cinema
+playback continues to use Vulkan and hardware video decoding.
 
 The bridge keeps Jellyfin credentials in memory and relays only the selected
 movie through an opaque localhost URL. Native playback reports position and
