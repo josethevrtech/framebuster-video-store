@@ -15,7 +15,7 @@ impl StoreCovers {
     pub fn new(device: Rc<Graphics>) -> Result<Self> {
         let texture = StoreTexture::new(device.clone())?;
         Ok(Self { pipeline:ControllerPipeline::textured(device.clone(),texture.layout)?,texture,
-            vertices:Buffer::new(device.clone(),184*6*48)?,count:0,device })
+            vertices:Buffer::new(device.clone(),crate::store_cover_mesh::mesh(54).len()*48)?,count:0,device })
     }
     pub fn update(&mut self,movies: &[Movie]) -> Result<()> {
         unsafe { self.device.api.device_wait_idle()?; }

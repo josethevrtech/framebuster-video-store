@@ -13,6 +13,11 @@ pub fn mesh(count: usize) -> Vec<Vertex> {
     for (i,&(p,yaw)) in store_endcaps::POSTERS.iter().enumerate().take(count) {
         quad(&mut result,p,yaw,[0.70,1.05],i);
     }
+    for (i,&p) in crate::store_arcade::CEILING_TVS.iter().enumerate() {
+        if count == 0 { break; }
+        quad(&mut result,[p[0],p[1]+0.025,p[2]-0.348],std::f32::consts::PI,
+            [0.3067,0.46],i%count);
+    }
     result
 }
 
@@ -36,7 +41,7 @@ mod tests {
     #[test]
     fn cover_uvs_use_the_same_catalog_entry_as_each_case() {
         let v = mesh(54);
-        assert_eq!(v.len(),(180+4)*6);
+        assert_eq!(v.len(),(180+4+4)*6);
         for i in 0..180 {
             let uv = v[i*6][1]; let item = i%54;
             assert!((uv[0]*1440.0-(24+(item%6)*240) as f32).abs()<0.01);

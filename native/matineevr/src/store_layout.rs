@@ -1,22 +1,23 @@
 use crate::store_geometry::{Vertex, box_mesh};
 
-pub const EXTRA_RACKS: [[f32; 2]; 6] = [
-    [-3.4, 5.3], [3.4, 5.3], [-3.4, 8.1], [3.4, 8.1], [-7.4, 8.1], [7.4, 8.1],
+pub const EXTRA_RACKS: [[f32; 2]; 12] = [
+    [-11.0,6.0],[-6.5,6.0],[-2.0,6.0],[2.5,6.0],
+    [-11.0,10.0],[-6.5,10.0],[-2.0,10.0],[2.5,10.0],
+    [-11.0,14.0],[-6.5,14.0],[-2.0,14.0],[2.5,14.0],
 ];
 
 pub fn obstacles() -> Vec<[f32; 4]> {
     let mut boxes = vec![[-4.25, -2.15, 1.55, 2.45], [2.15, 4.25, 1.55, 2.45],
-        [-2.6, 2.6, 14.35, 15.9], [6.35, 7.25, 15.55, 16.35], [-9.35,-8.2,10.85,13.75],
-        [8.3,9.3,11.65,12.85], [-4.3,-3.3,13.85,14.75], [3.3,4.3,13.85,14.75]];
-    for x in [-5.2, 5.2] {
-        for z in [1.0, 5.5] { boxes.push([x - 0.68, x + 0.68, z - 1.4, z + 1.4]); }
-    }
+        [-2.6,2.6,22.35,23.9],[6.35,7.25,23.55,24.35],
+        [-15.35,-14.2,18.85,21.75],[-13.3,-12.3,19.65,20.85],
+        [-4.3,-3.3,21.85,22.75],[3.3,4.3,21.85,22.75]];
+    boxes.extend(crate::store_arcade::obstacles());
     for [x, z] in EXTRA_RACKS { boxes.push([x - 1.04, x + 1.04, z - 0.39, z + 0.39]); }
     boxes
 }
 
 pub fn free(p: [f32; 3], radius: f32) -> bool {
-    if p[0].abs() > 9.75 - radius || p[2] < -4.4 + radius || p[2] > 16.7 - radius { return false; }
+    if p[0].abs() > 15.75 - radius || p[2] < -4.4 + radius || p[2] > 24.7 - radius { return false; }
     !obstacles().iter().any(|b| {
         let x = p[0] - p[0].clamp(b[0], b[1]);
         let z = p[2] - p[2].clamp(b[2], b[3]);
@@ -44,11 +45,21 @@ mod tests {
     use super::*;
     #[test]
     fn aisles_are_open_but_shelves_and_checkout_block_walking() {
-        for z in [0.0, 2.0, 5.3, 8.3, 10.0] { assert!(free([0.0, 0.15, z], 0.22)); }
-        for [x,z] in EXTRA_RACKS { assert!(!free([x, 0.15, z], 0.22)); }
-        for x in [-6.0, -3.0, 0.0, 3.0, 6.0] {
-            for z in [10.0, 11.0, 12.0, 13.0] { assert!(free([x,0.15,z],0.22)); }
+        for z in [0.0,2.0,6.0,10.0,14.0,18.0] { assert!(free([0.0,0.15,z],0.22)); }
+        for [x,z] in EXTRA_RACKS { assert!(!free([x,0.15,z],0.22)); }
+        for x in [-6.0,-3.0,0.0,3.0,6.0] {
+            for z in [18.0,19.0,20.0,21.0] { assert!(free([x,0.15,z],0.22)); }
         }
-        assert!(!free([0.0,0.15,15.0],0.22));
+        assert!(!free([0.0,0.15,23.0],0.22));
+        for z in [5.0,9.0,13.0,17.0,20.0] { assert!(free([9.0,0.15,z],0.22)); }
+    }
+    #[test]
+    fn rental_racks_never_intersect_or_pinching_the_aisles() {
+        let mut racks = vec![[-3.2,2.0],[3.2,2.0]]; racks.extend(EXTRA_RACKS);
+        for (i,a) in racks.iter().enumerate() {
+            for b in &racks[i+1..] {
+                assert!((a[0]-b[0]).abs() >= 3.0 || (a[1]-b[1]).abs() >= 1.8);
+            }
+        }
     }
 }

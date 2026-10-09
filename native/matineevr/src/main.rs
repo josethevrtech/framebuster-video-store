@@ -60,6 +60,7 @@ mod store_motion;
 mod store_controls;
 mod store_layout;
 mod store_decor;
+mod store_arcade;
 mod swapchains;
 mod thumbnail;
 mod xr;

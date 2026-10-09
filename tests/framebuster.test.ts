@@ -52,7 +52,7 @@ test('native catalog bounds identities and creates complete poster records witho
   assert.equal(bytes.length, offset + 8 + 192 * 288 * 4);
 });
 
-test('series use paged episodes, user progress and series artwork', async () => {
+test('series use paged episodes, user progress and individual artwork with series fallback', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'framebuster-episodes-'));
   const seriesId = 'c'.repeat(32), episodeId = 'd'.repeat(32);
   const requests: any[] = [];
@@ -68,7 +68,8 @@ test('series use paged episodes, user progress and series artwork', async () => 
   assert.equal(requests[0].query.Limit, 54);
   assert.equal(requests[0].query.EnableUserData, true);
   assert.equal('SortBy' in requests[0].query, false);
-  assert.equal(requests[1].path, `/Items/${seriesId}/Images/Primary`);
+  assert.equal(requests[1].path, `/Items/${episodeId}/Images/Primary`);
+  assert.equal(requests[2].path, `/Items/${seriesId}/Images/Primary`);
   const bytes = await readFile(await readFile(join(directory, 'catalog-path'), 'utf8'));
   assert.match(bytes.toString('utf8', 56, 56 + bytes.readUInt32LE(52)), /S01E02 Pilot/);
 });
@@ -77,10 +78,12 @@ test('native movie requests use an opaque relay and report progress without laun
   const directory = await mkdtemp(join(tmpdir(), 'framebuster-playback-'));
   const itemId = 'a'.repeat(32);
   const notifications: any[] = [];
+  const music: boolean[] = [];
+  let returns = 0;
   const api = { server: new URL('http://server.test:8096'), account: { userId: 'b'.repeat(32), token: 'private-token' },
     json: async () => ({ MediaSources: [{ Id: itemId }], PlaySessionId: 'c'.repeat(32) }),
     request: async (path: string, options: any) => { notifications.push({ path, data: options.data }); return new Response(); } };
-  const playback = await createStorePlayback(api, directory, async () => {});
+  const playback = await createStorePlayback(api, directory, async () => {}, paused => music.push(paused), () => { returns++; });
   try {
     await playback.play({ Id: itemId, Name: 'Movie', UserData: { PlaybackPositionTicks: 420000000 } });
     const [, url, start] = (await readFile(join(directory, 'movie-request'), 'utf8')).split('\n');
@@ -91,5 +94,10 @@ test('native movie requests use an opaque relay and report progress without laun
     await new Promise(resolve => setTimeout(resolve, 1300));
     assert.equal(notifications[0].path, '/Sessions/Playing');
     assert.equal(notifications[0].data.PositionTicks, 430000000);
+    assert.deepEqual(music, [true]);
+    await writeFile(join(directory, 'progress.json'), JSON.stringify({ position: 43, running: false, paused: false, ended: false, error: false }));
+    await new Promise(resolve => setTimeout(resolve, 1300));
+    assert.deepEqual(music, [true, false]);
+    assert.equal(returns, 1);
   } finally { await playback.close(); }
 });

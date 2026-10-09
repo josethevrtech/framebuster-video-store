@@ -31,22 +31,42 @@ complete the entrance. These features use the room's depth-tested mesh pass,
 not additional OpenXR quad layers. The exterior is scenery, not a navigable area;
 dynamic reflections, sunlight and shadows are not implemented.
 
-Six additional double-sided black rental racks fill the rear aisles; these
-new racks are empty display fixtures for now. Their shared layout definitions
-also supply locomotion collision bounds. Existing selectable
-cases and rack-end posters continue to use the owner's Jellyfin artwork.
-External decorative movie catalogs are not yet connected.
+Twelve additional parallel black rental racks fill three rows in the enlarged
+32 by 30 metre store. A shared layout supplies geometry and collision bounds;
+tests check that racks do not intersect and that the center and arcade aisles
+remain open. These racks are empty fixtures for now. The checkout and the
+window wall moved farther back; the window banks are now 14.3 metres wide.
+The original upholstered bench, kiosk, ventilation grilles and trim remain.
+Only the tracked floating controllers are rendered.
 
-The current store is 20 by 22 metres at fixed physical scale. Checkout and the
-storefront moved four metres farther back while the rear racks remain at z=8.1,
-leaving a broad lobby. An original upholstered bench, CRT catalog kiosk,
-ventilation grilles, wall trim and tape-stack counters add local retail detail.
-These meshes are authored in `store_decor.rs`; no third-party brands or reference
-site assets are included. Kenney furniture remains CC0; upstream Halcyon models
-remain GPL-3.0. Body rendering has been disabled at the owner's request; only
-the tracked floating controllers are drawn. Earlier body source is preserved
-but not compiled. Grip dragging and smooth analog turning replace the previous
-surface-only pull/snap-turn implementation.
+A dedicated arcade corner contains three original CRT/console stations and
+physical cartridge/disc-case props. Four ceiling-mounted CRTs display Jellyfin
+cover art as portrait images letterboxed onto their screens. Their artwork uses
+the same depth-tested pass as rental cases. The stations and game cases are
+currently scenery: selecting ROMs and playing a live emulator on a CRT are
+not connected yet. No emulator compatibility guarantee is implied by import.
+
+The intended game flow is physical checkout followed by taking the game home
+into a separate, small CRT room. While gaming, only that room should render;
+the store should not remain loaded into the active scene pass. Returning from
+the home room restores browsing. This scene transition is planned alongside
+native emulator integration, rather than implemented by launching a flat app
+and claiming it is a native VR CRT.
+
+Jellyfin store music uses audio items with an integer ProductionYear from 1
+through 1998. Missing years and 1999-or-newer items are excluded. The companion
+loads all catalog pages, shuffles eligible tracks, authenticates the audio
+stream with request headers and pipes it to the headset's installed ffplay.
+No token appears in the player's arguments. Playback uses a quiet 18% volume;
+background music pauses during cinema playback and resumes on return. No
+floating music text is added to the room. Server reachability is required.
+
+`steam-frame/import-retro-library.py` reads release-year metadata to prepare
+an import plan, then streams selected ROMs directly from the owner's archive
+to `~/Emulation/roms`. It accepts games through 1999, preserving existing files
+and recording imported entries and SHA-256 hashes in private headset manifests.
+Unsupported platforms and unknown dates are not assumed eligible. Nintendo 64
+and PS1 still require per-game testing; Dreamcast integration is separate.
 
 The room uses physical metre dimensions without rescaling controller tracking.
 On the tested Frame, STAGE exposed a zero head height, so treating it as a

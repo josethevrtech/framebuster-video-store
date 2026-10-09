@@ -59,11 +59,7 @@ def bake(path, origin, scale, selected=None, black=False):
 
 
 folder, output = map(Path, sys.argv[1:3])
-result = bake(folder/'checkout-counter-shield-rounded.glb', [0, -1.5, 15.3], [.3048]*3)
-for x in [-5.2, 5.2]:
-    for z in [1.0, 5.5]:
-        for y in [-1.15, -.65, -.15, .25]:
-            result.extend(bake(folder/'shelf-components.glb', [x, y, z], [1.15, .56, 2.65], 'Deck', True))
+result = bake(folder/'checkout-counter-shield-rounded.glb', [0, -1.5, 23.3], [.3048]*3)
 assert len(result) < 4 * 1024 * 1024
 output.write_bytes(b'FBPROP01' + struct.pack('<I', len(result)//48) + result)
 print(f'Baked {len(result)//144} upstream fixture triangles')

@@ -3,7 +3,7 @@ import { createServer } from 'node:http';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createNativeBridge } from './native-bridge.mjs';
 
-export async function createStorePlayback(api, directory, status) {
+export async function createStorePlayback(api, directory, status, pauseMusic = () => {}, onStopped = () => {}) {
   const bridge = createNativeBridge({ jellyfin: { url: api.server.href } }, {
     env: { HALCYON_FRAME_NATIVE: '1' }, launch: async () => {},
   });
@@ -44,6 +44,8 @@ export async function createStorePlayback(api, directory, status) {
           PositionTicks: Math.round(state.position * 1e7), Failed: state.error });
         await status(state.error ? 'The movie could not play. Choose another title.' : 'Choose a movie. Trigger: details. A: play.');
         current = null;
+        pauseMusic(false);
+        onStopped();
       }
     } catch {} finally { reporting = false; }
   }, 1000);
@@ -73,7 +75,10 @@ export async function createStorePlayback(api, directory, status) {
       await writeFile(`${directory}/progress.json`, JSON.stringify({ position: startSeconds, paused: false,
         running: false, ended: false, error: false }), { mode: 0o600 });
       current = { id: state.id, itemId: item.Id, playSessionId, started: false, reported: 0 };
-      await writeFile(`${directory}/movie-request`, `${++revision}\n${request.url}\n${startSeconds}`, { mode: 0o600 });
+      pauseMusic(true);
+      try {
+        await writeFile(`${directory}/movie-request`, `${++revision}\n${request.url}\n${startSeconds}`, { mode: 0o600 });
+      } catch (error) { current = null; pauseMusic(false); throw error; }
     },
     async close() {
       clearInterval(timer);

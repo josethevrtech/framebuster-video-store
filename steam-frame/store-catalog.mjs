@@ -27,10 +27,16 @@ export async function loadCatalog(api, directory, page, search, revision, series
   const items = (result.Items || []).filter(item => /^[a-f0-9]{32}$/i.test(item.Id)).slice(0, SHELF_CAPACITY);
   const artwork = new Map();
   const pictures = await Promise.all(items.map(item => {
-    const artId = item.Type === 'Episode' && /^[a-f0-9]{32}$/i.test(item.SeriesId) ? item.SeriesId : item.Id;
+    const artId = item.Id;
     if (!artwork.has(artId)) artwork.set(artId, (async () => {
     try {
-      const response = await api.request(`/Items/${artId}/Images/Primary`, { query: { MaxWidth: WIDTH, MaxHeight: HEIGHT, Format: 'jpg' } });
+      const options = { query: { MaxWidth: WIDTH, MaxHeight: HEIGHT, Format: 'jpg' } };
+      let response;
+      try { response = await api.request(`/Items/${artId}/Images/Primary`, options); }
+      catch (error) {
+        if (item.Type !== 'Episode' || !/^[a-f0-9]{32}$/i.test(item.SeriesId)) throw error;
+        response = await api.request(`/Items/${item.SeriesId}/Images/Primary`, options);
+      }
       const bytes = Buffer.from(await response.arrayBuffer());
       if (bytes.length > 8 * 1024 * 1024) throw new Error('Artwork too large');
       return await decode(bytes);
@@ -50,5 +56,5 @@ export async function loadCatalog(api, directory, page, search, revision, series
   const path = `${directory}/catalog-${revision}.bin`;
   await writeFile(path, data, { mode: 0o600 });
   await writeFile(`${directory}/catalog-path`, path, { mode: 0o600 });
-  return { items, total: result.TotalRecordCount || items.length };
+  return { items, total: result.TotalRecordCount || items.length, path };
 }
