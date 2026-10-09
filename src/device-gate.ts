@@ -138,6 +138,10 @@ function styleTag(): HTMLStyleElement {
  * no reload and no 3D scene built just to tear it down.
  */
 export function runDeviceGate(): Promise<void> {
+  if (new URLSearchParams(location.search).get('frame') === '1') {
+    setSetting('bb_render_mode', 'flat');
+    return Promise.resolve();
+  }
   const reason = detectGateReason();
   if (!reason) return Promise.resolve();
 
