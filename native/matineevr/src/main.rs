@@ -40,6 +40,7 @@ mod shortcuts;
 mod snapshot;
 mod startup;
 mod store_geometry;
+mod store_fixtures;
 mod store_scene;
 mod store_catalog;
 mod store_poster;

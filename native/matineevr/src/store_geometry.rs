@@ -27,22 +27,13 @@ pub fn box_mesh(vertices: &mut Vec<Vertex>, center: [f32; 3], size: [f32; 3], co
 
 pub fn room() -> Vec<Vertex> {
     let mut v = Vec::new();
-    box_mesh(&mut v, [0.0, -1.55, 0.0], [8.0, 0.1, 8.0], [0.055, 0.07, 0.10]);
-    box_mesh(&mut v, [0.0, 1.9, 0.0], [8.0, 0.1, 8.0], [0.035, 0.045, 0.065]);
-    for (center, size) in [([0.0, 0.2, -3.2], [8.0, 3.4, 0.1]),
-        ([-4.0, 0.2, 0.0], [0.1, 3.4, 8.0]), ([4.0, 0.2, 0.0], [0.1, 3.4, 8.0]),
-        ([0.0, 0.2, 4.0], [8.0, 3.4, 0.1])] {
-        box_mesh(&mut v, center, size, [0.035, 0.10, 0.22]);
-    }
+    crate::store_fixtures::shop(&mut v);
     for y in [-0.7, 0.2, 1.1] {
         box_mesh(&mut v, [0.0, y, -2.55], [4.2, 0.06, 0.45], [0.22, 0.12, 0.045]);
         box_mesh(&mut v, [0.0, y + 0.04, -2.30], [4.2, 0.025, 0.025], [0.7, 0.38, 0.045]);
     }
     for x in [-2.2, 2.2] {
         box_mesh(&mut v, [x, 0.2, -2.55], [0.12, 2.0, 0.5], [0.14, 0.08, 0.035]);
-    }
-    for x in [-2.0, 0.0, 2.0] {
-        box_mesh(&mut v, [x, 1.75, -0.5], [1.2, 0.035, 0.15], [0.55, 0.65, 0.80]);
     }
     for (i, center) in CARDS.into_iter().enumerate() {
         box_mesh(&mut v, center, [0.58, 0.72, 0.07],

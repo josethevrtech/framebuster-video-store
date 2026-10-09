@@ -45,7 +45,7 @@ try {
   const refresh = async () => {
     await status('Loading your movie shelves...');
     catalog = await loadCatalog(api, directory, page, search, ++revision);
-    await status(`FrameBuster Video Store\nPage ${page + 1} of ${Math.max(1, Math.ceil(catalog.total / 6))}${search ? ` | Search: ${search}` : ''}\nTrigger: details | A: play | Right stick: pages\nY: search | Left stick: move and snap turn | B: exit`);
+    await status(`FrameBuster Video Store\nPage ${page + 1} of ${Math.max(1, Math.ceil(catalog.total / 6))}${search ? ` | Search: ${search}` : ''}\nTrigger: details | A: play | Right stick: pages\nY: search | Left stick: move and snap turn | B: back`);
   };
   await refresh();
   while (active) {

@@ -58,7 +58,7 @@ impl StoreRuntime {
                 self.draw_detail(index)?;
             }
             if controls.b {
-                if self.selected.take().is_none() { return Ok(true); }
+                self.selected = None;
             } else if controls.a && let Some(index) = self.selected {
                 self.command("play", index)?;
                 self.selected = None;

@@ -119,7 +119,7 @@ pub fn run(options: &Options) -> Result<()> {
         let frame = app.frame().map(Rc::new);
         handoff.observe(&app);
         handoff.report(&app, app.playback.is_none())?;
-        if handoff.return_on_stop && app.playback.is_none() {
+        if !store_mode && handoff.return_on_stop && app.playback.is_none() {
             performance.empty(&mut stream, timing.predicted_display_time)?;
             break;
         }

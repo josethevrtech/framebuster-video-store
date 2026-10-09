@@ -23,7 +23,12 @@ impl StoreNavigation {
             self.pose.orientation = xr::Quaternionf { x: 0.0, y: s, z: 0.0, w: c };
         }
         if pressed[1] && !self.held[1] {
-            self.pose.position.z = (self.pose.position.z + y.signum() * 0.6).clamp(-2.0, 2.0);
+            self.pose.position.z += y.signum() * 0.6;
+            let (p, _) = self.inverse_ray([0.0; 3], [0.0; 3]);
+            let (s, c) = self.yaw.sin_cos();
+            let x = p[0].clamp(-2.8, 2.8); let z = p[2].clamp(-1.3, 4.8);
+            self.pose.position.x = -c * x - s * z;
+            self.pose.position.z = s * x - c * z;
         }
         self.held = pressed;
     }
@@ -45,8 +50,8 @@ mod tests {
         navigation.update(held); navigation.update(held);
         assert!((navigation.pose.position.z - 0.6).abs() < 0.001);
         for _ in 0..10 { navigation.update(Controls::default()); navigation.update(held); }
-        assert!(navigation.pose.position.z <= 2.0);
-        let (p, _) = navigation.inverse_ray([0.0, 0.0, 2.0], [0.0, 0.0, -1.0]);
+        assert!(navigation.pose.position.z <= 1.3);
+        let (p, _) = navigation.inverse_ray([0.0, 0.0, navigation.pose.position.z], [0.0, 0.0, -1.0]);
         assert_eq!(p, [0.0, 0.0, 0.0]);
     }
 }

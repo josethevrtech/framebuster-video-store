@@ -61,8 +61,14 @@ comfort movement and poster composition checks cover the native changes. Node
 tests cover token headers, catalog bounds, opaque movie requests and progress
 reporting. Hardware HTTP/HLS render probes and the earlier real Jellyfin cinema
 handoff passed on the owner's Frame. Native Quick Connect sign-in and catalog
-loading are verified; the shared artwork atlas and complete native shelf-to-movie
-flow still need visual verification on the headset.
+loading are verified. The owner also verified the shared artwork atlas and
+native shelf-to-movie playback on the headset.
+
+The owner has now verified posters and native shelf-to-Jellyfin playback.
+The shop has expanded floor space, side aisles, a checkout counter and ceiling
+fixtures. B closes details at the shelves and stops playback without exiting
+the store session; Steam's own menu provides app exit. The expanded shop and
+the corrected return behavior still need headset verification.
 
 The app is not a complete release: TV episodes, subtitles, Unicode text, a
 polished VR keyboard, configurable comfort options, stronger account storage

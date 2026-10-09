@@ -3,6 +3,7 @@ set -eu
 base=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
 export HALCYON_FRAME_STORE=1
 export FRAMEBUSTER_NATIVE=1
+export HALCYON_FRAME_RETURN=0
 if [ -f "$base/framebuster.env" ]; then
     set -a
     . "$base/framebuster.env"
