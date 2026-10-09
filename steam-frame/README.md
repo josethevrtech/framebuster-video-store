@@ -4,7 +4,8 @@ This fork targets rendering and serving Halcyon entirely on Steam Frame.
 It is a prototype under active testing on the owner's headset. Native
 OpenXR/Vulkan playback through MatineeVR has been verified with an H.264/AAC
 sample: video, sound, correct 16:9 mono presentation and button controls.
-Library-to-native-player integration is still in progress.
+The Jellyfin library bridge is implemented and installed for headset testing;
+an actual Jellyfin movie handoff has not yet been verified.
 
 ## Runtime
 
@@ -21,10 +22,23 @@ exception.
 
 Build the repository using its normal `npm ci` and `npm run build` workflow,
 then run `bash steam-frame/launch.sh` on the headset. The launcher opens a
-VR support check, with buttons for the regular store and demo catalog.
+regular library with native playback enabled by the `frame=1` query parameter.
 It starts a persistent user service for the local server. Add the
 launcher to Steam as a non-Steam application to launch from the library;
-the native player through Steam so Steam supplies its VR launch environment.
+launch the native player through Steam so Steam supplies its VR environment.
+
+Set `HALCYON_FRAME_NATIVE=1` and `HALCYON_JELLYFIN_URL` in the local server's
+environment to enable Jellyfin handoff. `register-native.py` registers the
+library and cinema helper. “Watch in VR” launches the helper automatically.
+The separate Cinema entry can also play the diagnostic sample directly.
+The browser wrapper clears Steam's injected graphics layers and preload
+libraries before starting Chrome; those injections crashed its GPU process.
+
+The bridge keeps Jellyfin credentials in memory and relays only the selected
+movie through an opaque localhost URL. Native playback reports position and
+pause state to the library for resume and progress reporting. HLS playlists
+and segments use the same restricted relay. Jellyfin HLS requests select
+H.264/AAC for the native player. A server restart interrupts active playback.
 
 Library connections continue to use Halcyon's Jellyfin, Plex and Emby
 clients. Those media servers must still be reachable on the network.
@@ -41,12 +55,13 @@ scanning is not implemented. Subscriptions remain provider link-outs.
 - The WebGL1 tracking cube works on the headset. The experimental browser
   cinema currently produces a black picture despite audio and tracking;
   use the native player for playback.
-- Native sample controls: X pauses, A recenters, B returns to the native
-  file browser, right stick seeks, grips show shortcut panels.
+- Native controls: X pauses, A recenters, B exits playback, right stick seeks,
+  and grips show shortcut panels. The cinema helper exits when playback ends.
 - Native Steam Frame 3D controller models passed the release build and owner
   visual verification. The original and icon binaries are preserved separately.
-- Library playback, resume, subtitles, store comfort and modern pointing
-  controls still need integration and headset verification. This is not a
+- Library playback and resume need real-server headset verification. Native
+  subtitle selection, store comfort and modern pointing controls need more
+  implementation and testing. This is not a
   complete standalone release yet.
 
 ## Native player source
@@ -59,6 +74,6 @@ model assets with `prepare-controller-models.py`; they are not bundled here.
 Launch ordinary movies
 with `--projection flat --stereo mono`; the upstream defaults are VR180 SBS.
 
-Local verification: `node --test tests/frame-server.test.ts tests/vr-units.test.ts`.
+Local verification: `node --test tests/frame-server.test.ts tests/frame-native.test.ts tests/vr-units.test.ts`.
 
 Official platform setup: https://partner.steamgames.com/doc/steamhardware/steamframe/setup

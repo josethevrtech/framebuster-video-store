@@ -18,6 +18,8 @@ pub struct App {
     pub path: PathBuf,
     pub hud: bool,
     pub changed: bool,
+    pub completed: bool,
+    pub failed: bool,
     pub shortcuts: Shortcuts,
     pub presentation: Presentation,
     pub adjustment: Adjustment,
@@ -33,8 +35,11 @@ pub struct App {
 
 impl App {
     pub fn new(options: &Options) -> Self {
-        let file = options.file.is_file();
-        let directory = if file {
+        let stream = crate::frame_playback::is_stream(&options.file);
+        let file = options.file.is_file() || stream;
+        let directory = if stream {
+            PathBuf::from(std::env::var_os("HOME").unwrap_or_else(|| ".".into()))
+        } else if file {
             options.file.parent().unwrap().to_owned()
         } else {
             options.file.clone()
@@ -47,6 +52,8 @@ impl App {
             path: options.file.clone(),
             hud: options.hud,
             changed: true,
+            completed: false,
+            failed: false,
             shortcuts: Shortcuts::default(),
             presentation,
             adjustment: Adjustment::default(),
@@ -101,6 +108,8 @@ impl App {
             && let Some(path) = self.pending.take()
         {
             self.path = path;
+            self.completed = false;
+            self.failed = false;
             self.presentation = self.settings.open(&self.path);
             self.playback = Some(Playback::start(self.path.clone()));
             self.changed = true;
@@ -157,6 +166,7 @@ impl App {
         }
         match result {
             Ok(None) if player.finished() => {
+                self.completed = true;
                 self.stop();
                 None
             }
@@ -169,6 +179,7 @@ impl App {
     }
 
     pub fn fail(&mut self, error: anyhow::Error) {
+        self.failed = true;
         self.browser.message = format!("{error:#}");
         eprintln!("Playback failed: {}", self.browser.message);
         self.stop();

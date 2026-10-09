@@ -6,6 +6,7 @@ import { dirname, extname, join, relative, isAbsolute } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { readOperatorEnv, publicOperatorDefaults } from '../src/operator-defaults.ts';
 import { createIntegrationProxy } from '../tools/integration-proxy.mjs';
+import { createNativeBridge } from './native-bridge.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -26,6 +27,7 @@ export async function createFrameServer({ dist = join(root, '../dist'), env = pr
   const base = await realpath(dist);
   const config = readOperatorEnv(env);
   const proxy = createIntegrationProxy(config, { env });
+  const native = createNativeBridge(config, { env });
   let lastReport = null;
   let lastActive = null;
   return createServer(async (req, res) => {
@@ -40,6 +42,7 @@ export async function createFrameServer({ dist = join(root, '../dist'), env = pr
       if (req.headers['sec-fetch-site'] === 'cross-site') throw 0;
     } catch { return reply(res, 403, { error: 'Local access only' }); }
     try {
+      if (await native(req, res, url)) return;
       if (url.pathname === '/dev-proxy') return await proxy(req, res, () => reply(res, 404, { error: 'Not found' }));
       if (url.pathname === '/__frame/report' && req.method === 'POST') {
         let body = '';

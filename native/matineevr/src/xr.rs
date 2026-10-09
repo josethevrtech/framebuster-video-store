@@ -19,6 +19,7 @@ pub fn run(options: &Options) -> Result<()> {
         session.create_reference_space(xr::ReferenceSpaceType::LOCAL, xr::Posef::IDENTITY)?;
     let view_config = xr::ViewConfigurationType::PRIMARY_STEREO;
     let mut app = App::new(options);
+    let mut handoff = crate::frame_playback::FramePlayback::new(&mut app)?;
     let mut video = Video::new(graphics.clone(), &instance, system, &session)?;
     video.renderer.stats = options.stats.then(Statistics::default);
     let mut overlays = Overlays::new(&session, graphics.clone())?;
@@ -98,6 +99,7 @@ pub fn run(options: &Options) -> Result<()> {
         } else {
             Default::default()
         };
+        handoff.observe(&app);
         app.update(controls);
         if options.stats
             && let Some(player) = &mut app.playback
@@ -106,6 +108,12 @@ pub fn run(options: &Options) -> Result<()> {
         }
         app.synchronize(&mut [&mut video.renderer, &mut overlays.thumbnail.renderer])?;
         let frame = app.frame().map(Rc::new);
+        handoff.observe(&app);
+        handoff.report(&app, app.playback.is_none())?;
+        if handoff.return_on_stop && app.playback.is_none() {
+            performance.empty(&mut stream, timing.predicted_display_time)?;
+            break;
+        }
         if let Err(error) = overlays.thumbnail.update(&mut app, frame.as_ref()) {
             app.fail(error);
         }
@@ -167,6 +175,8 @@ pub fn run(options: &Options) -> Result<()> {
         );
         overlays.submitted(options.stats);
     }
+    handoff.observe(&app);
+    handoff.report(&app, true)?;
     app.stop();
     app.synchronize(&mut [&mut video.renderer, &mut overlays.thumbnail.renderer])?;
     performance.report(&mut video.renderer, true);

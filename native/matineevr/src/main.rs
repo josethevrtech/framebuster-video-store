@@ -10,6 +10,7 @@ mod controller_draw;
 mod controller_mesh;
 mod controller_pipeline;
 mod font;
+mod frame_playback;
 #[cfg(test)]
 mod forward_seek_tests;
 mod hud;

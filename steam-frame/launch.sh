@@ -17,7 +17,7 @@ fi
 if [[ -z "$BROWSER" ]]; then echo 'Set HALCYON_FRAME_BROWSER to the executable for an immersive WebXR browser.' >&2; exit 1; fi
 PORT="${HALCYON_FRAME_PORT:-1420}"
 if [[ ! "$PORT" =~ ^[0-9]+$ ]] || (( PORT < 1024 || PORT > 65535 )); then echo 'Invalid HALCYON_FRAME_PORT' >&2; exit 1; fi
-URL="http://127.0.0.1:${PORT}/frame-check.html"
+URL="http://127.0.0.1:${PORT}/?frame=1"
 health() {
   "$NODE" -e 'fetch(process.argv[1]).then(r=>r.json()).then(x=>process.exit(x.app==="halcyon-frame"?0:1)).catch(()=>process.exit(1))' "http://127.0.0.1:${PORT}/__frame/health"
 }

@@ -34,6 +34,10 @@ the wrapper scripts executable before running it. The original toolchain
 scripts describe the upstream cross-build process.
 
 Keep the reference player available while validating the adapted binary.
-The launcher uses `native-player/halcyon-frame-player-models`; the original and
-icon versions are preserved separately. The library bridge and playback
-progress integration are unfinished.
+The launcher uses `native-player/halcyon-frame-player-library`; the original,
+icon and controller-model versions are preserved separately. The library bridge
+passes an opaque localhost media URL and an initial resume position. The player
+writes position, pause and completion snapshots without credentials; the runner
+reports them to the local library server. B and natural completion exit the
+cinema helper. The relay and native URL restrictions have automated coverage,
+but a real Jellyfin movie handoff still needs headset verification.

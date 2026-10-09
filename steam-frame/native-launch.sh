@@ -17,4 +17,4 @@ case "$result" in
     *' return VRApplicationError_None') ;;
     *) printf 'SteamVR prelaunch failed: %s\n' "$result" >&2; exit 1 ;;
 esac
-exec "$base/native-player/halcyon-frame-player-models" "$@"
+exec "$base/runtime/bin/node" "$base/steam-frame/native-runner.mjs" "$@"

@@ -5,6 +5,7 @@ BROWSER="$APP_DIR/chrome-dev/opt/google/chrome-unstable/chrome"
 if [[ ! -x "$BROWSER" ]]; then echo 'Install the Linux ARM64 Chrome Dev runtime into chrome-dev first.' >&2; exit 1; fi
 export XR_RUNTIME_JSON="${XR_RUNTIME_JSON:-/opt/steamvr/steamxr_linuxarm64.json}"
 export DISPLAY="${DISPLAY:-:0}"
+unset LD_PRELOAD VK_INSTANCE_LAYERS VK_LAYER_PATH
 # Temporary SteamVR ARM64 compatibility: its SO_PEERCRED call is rejected
 # by Chromium's XR seccomp policy. This applies to this isolated app profile
 # only. Namespace sandboxing stays enabled; do not use --no-sandbox.

@@ -4,6 +4,7 @@ import { currentTranscodeSessionId, stopTranscodeSession } from './playback-rout
 import { keyboardOwnedByControl } from './text-entry-focus';
 import { getSegmentFixLoader } from './hls-segment-fix';
 import { VRCinema } from './vr-cinema';
+import { FrameNativePlayback } from './frame-native-playback';
 
 let HlsMod: typeof import('hls.js').default | null = null;
 async function loadHls() {
@@ -154,6 +155,9 @@ interface MenuRow {
 export class VideoPlayer {
   private cinema = new VRCinema();
   private cinemaBtn: HTMLElement;
+  private nativeAvailable = false;
+  private nativeSession: FrameNativePlayback | null = null;
+  private nativePositionTicks: number | null = null;
   private overlay: HTMLElement;
   private video: HTMLVideoElement;
   private titleEl: HTMLElement;
@@ -273,10 +277,15 @@ export class VideoPlayer {
     this.video.crossOrigin = 'anonymous';
     this.cinemaBtn = document.getElementById('vp-vr')!;
     navigator.xr?.isSessionSupported('immersive-vr').then(supported => {
-      this.cinemaBtn.hidden = !supported;
+      this.cinemaBtn.hidden = !supported && !this.nativeAvailable;
     }).catch(() => {});
+    void FrameNativePlayback.available().then(available => {
+      this.nativeAvailable = available;
+      if (available) { this.cinemaBtn.hidden = false; this.cinemaBtn.textContent = 'Watch in VR'; }
+    });
     this.cinemaBtn.addEventListener('click', () => {
       if (!this._isOpen) return;
+      if (this.nativeAvailable) { void this.enterNativeCinema(); return; }
       void this.cinema.enter(this.video, this).catch(() => {
         this.mediaStatusEl.textContent = 'VR cinema could not start. Check SteamVR and try again.';
       });
@@ -314,6 +323,50 @@ export class VideoPlayer {
     return this._isOpen;
   }
 
+  private async enterNativeCinema(): Promise<void> {
+    const opts = this.opts;
+    if (!opts || this.nativeSession) return;
+    this.cinemaBtn.setAttribute('disabled', '');
+    this.mediaStatusEl.textContent = 'Opening headset cinema…';
+    try {
+      const source = new URL(opts.directPlayable ? opts.staticSrc : opts.hlsSrc, location.href);
+      if (!opts.directPlayable) {
+        source.searchParams.set('VideoCodec', 'h264');
+        source.searchParams.set('AudioCodec', 'aac');
+        source.searchParams.set('MaxAudioChannels', '2');
+        source.searchParams.set('StartTimeTicks', '0');
+        source.searchParams.set('PlaySessionId', crypto.randomUUID().replace(/-/g, ''));
+        source.searchParams.set('DeviceId', 'halcyon-frame-native');
+      }
+      const token = opts.server?.token || source.searchParams.get('api_key') || '';
+      const session = await FrameNativePlayback.start(source.href, token,
+        this.currentPositionTicks() / TICKS_PER_SECOND, state => {
+          if (this.opts !== opts) return;
+          this.nativePositionTicks = Math.round(state.position * TICKS_PER_SECOND);
+          opts.onProgress?.(this.nativePositionTicks, state.paused);
+        }, state => {
+          if (this.opts !== opts) return;
+          this.nativeSession = null;
+          if (state.error) {
+            this.mediaStatusEl.textContent = 'The headset cinema could not play this movie. Try another title.';
+            this.nativePositionTicks = null;
+            void this.loadSource(this.sources[this.sourceIndex].src, this.sources[this.sourceIndex].isHls);
+            return;
+          }
+          this.endedNaturally = state.ended;
+          this.close();
+        });
+      if (this.opts !== opts || !this._isOpen) { session.stop(); return; }
+      this.nativeSession = session;
+      this.nativePositionTicks ??= this.currentPositionTicks();
+      this.stopCurrentEncode();
+      this.teardownPlayback();
+      this.mediaStatusEl.textContent = 'Playing in headset cinema. Press B to return.';
+    } catch (error) {
+      this.mediaStatusEl.textContent = error instanceof Error ? error.message : 'The headset cinema could not start.';
+    } finally { this.cinemaBtn.removeAttribute('disabled'); }
+  }
+
   /** The player's <video> — T23's back room maps it onto the CRT screen plane. */
   get videoElement(): HTMLVideoElement {
     return this.video;
@@ -329,6 +382,9 @@ export class VideoPlayer {
   // ── Public control surface (driven by the remote/keyboard in main.ts) ──────
 
   open(opts: VideoPlayerOptions, startHidden = false): void {
+    this.nativeSession?.stop();
+    this.nativeSession = null;
+    this.nativePositionTicks = null;
     // Defensive: no normal UI path opens on top of a live player (close()
     // always runs first), but if one ever does, the previous stream's encode
     // and hls.js instance must be torn down or they'd keep running behind
@@ -576,6 +632,8 @@ export class VideoPlayer {
 
   close(): void {
     if (!this._isOpen) return;
+    this.nativeSession?.stop();
+    this.nativeSession = null;
     this.cinema.stop();
     this.exitConfirmEl.hidden = true;
     const ticks = this.currentPositionTicks();
@@ -1591,6 +1649,7 @@ export class VideoPlayer {
   // ── Progress reporting ───────────────────────────────────────────────────────
 
   private currentPositionTicks(): number {
+    if (this.nativePositionTicks !== null) return this.nativePositionTicks;
     return Math.round(this.currentAbsoluteSeconds() * TICKS_PER_SECOND);
   }
 

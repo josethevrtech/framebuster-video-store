@@ -112,10 +112,11 @@ impl Options {
                 home
             };
         }
-        if !result.file.is_file() && !result.file.is_dir() {
+        let stream = crate::frame_playback::is_stream(&result.file);
+        if !stream && !result.file.is_file() && !result.file.is_dir() {
             bail!("Supply an existing local file or directory; see --help");
         }
-        if (result.probe || result.render_probe) && !result.file.is_file() {
+        if (result.probe || result.render_probe) && !result.file.is_file() && !stream {
             bail!("Probe modes require a video file");
         }
         if result.probe && result.render_probe {
@@ -126,7 +127,7 @@ impl Options {
         {
             bail!("--hud-snapshot requires the browser or an enabled playback HUD");
         }
-        result.file = result.file.canonicalize()?;
+        if !stream { result.file = result.file.canonicalize()?; }
         result.presentation = result.presentation_overrides.apply(result.presentation);
         Ok(Some(result))
     }
