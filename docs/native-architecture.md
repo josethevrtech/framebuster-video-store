@@ -44,14 +44,18 @@ system FFmpeg with inherited decoder/preload libraries cleared: the cinema's
 patched FFmpeg codec library is incompatible with the system image converter.
 The cinema retains its Iris decoder library and Turnip Vulkan driver settings.
 
-Right-stick up/down pages shelves; left/right snap-turns 30 degrees around the
-tracked head position. Y searches. Left-stick walking is head-directed, with a
-radial dead zone, smoothed velocity and a 1.4 m/s speed limit. X switches to
-surface-grip movement: only hands near fixtures can acquire anchors; planar
-pulling is limited to 2 m/s, followed by exponentially damped coasting on release.
-Loss of focus releases anchors and stops locomotion. Artificial movement uses a
-22 cm horizontal collision radius around shelves, counter and room boundaries;
-physical room-scale head movement is not constrained. Trigger selects a case;
+Right-stick up/down pages shelves; left/right turns continuously around the
+tracked head position, with a radial dead zone and a maximum 90 degrees/second.
+Y searches. Left-stick walking is controller-directed with a 12% radial dead
+zone and fast smoothed response. X switches walk mode (1.9 m/s, prompt braking)
+and glide mode (3 m/s, damped coasting). Both allow grip dragging anywhere:
+holding a grip anchors the hand in world space, and hand displacement moves
+the player directly, without the previous low pull-speed cap. Large tracking
+jumps release the anchor; tracking loss and loss of focus stop held motion.
+The virtual room stays grounded; vertical head motion remains physical.
+Swept substeps and a 20 cm horizontal collision radius stop artificial movement
+through racks, checkout and new lobby fixtures. Physical room-scale movement
+is not constrained. No torso or arms are rendered. Trigger selects a case;
 A plays/resumes or opens a series' episodes. B clears
 selection, stops playback, or returns from episodes to the main shelves.
 The original library/cinema/store-test entries remain separate development

@@ -4,16 +4,17 @@ const BLUE: [f32; 3] = [0.035, 0.10, 0.22];
 const FRAME: [f32; 3] = [0.075, 0.085, 0.10];
 
 pub fn append(v: &mut Vec<Vertex>) {
-    box_mesh(v, [0.0, 1.57, 13.0], [16.0, 0.86, 0.18], BLUE);
-    for x in [-4.65, 4.65] {
-        box_mesh(v, [x, -1.34, 13.0], [6.7, 0.32, 0.18], BLUE);
+    let start = v.len();
+    box_mesh(v, [0.0, 1.57, 13.0], [20.0, 0.86, 0.18], BLUE);
+    for x in [-5.65, 5.65] {
+        box_mesh(v, [x, -1.34, 13.0], [8.7, 0.32, 0.18], BLUE);
     }
-    for x in [-7.9, -1.4, 1.4, 7.9] {
+    for x in [-9.9, -1.4, 1.4, 9.9] {
         box_mesh(v, [x, -0.02, 13.0], [0.20, 2.32, 0.24], BLUE);
     }
-    box_mesh(v, [0.0, 1.29, 12.87], [16.0, 0.12, 0.04], [0.69, 0.47, 0.16]);
-    for x in [-4.65, 4.65] {
-        window(v, x, 6.3);
+    box_mesh(v, [0.0, 1.29, 12.87], [20.0, 0.12, 0.04], [0.69, 0.47, 0.16]);
+    for x in [-5.65, 5.65] {
+        window(v, x, 8.3);
     }
     for x in [-1.25, 0.0, 1.25] {
         box_mesh(v, [x, -0.15, 12.97], [0.065, 2.7, 0.09], FRAME);
@@ -31,6 +32,7 @@ pub fn append(v: &mut Vec<Vertex>) {
     box_mesh(v, [6.8, -0.99, 11.95], [0.8, 1.02, 0.65], [0.16, 0.17, 0.19]);
     box_mesh(v, [6.8, -0.7, 11.60], [0.55, 0.095, 0.07], [0.02, 0.025, 0.035]);
     exterior(v);
+    for vertex in &mut v[start..] { vertex[0][2] += 4.0; }
 }
 
 fn window(v: &mut Vec<Vertex>, x: f32, width: f32) {

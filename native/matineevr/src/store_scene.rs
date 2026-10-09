@@ -45,7 +45,6 @@ impl StoreScene {
         let mut launch = false;
         if active && let Some(head) = head {
             self.navigation.update(controls, head, hands, dt);
-            crate::store_body::append(&mut self.dynamic, &self.navigation, head, hands);
         } else { self.navigation.reset(); }
         for (hand, pose) in aims.into_iter().enumerate() {
             let pressed = controls.triggers[hand] > 0.65;

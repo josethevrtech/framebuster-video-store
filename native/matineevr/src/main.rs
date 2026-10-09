@@ -55,7 +55,7 @@ mod store_poster;
 mod store_runtime;
 mod store_motion;
 mod store_layout;
-mod store_body;
+mod store_decor;
 mod swapchains;
 mod thumbnail;
 mod xr;

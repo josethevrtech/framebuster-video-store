@@ -59,7 +59,7 @@ def bake(path, origin, scale, selected=None, black=False):
 
 
 folder, output = map(Path, sys.argv[1:3])
-result = bake(folder/'checkout-counter-shield-rounded.glb', [0, -1.5, 11.3], [.3048]*3)
+result = bake(folder/'checkout-counter-shield-rounded.glb', [0, -1.5, 15.3], [.3048]*3)
 for x in [-5.2, 5.2]:
     for z in [1.0, 5.5]:
         for y in [-1.15, -.65, -.15, .25]:

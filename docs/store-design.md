@@ -22,7 +22,7 @@ The room does not fetch BingeBrowse or require an external theme service.
 Movie streaming and fresh Jellyfin catalogue artwork still require the server;
 downloaded movie playback and a persistent offline catalogue are not implemented.
 
-The checkout-side wall now has two 6.3-metre window banks with narrow dark
+The checkout-side wall now has two 8.3-metre window banks with narrow dark
 aluminium mullions and a central double-door entrance. Actual wall openings
 reveal a local dusk strip-mall scene: pavement, a curb, parking stripes, lamps
 and neighbouring storefronts. Sparse highlights suggest glazing without an opaque
@@ -33,17 +33,20 @@ dynamic reflections, sunlight and shadows are not implemented.
 
 Six additional double-sided black rental racks fill the rear aisles; these
 new racks are empty display fixtures for now. Their shared layout definitions
-also supply locomotion collision and grip-surface bounds. Existing selectable
+also supply locomotion collision bounds. Existing selectable
 cases and rack-end posters continue to use the owner's Jellyfin artwork.
 External decorative movie catalogs are not yet connected.
 
-The first body-presence pass renders a torso and two-segment arms estimated
-from the tracked headset and controllers. Reachable elbow poses use two-bone
-inverse kinematics; longer reaches stretch to keep wrists at the controllers.
-This is not full-body tracking or a reproduction of Lone Echo's body system.
-Legs, foot planting, calibrated arm lengths, torso yaw filtering and physical
-case grabbing remain future work. Grip locomotion stays on the floor rather
-than introducing zero-gravity movement into the shop.
+The current store is 20 by 22 metres at fixed physical scale. Checkout and the
+storefront moved four metres farther back while the rear racks remain at z=8.1,
+leaving a broad lobby. An original upholstered bench, CRT catalog kiosk,
+ventilation grilles, wall trim and tape-stack counters add local retail detail.
+These meshes are authored in `store_decor.rs`; no third-party brands or reference
+site assets are included. Kenney furniture remains CC0; upstream Halcyon models
+remain GPL-3.0. Body rendering has been disabled at the owner's request; only
+the tracked floating controllers are drawn. Earlier body source is preserved
+but not compiled. Grip dragging and smooth analog turning replace the previous
+surface-only pull/snap-turn implementation.
 
 The room uses physical metre dimensions without rescaling controller tracking.
 On the tested Frame, STAGE exposed a zero head height, so treating it as a
@@ -51,13 +54,13 @@ calibrated floor shrank the room incorrectly. Store sessions now use LOCAL;
 the first valid head position anchors a virtual eye height of 1.65 metres.
 This is a game comfort origin, not a measurement of the owner's real floor.
 The room keeps its dimensions when the owner looks around or crouches.
-Cases are approximately 22 by 37 cm including their title captions; each
+Cases are approximately 22 by 37 cm with artwork and a plain lower border; each
 black shelf bay holds six columns and three rows. The arcade carpet remains.
 Wall bands sit in front of wall faces rather than on coplanar surfaces.
 Scale and edge shimmer still require owner verification.
 
 The owner confirmed the eye-relative version feels much better. The next
-layout expands the floor to 16 by 18 metres without scaling people, cases,
+layout expands the floor to 20 by 22 metres without scaling people, cases,
 controllers or ceiling height. Clear central space separates longer black
 aisle runs. The original Halcyon shield checkout and Blender shelf decks
 are baked from `public/models/` by `prepare-halcyon-fixtures.py`; their
