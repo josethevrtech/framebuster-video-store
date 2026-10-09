@@ -48,7 +48,7 @@ export async function createStorePlayback(api, directory, status, pauseMusic = (
         onStopped();
       }
     } catch {} finally { reporting = false; }
-  }, 1000);
+  }, 200);
   return {
     async play(item) {
       if (current) return;
