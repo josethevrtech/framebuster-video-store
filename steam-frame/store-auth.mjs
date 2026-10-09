@@ -14,7 +14,7 @@ export async function connectAccount(api, directory, status, active) {
   if (!enabled) throw new Error('Enable Jellyfin Quick Connect in the server settings');
   const pending = await api.json('/QuickConnect/Initiate', { method: 'POST' });
   if (!/^\d{6}$/.test(pending.Code) || typeof pending.Secret !== 'string') throw new Error('Invalid device sign-in response');
-  await status(`SIGN IN: ${pending.Code}\nIn Jellyfin, open your profile > Quick Connect.\nApprove this code to connect FrameBuster.\nB exits. No password is sent to the headset UI.`);
+  await status(`SIGN IN: ${pending.Code}\nIn Jellyfin, open your profile > Quick Connect.\nApprove this code to connect FrameBuster.\nUse the Steam menu to exit.`);
   for (let attempt = 0; attempt < 120 && active(); attempt++) {
     await new Promise(resolve => setTimeout(resolve, 5000));
     const state = await api.json('/QuickConnect/Connect', { query: { secret: pending.Secret } });

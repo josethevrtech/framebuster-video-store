@@ -9,12 +9,12 @@ pub struct Movie {
 }
 
 pub fn read(path: &Path) -> Result<Vec<Movie>> {
-    ensure!(fs::metadata(path)?.len() <= 4 * 1024 * 1024, "Catalog exceeds capacity");
+    ensure!(fs::metadata(path)?.len() <= 16 * 1024 * 1024, "Catalog exceeds capacity");
     let bytes = fs::read(path)?;
     let mut reader = Reader(&bytes);
     ensure!(reader.take(8)? == b"FBCAT001", "Invalid catalog header");
     let count = reader.number()?;
-    ensure!(count <= 6, "Too many shelf entries");
+    ensure!(count <= 54, "Too many shelf entries");
     reader.number()?;
     reader.number()?;
     let mut movies = Vec::new();

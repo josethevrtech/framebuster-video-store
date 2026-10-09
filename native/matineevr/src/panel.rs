@@ -69,6 +69,11 @@ impl Panel {
         pose: xr::Posef,
         width: f32,
     ) -> xr::CompositionLayerQuad<'a, xr::Vulkan> {
+        self.region_layer(space, pose, width, 0, self.size)
+    }
+
+    pub fn region_layer<'a>(&'a self, space: &'a xr::Space, pose: xr::Posef,
+        width: f32, bottom: usize, size: [usize; 2]) -> xr::CompositionLayerQuad<'a, xr::Vulkan> {
         xr::CompositionLayerQuad::new()
             .space(space)
             .eye_visibility(xr::EyeVisibility::BOTH)
@@ -77,15 +82,15 @@ impl Panel {
                     | xr::CompositionLayerFlags::UNPREMULTIPLIED_ALPHA,
             )
             .pose(pose)
-            .size(extent(self.size, width))
+            .size(extent(size, width))
             .sub_image(
                 xr::SwapchainSubImage::new()
                     .swapchain(&self.chain)
                     .image_rect(xr::Rect2Di {
-                        offset: xr::Offset2Di { x: 0, y: 0 },
+                        offset: xr::Offset2Di { x: 0, y: bottom as i32 },
                         extent: xr::Extent2Di {
-                            width: self.size[0] as i32,
-                            height: self.size[1] as i32,
+                            width: size[0] as i32,
+                            height: size[1] as i32,
                         },
                     }),
             )

@@ -11,15 +11,16 @@ server and browser credentials are not required by this launch path.
 `framebuster-launch.sh` loads optional server configuration and invokes the
 Steam OpenXR prelaunch wrapper. `native-store-runner.mjs` creates a private
 session directory, starts `framebuster-video-store`, pairs through Jellyfin Quick
-Connect when needed, and fetches six movies per shelf page. A private native
+Connect when needed, and fetches 54 movies and series per shelf page. Series
+selection opens paged episode shelves through Jellyfin's Show API. A private native
 device account survives application restarts. Session catalog snapshots remain
 on disk for diagnostics; they contain titles and artwork, not credentials.
 
 The companion writes bounded binary catalog records and status text. Rust checks
 record counts, text lengths, image dimensions and payload lengths before upload.
-Six covers with title captions are packed into a single transparent shelf atlas,
-reducing OpenXR swapchain/resource use. Status, shelf artwork and details use
-at most three quad layers in addition to the projection layer. The room and
+54 covers with title captions share one transparent atlas and swapchain.
+Three atlas regions face front and side shelf bays. Status, shelf artwork and
+shelf-mounted details use at most five quad layers plus the projection layer. The room and
 tracked Valve controller meshes share the depth-tested Vulkan mesh pass.
 
 Native selection writes a numbered command. The companion prepares Jellyfin
@@ -40,9 +41,11 @@ system FFmpeg with inherited decoder/preload libraries cleared: the cinema's
 patched FFmpeg codec library is incompatible with the system image converter.
 The cinema retains its Iris decoder library and Turnip Vulkan driver settings.
 
-Right stick pages shelves; Y searches. Left stick provides bounded 0.6-metre
+Right stick pages shelves; Y searches. Left stick provides bounded steps of
+0.6 metres times the room scale,
 steps and 30-degree snap turns on stick edges, without continuously sliding the
-view. Movie details open with a trigger; A plays/resumes and B closes details.
+view. Trigger opens details; A plays/resumes or opens a series' episodes. B closes
+details, stops playback, or returns from episodes to the main shelves.
 The original library/cinema/store-test entries remain separate development
 fallbacks. The primary entry is `Devkit Game: FrameBusterVideoStore`.
 
@@ -70,6 +73,11 @@ fixtures. B closes details at the shelves and stops playback without exiting
 the store session; Steam's own menu provides app exit. The expanded shop and
 the corrected return behavior still need headset verification.
 
-The app is not a complete release: TV episodes, subtitles, Unicode text, a
+The latest store pass adds a shared fixture scale, STAGE floor reference,
+separated wall trim, retro signs, tape spines, carpet and a CRT rental terminal.
+See [store design and asset provenance](store-design.md) for the BingeBrowse
+reference, offline environment assets, current limitations and visual checks.
+
+The app is not a complete release: subtitle selection, Unicode text, a
 polished VR keyboard, configurable comfort options, stronger account storage
 integration, bounded cache retention and automated runtime packaging remain.

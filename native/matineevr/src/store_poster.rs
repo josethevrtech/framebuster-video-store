@@ -19,11 +19,11 @@ pub fn compose(movie: &Movie) -> Canvas {
 }
 
 pub fn atlas(movies: &[Movie]) -> Canvas {
-    let mut result = Canvas::new(Path::new(""), [1440, 720]);
-    for (i, movie) in movies.iter().take(6).enumerate() {
+    let mut result = Canvas::new(Path::new(""), [1440, 3240]);
+    for (i, movie) in movies.iter().take(54).enumerate() {
         let poster = compose(movie);
-        let left = 240 + (i % 3) * 480 - 96;
-        let bottom = 180 + (i / 3) * 360 - 164;
+        let left = 120 + (i % 6) * 240 - 96;
+        let bottom = (i / 18) * 1080 + 180 + ((i % 18) / 6) * 360 - 164;
         for y in 0..328 {
             for x in 0..192 {
                 let source = (y * 2 * 384 + x * 2) * 4;
@@ -47,6 +47,6 @@ mod tests {
         assert_eq!(&canvas.pixels[(80 * 384) * 4..(80 * 384) * 4 + 4], &[12, 34, 56, 255]);
         let atlas = atlas(&[movie]);
         assert_eq!(&atlas.pixels[..4], &[0, 0, 0, 0]);
-        assert_eq!(atlas.pixels.len(), 1440 * 720 * 4);
+        assert_eq!(atlas.pixels.len(), 1440 * 3240 * 4);
     }
 }

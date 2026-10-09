@@ -40,7 +40,12 @@ mod shortcuts;
 mod snapshot;
 mod startup;
 mod store_geometry;
+mod store_capture;
 mod store_fixtures;
+mod store_scale;
+mod store_signs;
+mod store_carpet;
+mod store_props;
 mod store_scene;
 mod store_catalog;
 mod store_poster;
@@ -50,6 +55,7 @@ mod swapchains;
 mod thumbnail;
 mod xr;
 mod xr_draw;
+mod xr_space;
 
 use matineevr::{
     adjustment, alignment, graphics, media, navigation, playback, presentation, preview, renderer,

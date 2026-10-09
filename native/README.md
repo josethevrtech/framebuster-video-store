@@ -34,8 +34,8 @@ Jellyfin movie handoff after decoder URL handling was corrected.
 
 ## Native store foundation
 
-`store_geometry.rs` and `store_scene.rs` add a native room with shelves and six
-test cases, using the existing Vulkan mesh pipeline. OpenXR aim poses drive
+`store_geometry.rs` and `store_scene.rs` add a native room with three shelf bays,
+using the existing Vulkan mesh pipeline. The original test used six cases. OpenXR aim poses drive
 visible controller pointers and case hover outlines. Trigger selection starts
 the local sample in the same OpenXR session; B during playback or movie completion
 returns to the room. B in the room exits the prototype. A also starts the sample.
@@ -49,8 +49,10 @@ trigger selection, sample playback and return to the room on the headset.
 That original entry is a sample interaction prototype. The separate FrameBuster
 entry now pairs natively with Jellyfin and loads actual titles, poster artwork,
 details, search, paging and comfort movement. Sign-in and catalog loading passed
-on the headset. The shared shelf atlas and full native movie selection flow are
-still undergoing visual verification. The ordinary library remains a fallback.
+on the headset, as did posters and real movie selection/playback. The latest
+eye-relative origin, compact black shelves and three-bay atlas and episode navigation still need visual
+verification. The ordinary library remains a fallback. CC0 Kenney prop meshes
+and their original source/licence are embedded from `matineevr/assets/`.
 
 Building on the headset requires Rust, glslc, a working C compiler, FFmpeg
 and PulseAudio development headers. The upstream build uses a

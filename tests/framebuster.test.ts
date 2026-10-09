@@ -52,6 +52,27 @@ test('native catalog bounds identities and creates complete poster records witho
   assert.equal(bytes.length, offset + 8 + 192 * 288 * 4);
 });
 
+test('series use paged episodes, user progress and series artwork', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'framebuster-episodes-'));
+  const seriesId = 'c'.repeat(32), episodeId = 'd'.repeat(32);
+  const requests: any[] = [];
+  const api = { account: { userId: 'a'.repeat(32) },
+    json: async (path: string, options: any) => {
+      requests.push({ path, ...options });
+      return { Items: [{ Id: episodeId, SeriesId: seriesId, Type: 'Episode', Name: 'Pilot',
+        ParentIndexNumber: 1, IndexNumber: 2 }], TotalRecordCount: 23 };
+    }, request: async (path: string) => { requests.push({ path }); throw new Error('No artwork'); } };
+  await loadCatalog(api, directory, 1, '', 1, { Id: seriesId });
+  assert.equal(requests[0].path, `/Shows/${seriesId}/Episodes`);
+  assert.equal(requests[0].query.StartIndex, 54);
+  assert.equal(requests[0].query.Limit, 54);
+  assert.equal(requests[0].query.EnableUserData, true);
+  assert.equal('SortBy' in requests[0].query, false);
+  assert.equal(requests[1].path, `/Items/${seriesId}/Images/Primary`);
+  const bytes = await readFile(await readFile(join(directory, 'catalog-path'), 'utf8'));
+  assert.match(bytes.toString('utf8', 56, 56 + bytes.readUInt32LE(52)), /S01E02 Pilot/);
+});
+
 test('native movie requests use an opaque relay and report progress without launching a browser', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'framebuster-playback-'));
   const itemId = 'a'.repeat(32);

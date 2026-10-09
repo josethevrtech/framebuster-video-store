@@ -19,6 +19,8 @@ case "$result" in
     *) printf 'SteamVR prelaunch failed: %s\n' "$result" >&2; exit 1 ;;
 esac
 if [ "${FRAMEBUSTER_NATIVE:-0}" = 1 ]; then
+    export FRAMEBUSTER_PLAYER_PRELOAD="${LD_PRELOAD:-}"
+    unset LD_PRELOAD
     exec "$base/runtime/bin/node" "$base/steam-frame/native-store-runner.mjs" "$@"
 fi
 if [ "${HALCYON_FRAME_STORE:-0}" = 1 ]; then

@@ -16,13 +16,13 @@ pub fn run(options: &Options) -> Result<()> {
     let graphics = Graphics::new(&instance, system)?;
     let (session, mut waiter, mut stream) = graphics.session(&instance, system)?;
     let mut input = Input::new(&instance, &session, Overlays::hand_offset())?;
-    let space =
-        session.create_reference_space(xr::ReferenceSpaceType::LOCAL, xr::Posef::IDENTITY)?;
+    let store_mode = std::env::var("HALCYON_FRAME_STORE").as_deref() == Ok("1");
+    let (space, floor_offset) = crate::xr_space::create(&session, store_mode)?;
     let view_config = xr::ViewConfigurationType::PRIMARY_STEREO;
     let mut app = App::new(options);
-    let store_mode = std::env::var("HALCYON_FRAME_STORE").as_deref() == Ok("1");
     let mut handoff = crate::frame_playback::FramePlayback::new(&mut app)?;
     let mut video = Video::new(graphics.clone(), &instance, system, &session)?;
+    video.store_floor(floor_offset);
     let mut store = crate::store_runtime::StoreRuntime::new(&session, graphics.clone())?;
     video.renderer.stats = options.stats.then(Statistics::default);
     let mut overlays = Overlays::new(&session, graphics.clone())?;
@@ -154,6 +154,7 @@ pub fn run(options: &Options) -> Result<()> {
             let q = views[0].pose.orientation;
             yaw = (2.0 * (q.w * q.y + q.x * q.z)).atan2(1.0 - 2.0 * (q.x * q.x + q.y * q.y));
         }
+        if state.contains(xr::ViewStateFlags::POSITION_VALID) { video.calibrate_store(&views)?; }
         video.draw(views, app.presentation, yaw, video_ready, options,
             if focused { input.controller_poses } else { [None; 2] })?;
         let overlay_started = options.stats.then(Instant::now);
@@ -164,7 +165,7 @@ pub fn run(options: &Options) -> Result<()> {
                 overlay_started.unwrap().elapsed().as_secs_f64() * 1000.0,
             );
         }
-        let quads = if in_store { store.as_ref().map_or_else(Vec::new, |s| s.layers(&space, video.store_pose())) }
+        let quads = if in_store { store.as_ref().map_or_else(Vec::new, |s| s.layers(&space, video.store_pose(), video.store_scale())) }
             else { overlays.layers(&space, input.panel_poses, timing.predicted_display_time) };
         timed(performance.stats.as_mut(), "xr_end_ms", || {
             crate::swapchains::submit(

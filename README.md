@@ -12,9 +12,9 @@ This is an actively tested prototype, not a finished release. Native room render
 - FFmpeg uses the Frame's Iris hardware video decoder, with H.264/AAC HLS requested for Jellyfin playback.
 - Native Linux dialogs provide server-address entry and title search. The signed-in runtime does not require Chrome or a development server.
 
-Launch **Devkit Game: FrameBusterVideoStore** in Steam. Trigger selects a case and opens details; A plays or resumes; B returns from a movie or closes details, then exits from the shelves. Right stick changes pages; Y opens native search. Left stick provides bounded step movement and 30-degree snap turns. These new catalog/navigation features require headset verification.
+Launch **Devkit Game: FrameBusterVideoStore** in Steam. Trigger selects a case and opens details on its shelf; A plays, resumes, or opens a series' episodes. B returns from a movie, closes details, or returns from episodes to the main store. Exit through Steam's menu. Right stick changes pages; Y opens native search. Left stick provides bounded step movement and 30-degree snap turns. The room fits its scale to measured headset height while controllers retain physical scale.
 
-The current store shows six titles per page. TV/episode navigation, Unicode text rendering, subtitle selection, polished login/search keyboard integration, configurable comfort controls and a complete installer remain unfinished. Valve controller assets are prepared from the headset's installed SteamVR files and are not redistributed.
+The store shows 54 movies/series or episodes across three shelf bays. Posters and movie playback are owner-verified; the latest eye-relative origin, compact black shelves and episode navigation need headset verification. Unicode text rendering, subtitle selection, a polished VR keyboard, configurable comfort controls and a complete installer remain unfinished. Valve controller assets are prepared from installed SteamVR files and are not redistributed. Offline shop props include CC0 Kenney furniture; see [store design and asset credits](docs/store-design.md).
 
 ## Source and development
 

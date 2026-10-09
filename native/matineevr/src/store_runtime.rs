@@ -8,7 +8,6 @@ pub struct StoreRuntime {
     directory: PathBuf,
     status: Panel,
     detail: Panel,
-    view_space: xr::Space,
     posters: Panel,
     movies: Vec<Movie>,
     selected: Option<usize>,
@@ -38,8 +37,7 @@ impl StoreRuntime {
         let Some(directory) = std::env::var_os("HALCYON_FRAME_STORE_IPC") else { return Ok(None); };
         Ok(Some(Self { directory: directory.into(), status: Panel::new(session, device.clone(), [WIDTH, 144])?,
             detail: Panel::new(session, device.clone(), [WIDTH, 420])?,
-            view_space: session.create_reference_space(xr::ReferenceSpaceType::VIEW, xr::Posef::IDENTITY)?,
-            posters: Panel::new(session, device.clone(), [1440, 720])?, movies: Vec::new(), selected: None, catalog_path: String::new(),
+            posters: Panel::new(session, device.clone(), [1440, 3240])?, movies: Vec::new(), selected: None, catalog_path: String::new(),
             status_text: String::new(), request: String::new(), next: Instant::now(), sequence: 0,
             stick: false, resume: None }))
     }
@@ -58,7 +56,7 @@ impl StoreRuntime {
                 self.draw_detail(index)?;
             }
             if controls.b {
-                self.selected = None;
+                if self.selected.take().is_none() { self.command("back", 0)?; }
             } else if controls.a && let Some(index) = self.selected {
                 self.command("play", index)?;
                 self.selected = None;
@@ -115,7 +113,8 @@ impl StoreRuntime {
         let mut canvas = Canvas::new(std::path::Path::new(""), self.detail.size);
         canvas.clear();
         canvas.line(0, &movie.title, [255, 215, 110, 255]);
-        canvas.line(2, "A: Play / Resume     B: Back to shelves", [110, 220, 255, 255]);
+        canvas.line(2, if movie.title.ends_with(" [Series]") { "A: Browse episodes     B: Back to shelves" }
+            else { "A: Play / Resume     B: Back to shelves" }, [110, 220, 255, 255]);
         let mut line = String::new(); let mut row = 4;
         for word in movie.overview.split_whitespace() {
             if line.chars().count() + word.chars().count() > 62 {
@@ -128,20 +127,26 @@ impl StoreRuntime {
         self.detail.upload(&canvas.pixels)
     }
 
-    pub fn layers<'a>(&'a self, space: &'a xr::Space, room: xr::Posef) -> Vec<xr::CompositionLayerQuad<'a, xr::Vulkan>> {
-        let transform = |p: [f32; 3]| {
+    pub fn layers<'a>(&'a self, space: &'a xr::Space, room: xr::Posef, scale: f32) -> Vec<xr::CompositionLayerQuad<'a, xr::Vulkan>> {
+        let transform = |p: [f32; 3], yaw: f32| {
+            let p = crate::store_scale::point(p, scale);
             let q = room.orientation;
             let c = 1.0 - 2.0 * q.y * q.y; let s = 2.0 * q.y * q.w;
-            xr::Posef { orientation: q, position: xr::Vector3f {
+            let angle = s.atan2(c) + yaw;
+            xr::Posef { orientation: xr::Quaternionf { x: 0.0, y: (angle / 2.0).sin(), z: 0.0, w: (angle / 2.0).cos() }, position: xr::Vector3f {
                 x: c * p[0] + s * p[2] + room.position.x, y: p[1] + room.position.y,
                 z: -s * p[0] + c * p[2] + room.position.z } }
         };
-        let mut layers = vec![self.status.layer(space, transform([0.0, 1.35, -2.4]), 3.4)];
-        if !self.movies.is_empty() { layers.push(self.posters.layer(space, transform([0.0, 0.2, -2.445]),
-            3.6 * WIDTH as f32 / self.posters.size[0] as f32)); }
-        if self.selected.is_some() {
-            layers.push(self.detail.layer(&self.view_space, xr::Posef {
-                position: xr::Vector3f { x: 0.0, y: 0.0, z: -1.3 }, ..xr::Posef::IDENTITY }, 1.2));
+        let mut layers = vec![self.status.layer(space, transform([0.0, 1.35, -2.4], 0.0), 3.4 * scale)];
+        for bank in 0..self.movies.len().div_ceil(18) {
+            let (p, yaw) = crate::store_geometry::bank_pose(bank);
+            layers.push(self.posters.region_layer(space, transform(p, yaw),
+                1.62 * scale * WIDTH as f32 / 1440.0, bank * 1080, [1440, 1080]));
+        }
+        if let Some(selected) = self.selected {
+            let (mut p, yaw) = crate::store_geometry::bank_pose(selected / 18);
+            p[0] += yaw.sin() * 0.35; p[2] += yaw.cos() * 0.35;
+            layers.push(self.detail.layer(space, transform(p, yaw), 1.8 * scale));
         }
         layers
     }

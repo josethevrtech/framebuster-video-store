@@ -17,9 +17,20 @@ pub struct Video {
     controllers: crate::controller_draw::ControllerDraw,
     frames: u64,
     captured: bool,
+    scene_capture: String,
 }
 
 impl Video {
+    pub fn calibrate_store(&mut self, views: &[xr::View]) -> Result<()> {
+        if let Some(store) = &mut self.controllers.store { store.calibrate(views[0].pose.position.y)?; }
+        Ok(())
+    }
+    pub fn store_scale(&self) -> f32 {
+        self.controllers.store.as_ref().map_or(1.0, |s| s.scale)
+    }
+    pub fn store_floor(&mut self, offset: f32) {
+        if let Some(store) = &mut self.controllers.store { store.navigation.pose.position.y = offset; }
+    }
     pub fn update_store(&mut self, active: bool, controls: crate::input::Controls,
         aims: [Option<xr::Posef>; 2]) -> Option<usize> {
         self.controllers.store.as_mut().and_then(|s| s.update(active, controls, aims))
@@ -40,6 +51,7 @@ impl Video {
             views: Vec::new(),
             frames: 0,
             captured: false,
+            scene_capture: String::new(),
         })
     }
 
@@ -68,7 +80,10 @@ impl Video {
             self.renderer
                 .draw(target, &views[index], index as i32, presentation, yaw)?;
             self.controllers.draw(target, &views[index], hands)?;
-            if index == 0 && ready && self.frames >= 30 && !self.captured {
+            if index == 0 && self.frames % 72 == 0 {
+                crate::store_capture::capture(&self.renderer.device, target, &mut self.scene_capture)?;
+            }
+            if index == 0 && (ready || self.controllers.store.as_ref().is_some_and(|s| s.active)) && self.frames >= 30 && !self.captured {
                 if let Some(path) = &options.snapshot {
                     self.renderer.finish()?;
                     snapshot::save(&self.renderer.device, path, target)?;

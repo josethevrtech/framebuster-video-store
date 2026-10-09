@@ -5,9 +5,10 @@ pub struct StoreNavigation {
     pub pose: xr::Posef,
     held: [bool; 2],
     yaw: f32,
+    pub scale: f32,
 }
 impl Default for StoreNavigation {
-    fn default() -> Self { Self { pose: xr::Posef::IDENTITY, held: [false; 2], yaw: 0.0 } }
+    fn default() -> Self { Self { pose: xr::Posef::IDENTITY, held: [false; 2], yaw: 0.0, scale: 1.0 } }
 }
 impl StoreNavigation {
     pub fn update(&mut self, controls: Controls) {
@@ -23,10 +24,11 @@ impl StoreNavigation {
             self.pose.orientation = xr::Quaternionf { x: 0.0, y: s, z: 0.0, w: c };
         }
         if pressed[1] && !self.held[1] {
-            self.pose.position.z += y.signum() * 0.6;
+            self.pose.position.z += y.signum() * 0.6 * self.scale;
             let (p, _) = self.inverse_ray([0.0; 3], [0.0; 3]);
             let (s, c) = self.yaw.sin_cos();
-            let x = p[0].clamp(-2.8, 2.8); let z = p[2].clamp(-1.3, 4.8);
+            let x = p[0].clamp(-2.3 * self.scale, 2.3 * self.scale);
+            let z = p[2].clamp(-1.3 * self.scale, 4.8 * self.scale);
             self.pose.position.x = -c * x - s * z;
             self.pose.position.z = s * x - c * z;
         }

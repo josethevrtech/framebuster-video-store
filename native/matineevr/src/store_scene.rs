@@ -12,17 +12,30 @@ pub struct StoreScene {
     dynamic: Vec<Vertex>,
     held: [bool; 2],
     selected: Option<usize>,
+    pub scale: f32,
+    calibrated: bool,
     pub navigation: crate::store_navigation::StoreNavigation,
 }
 
 impl StoreScene {
     pub fn new(device: Rc<Graphics>) -> Result<Self> {
-        let vertices = store_geometry::room();
+        let mut vertices = store_geometry::room();
+        crate::store_scale::vertices(&mut vertices, crate::store_scale::SCALE);
         let room = Buffer::new(device.clone(), vertices.len() * 48)?;
         upload(&room, &vertices)?;
         Ok(Self { active: true, room, count: vertices.len() as u32,
             frames: (0..IN_FLIGHT).map(|_| Buffer::new(device.clone(), 64 * 1024)).collect::<Result<_>>()?,
-            dynamic: Vec::new(), held: [false; 2], selected: None, navigation: Default::default() })
+            dynamic: Vec::new(), held: [false; 2], selected: None, navigation: Default::default(),
+            scale: crate::store_scale::SCALE, calibrated: false })
+    }
+
+    pub fn calibrate(&mut self, head_y: f32) -> Result<()> {
+        if self.calibrated { return Ok(()); }
+        if !head_y.is_finite() { return Ok(()); }
+        self.navigation.pose.position.y = crate::store_scale::eye_offset(head_y);
+        self.calibrated = true;
+        eprintln!("FrameBuster eye origin: {head_y:.3}m; floor: {:.3}m; physical scale: 1.0", head_y - 1.65);
+        Ok(())
     }
 
     pub fn update(&mut self, active: bool, controls: Controls, aims: [Option<xr::Posef>; 2]) -> Option<usize> {
@@ -35,6 +48,7 @@ impl StoreScene {
             if active && let Some(pose) = pose {
                 let (origin, direction) = ray(pose);
                 let (origin, direction) = self.navigation.inverse_ray(origin, direction);
+                let (origin, direction) = crate::store_scale::inverse(origin, direction, self.scale);
                 let hit = CARDS.iter().enumerate().filter_map(|(i, center)|
                     hit_card(origin, direction, *center).map(|t| (i, t)))
                     .min_by(|a, b| a.1.total_cmp(&b.1));
@@ -48,6 +62,7 @@ impl StoreScene {
             self.held[hand] = pressed;
         }
         if active && let Some(i) = self.selected { outline(&mut self.dynamic, CARDS[i], [0.2, 1.0, 0.4]); }
+        crate::store_scale::vertices(&mut self.dynamic, self.scale);
         (active && (launch || controls.a)).then_some(self.selected.unwrap_or(0))
     }
 
@@ -65,11 +80,15 @@ fn upload(buffer: &Buffer, vertices: &[Vertex]) -> Result<()> {
 }
 
 fn outline(v: &mut Vec<Vertex>, p: [f32; 3], color: [f32; 3]) {
-    for x in [-0.32, 0.32] {
-        store_geometry::box_mesh(v, [p[0] + x, p[1], p[2] + 0.075], [0.025, 0.79, 0.025], color);
+    let side = p[0].abs() > 3.0;
+    let map = |dx, dy| if side { [p[0] - p[0].signum() * 0.075, p[1] + dy, p[2] + dx] }
+        else { [p[0] + dx, p[1] + dy, p[2] + 0.075] };
+    for x in [-0.116, 0.116] {
+        store_geometry::box_mesh(v, map(x, 0.0), [0.025, 0.385, 0.025], color);
     }
-    for y in [-0.395, 0.395] {
-        store_geometry::box_mesh(v, [p[0], p[1] + y, p[2] + 0.075], [0.665, 0.025, 0.025], color);
+    for y in [-0.1925, 0.1925] {
+        store_geometry::box_mesh(v, map(0.0, y),
+            if side { [0.025, 0.025, 0.257] } else { [0.257, 0.025, 0.025] }, color);
     }
 }
 
@@ -81,10 +100,17 @@ fn ray(p: xr::Posef) -> ([f32; 3], [f32; 3]) {
 }
 
 fn hit_card(origin: [f32; 3], direction: [f32; 3], center: [f32; 3]) -> Option<f32> {
+    if center[0].abs() > 3.0 {
+        let sign = center[0].signum();
+        if direction[0] * sign <= 0.001 { return None; }
+        let t = (center[0] - sign * 0.04 - origin[0]) / direction[0];
+        return (t > 0.0 && (origin[2] + t * direction[2] - center[2]).abs() <= 0.116
+            && (origin[1] + t * direction[1] - center[1]).abs() <= 0.19).then_some(t);
+    }
     if direction[2] >= -0.001 { return None; }
     let t = (center[2] + 0.04 - origin[2]) / direction[2];
-    (t > 0.0 && (origin[0] + t * direction[0] - center[0]).abs() <= 0.30
-        && (origin[1] + t * direction[1] - center[1]).abs() <= 0.37).then_some(t)
+    (t > 0.0 && (origin[0] + t * direction[0] - center[0]).abs() <= 0.116
+        && (origin[1] + t * direction[1] - center[1]).abs() <= 0.19).then_some(t)
 }
 
 #[cfg(test)]
@@ -92,9 +118,11 @@ mod tests {
     use super::*;
     #[test]
     fn pointing_hits_only_cards_in_front() {
-        assert!(hit_card([0.0, -0.25, 0.0], [0.0, 0.0, -1.0], CARDS[1]).is_some());
-        assert!(hit_card([0.0, -0.25, 0.0], [0.0, 0.0, 1.0], CARDS[1]).is_none());
-        assert!(hit_card([0.0, 1.5, 0.0], [0.0, 0.0, -1.0], CARDS[1]).is_none());
+        assert!(hit_card([-0.135, -0.85, 0.0], [0.0, 0.0, -1.0], CARDS[2]).is_some());
+        assert!(hit_card([-0.135, -0.85, 0.0], [0.0, 0.0, 1.0], CARDS[2]).is_none());
+        assert!(hit_card([0.0, 1.5, 0.0], [0.0, 0.0, -1.0], CARDS[2]).is_none());
+        assert!(hit_card([0.0, CARDS[20][1], CARDS[20][2]], [1.0, 0.0, 0.0], CARDS[20]).is_some());
+        assert!(hit_card([0.0, CARDS[38][1], CARDS[38][2]], [-1.0, 0.0, 0.0], CARDS[38]).is_some());
         let (_, d) = ray(xr::Posef::IDENTITY);
         assert_eq!(d, [0.0, 0.0, -1.0]);
         assert!(store_geometry::room().iter().flatten().flatten().all(|v| v.is_finite()));
