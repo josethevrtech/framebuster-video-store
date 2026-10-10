@@ -49,6 +49,7 @@ impl ControllerDraw {
             room.material_props.prepare(command);
             room.albums.prepare(command);
             room.lounge_props.prepare(command);
+            room.retail_props.prepare(command);
             room.console.prepare(command);
             room.games.prepare(command);
             room.trailer.prepare(command,slot)?;
@@ -110,6 +111,7 @@ impl ControllerDraw {
                 room.material_props.draw(command,p,&self.device);
                 room.albums.draw(command,p);
                 room.lounge_props.draw(command,p,&self.device);
+                room.retail_props.draw(command,p,&self.device);
                 room.console.draw(command,p,&self.device);
                 room.games.draw(command,p);
                 room.trailer.draw(command,p,slot);

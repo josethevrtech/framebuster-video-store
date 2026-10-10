@@ -57,7 +57,6 @@ if __name__ == '__main__':
     for name, position, scale, yaw in [
         ('pottedPlant', (-4.0, -1.5, 23.7), 1.3, 0),
         ('pottedPlant', (4.0, -1.5, 23.7), 1.3, 0),
-        ('chairCushion', (2.9, -1.5, 21.8), 1.2, math.pi / 2),
     ]:
         data.extend(model(folder, name, position, scale, yaw))
     if not data or len(data) > 4 * 1024 * 1024:

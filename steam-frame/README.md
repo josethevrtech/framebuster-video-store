@@ -200,3 +200,20 @@ privately on the headset and loaded independently of movie and game artwork.
 The current library contains 614 albums in 22 sections; the native music area
 supports up to 24 sections of 54 albums each. Empty sections are not rendered
 and have no collisions. Genre aliases are grouped using music-genres.json.
+
+The music wall has four matching physical MUSIC headers, including three
+evenly spaced along its west run. The listening station uses a licensed
+textured CD mini-system with real-scale speakers, a Poly Haven wood cabinet
+and a small now-playing CD display. Its three transport buttons control
+previous, pause/play and next. The checkout uses the authored rounded rental
+counter with scanned laminate and two detailed CRT/keyboard stations on the
+staff worktop. Equipment faces the clerk; the customer ledge stays clear.
+The old miniature computer and clipping chair are absent from the scene.
+Licenses and asset adaptations are documented in native/matineevr/assets/retail/.
+
+To rebuild these fixtures: use download-retail-stereo.py with an external
+source directory; run prepare-retail-assets.py in Blender with that directory
+and a bake directory; then run pack-retail-materials.py to create
+native/matineevr/assets/retail-materials.rgba. check-retail-assets.py verifies
+worktop support, atlas coordinates and CD stand height. preview-retail-assets.py
+renders the actual exported native meshes with their baked PBR maps.

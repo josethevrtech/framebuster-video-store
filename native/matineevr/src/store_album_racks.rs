@@ -1,8 +1,6 @@
 use crate::store_geometry::{Vertex,box_mesh};
 use std::sync::atomic::{AtomicUsize,Ordering};
 pub const MAX_BAYS: usize=24;
-pub const DECK: [f32;3]=[-11.5,-0.68,24.0];
-pub const COVER: [f32;3]=[-11.5,-0.22,23.968];
 static ACTIVE: AtomicUsize=AtomicUsize::new(0);
 pub fn activate(count: usize) {ACTIVE.store(count,Ordering::Relaxed);}
 pub fn yaw(bay: usize) -> f32 {if bay<6 {0.0} else {std::f32::consts::FRAC_PI_2}}
@@ -38,7 +36,7 @@ pub fn rack(v: &mut Vec<Vertex>,bay: usize,count: usize) {
     }
 }
 pub fn obstacles() -> Vec<[f32;4]> {
-    let mut boxes=vec![[-12.22,-10.78,23.75,24.25]];
+    let mut boxes=vec![crate::store_retail_layout::CABINET];
     for bay in 0..ACTIVE.load(Ordering::Relaxed) {
         let p=center(bay);let [x,z]=if bay<6 {[0.675,0.19]} else {[0.19,0.675]};
         boxes.push([p[0]-x,p[0]+x,p[2]-z,p[2]+z]);
@@ -66,20 +64,32 @@ pub fn hit(p: [f32;3],d: [f32;3],bay: usize,index: usize) -> Option<f32> {
     (t>0.0 && x.abs()<0.0875 && (p[1]+t*d[1]-q[1]).abs()<0.0875).then_some(t)
 }
 pub fn deck(v: &mut Vec<Vertex>) {
-    box_mesh(v,[-11.5,-1.12,24.0],[1.44,0.76,0.50],[0.13,0.085,0.05]);
-    box_mesh(v,DECK,[1.22,0.12,0.30],[0.13,0.14,0.15]);
-    box_mesh(v,[-11.5,-0.10,24.0],[0.70,1.02,0.06],[0.03,0.03,0.035]);
-    for x in [-11.90,-11.5,-11.10] {box_mesh(v,[x,-0.675,23.839],[0.075,0.038,0.010],[0.52,0.54,0.56]);}
+    let p=crate::store_retail_layout::COVER;
+    box_mesh(v,[p[0],p[1],p[2]+0.005],[0.17,0.17,0.010],[0.12,0.13,0.14]);
+    box_mesh(v,[p[0],p[1]-0.097,p[2]+0.025],[0.19,0.024,0.07],[0.035,0.035,0.04]);
 }
 pub fn controls(p: [f32;3],d: [f32;3]) -> Option<(&'static str,f32)> {
-    if d[2]<=0.001 {return None;}let t=(23.832-p[2])/d[2];
-    if t<=0.0 || (p[1]+t*d[1]+0.675).abs()>0.035 {return None;}
-    [-11.90,-11.5,-11.10].into_iter().enumerate().find(|(_,x)|(p[0]+t*d[0]-x).abs()<0.10)
-        .map(|(i,_)| (["music-previous","music-toggle","music-next"][i],t))
+    if d[2]<=0.001 {return None;}
+    crate::store_retail_layout::BUTTONS.into_iter().enumerate().find_map(|(i,q)| {
+        let t=(q[2]-p[2])/d[2];
+        (t>0.0 && (p[0]+t*d[0]-q[0]).abs()<0.016 && (p[1]+t*d[1]-q[1]).abs()<0.025)
+            .then_some((["music-previous","music-toggle","music-next"][i],t))
+    })
 }
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn stereo_buttons_select_independently_and_reject_backside_rays() {
+        for (i,q) in crate::store_retail_layout::BUTTONS.into_iter().enumerate() {
+            let p=[q[0],q[1],q[2]-1.0];
+            let (action,distance)=controls(p,[0.0,0.0,1.0]).unwrap();
+            assert_eq!(action,["music-previous","music-toggle","music-next"][i]);
+            assert!((distance-1.0).abs()<0.0001);
+            assert!(controls([q[0],q[1],q[2]+1.0],[0.0,0.0,-1.0]).is_none());
+            assert!(controls([q[0],q[1]+0.1,q[2]-1.0],[0.0,0.0,1.0]).is_none());
+        }
+    }
     #[test]
     fn every_cd_has_square_art_and_selects_its_own_case_from_the_front() {
         for bay in 0..MAX_BAYS {

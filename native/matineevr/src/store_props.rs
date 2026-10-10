@@ -2,7 +2,6 @@ use crate::store_geometry::Vertex;
 
 pub fn append(vertices: &mut Vec<Vertex>) {
     decode(vertices, include_bytes!("../assets/kenney-furniture.bin"));
-    decode(vertices, include_bytes!("../assets/halcyon-fixtures.bin"));
 }
 
 fn decode(vertices: &mut Vec<Vertex>, bytes: &[u8]) {
