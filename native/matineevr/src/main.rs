@@ -59,6 +59,7 @@ mod store_runtime;
 mod store_motion;
 mod store_controls;
 mod store_layout;
+mod store_collision;
 mod store_decor;
 mod store_arcade;
 mod store_console;

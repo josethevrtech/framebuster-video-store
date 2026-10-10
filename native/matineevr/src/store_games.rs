@@ -43,7 +43,14 @@ impl StoreGames {
         let games=crate::store_catalog::read(&section.path)?;
         ensure!(games.len()==section.count,"Game shelf count does not match its catalog");
         let mut covers=StoreCovers::new(self.device.clone())?;
-        covers.update_mesh(&games,crate::store_game_mesh::labels(section.bay,games.len()))?;
+        let mut mesh=crate::store_game_mesh::labels(section.bay,games.len());
+        if section.bay%2==0 && !self.pending.iter().any(|s| s.bay==section.bay+1) {
+            let p=crate::store_game_racks::center(section.bay);
+            for i in 0..games.len().min(2) {
+                crate::store_cover_mesh::quad(&mut mesh,[p[0]-0.43+i as f32*0.86,-0.45,p[2]-0.375],std::f32::consts::PI,[0.70,1.05],i);
+            }
+        }
+        covers.update_mesh(&games,mesh)?;
         self.covers.push(covers);
         if self.pending.is_empty() {eprintln!("Game shelves: all {} console bays loaded",self.covers.len());}
         Ok(())

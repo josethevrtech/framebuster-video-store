@@ -10,8 +10,8 @@ pub fn boxes(bay: usize,count: usize) -> Vec<Vertex> {
 pub fn labels(bay: usize,count: usize) -> Vec<Vertex> {
     let mut vertices=Vec::new();
     for index in 0..count {
-        let mut p=crate::store_game_racks::card(bay,index);p[2]+=0.014;
-        crate::store_cover_mesh::quad(&mut vertices,p,0.0,[0.155,0.2325],index);
+        let mut p=crate::store_game_racks::card(bay,index);p[2]+=crate::store_game_racks::side(bay)*0.014;
+        crate::store_cover_mesh::quad(&mut vertices,p,crate::store_game_racks::yaw(bay),[0.155,0.2325],index);
     }
     vertices
 }
@@ -26,8 +26,9 @@ mod tests {
             for index in 0..54 {
                 let p=crate::store_game_racks::card(bay,index);
                 let cover=labels[index*6];
-                assert!(cover[0][2]>p[2]+0.0125);
-                assert!((cover[0][0]+0.0775-p[0]).abs()<0.0001);
+                let side=crate::store_game_racks::side(bay);
+                assert!((cover[0][2]-p[2])*side>0.0125);
+                assert!((cover[0][0]+side*0.0775-p[0]).abs()<0.0001);
                 assert!((cover[1][0]*1440.0-(24+(index%6)*240) as f32).abs()<0.01);
             }
         }

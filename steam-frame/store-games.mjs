@@ -3,7 +3,7 @@ import { join, resolve, sep } from 'node:path';
 import systems from './game-systems.json' with {type:'json'};
 
 export const SYSTEMS=systems.map(system=>system.id);
-const CAPACITY=54, MAX_BAYS=32, PIXELS=192*288*4;
+const CAPACITY=54, MAX_BAYS=28, PIXELS=192*288*4;
 function number(value) { const bytes=Buffer.alloc(4);bytes.writeUInt32LE(value);return bytes; }
 function text(value) { const bytes=Buffer.from(String(value).slice(0,240));return Buffer.concat([number(bytes.length),bytes]); }
 export function arrangeGames(items) {

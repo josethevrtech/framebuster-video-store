@@ -8,7 +8,11 @@ pub fn mesh(bays: &[GameBay]) -> Vec<Vertex> {
     quad(&mut vertices,[22.0,1.15,20.958],std::f32::consts::PI,[4.8,0.60],0);
     for section in bays {
         let p=crate::store_game_racks::center(section.bay);
-        quad(&mut vertices,[p[0],0.47,p[2]+0.105],0.0,[1.78,0.215],section.system+1);
+        let side=crate::store_game_racks::side(section.bay);
+        quad(&mut vertices,[p[0],0.47,p[2]+side*0.28],crate::store_game_racks::yaw(section.bay),[1.78,0.215],section.system+1);
+        if section.bay%2==0 && !bays.iter().any(|b| b.bay==section.bay+1) {
+            quad(&mut vertices,[p[0],0.47,p[2]-0.28],std::f32::consts::PI,[1.78,0.215],section.system+1);
+        }
     }
     vertices
 }

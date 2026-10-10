@@ -144,13 +144,18 @@ selection on this shared screen remain separate integration work.
 
 The right game wing extends the room from 32 to 44 metres wide while retaining
 physical scale, floor height and ceiling height. It has a separate teal carpet,
-a hanging printed VIDEO GAMES board, and 32 black shelf bays with printed console
+a hanging printed VIDEO GAMES board, and fourteen double-sided black racks with printed console
 headers. Every imported game has one boxed cover in its console section; the
 current private library occupies 27 bays with 1,043 games across eleven systems.
 There is no game shelf pagination or filtering. Cabinet inputs change only the
 console on the lounge cabinet. Game covers are display items at this stage,
 not playable selection controls. The former standalone computer kiosk is gone
 from the room; its computer and keyboard now rest on the checkout counter.
+The entrance bench is removed. Computer base corners fit within the actual
+countertop triangles. Checkout collision follows the counter mesh's convex
+footprint, and movement resolves embedded positions before sliding along
+furniture edges. Paired game bays share a rack with covers on opposing faces;
+the unmatched final back displays two game posters.
 
 Each bay has at most 54 covers with a stable game identity and its own artwork
 atlas, independent of movies and music. The native renderer loads one bay per

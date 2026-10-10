@@ -1,4 +1,4 @@
-use crate::{input::Controls, store_layout};
+use crate::input::Controls;
 use openxr as xr;
 
 pub struct StoreNavigation {
@@ -75,7 +75,7 @@ impl StoreNavigation {
         let delta = [target[0]-local[0],target[2]-local[2]];
         let factor = (0.25/delta[0].hypot(delta[1]).max(0.00001)).min(1.0);
         target[0] = local[0]+delta[0]*factor; target[2] = local[2]+delta[1]*factor;
-        let accepted = slide(local,target);
+        let accepted = crate::store_collision::slide(local,target);
         if !pulls.is_empty() && dt > 0.0 {
             let velocity = [(accepted[0]-local[0])/dt,(accepted[2]-local[2])/dt];
             let response = 1.0-(-25.0*dt).exp();
@@ -102,18 +102,6 @@ impl StoreNavigation {
 }
 fn point(p: xr::Posef) -> [f32;3] { [p.position.x,p.position.y,p.position.z] }
 fn analog(x: f32, dead: f32) -> f32 { x.signum()*((x.abs()-dead)/(1.0-dead)).clamp(0.0,1.0) }
-fn slide(start: [f32;3], target: [f32;3]) -> [f32;3] {
-    let mut p = start;
-    let distance = (target[0]-start[0]).hypot(target[2]-start[2]);
-    let steps = (distance/0.035).ceil().max(1.0) as usize;
-    for _ in 0..steps {
-        for axis in [0,2] {
-            let mut candidate = p; candidate[axis] += (target[axis]-start[axis])/steps as f32;
-            if store_layout::free(candidate,0.20) { p = candidate; }
-        }
-    }
-    p
-}
 
 #[cfg(test)]
 mod tests {
