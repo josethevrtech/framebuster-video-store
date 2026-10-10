@@ -29,5 +29,6 @@ case cover was folded into a closed rental case. The N64 scene's accessory
 meshes are not used as part of its console. Private game artwork is supplied by
 the owner's separate library cache, and is not covered by the app source license.
 
-The Game Boy cartridge is prepared as a source family but is not currently
-included in the five-console game shelf selector.
+The cartridge and jewel-case assets are preserved as source families, but the
+current store displays boxed game covers on black rental shelves. Only the five
+console meshes above are currently rendered on the lounge cabinet.

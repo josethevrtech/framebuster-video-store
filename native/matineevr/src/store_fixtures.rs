@@ -3,9 +3,11 @@ use crate::store_geometry::{Vertex, box_mesh};
 pub fn shop(v: &mut Vec<Vertex>) {
     let blue = [0.035, 0.10, 0.22];
     crate::store_carpet::carpet(v);
-    for (p, size) in [([0.0, 0.25, -5.0], [32.0, 3.5, 0.15]),
+    let width=crate::store_bounds::WIDTH;
+    let center=crate::store_bounds::CENTER;
+    for (p, size) in [([center, 0.25, -5.0], [width, 3.5, 0.15]),
         ([-16.0, 0.25, 10.0], [0.15, 3.5, 30.0]),
-        ([16.0, 0.25, 10.0], [0.15, 3.5, 30.0])] {
+        ([crate::store_bounds::RIGHT, 0.25, 10.0], [0.15, 3.5, 30.0])] {
         box_mesh(v, p, size, blue);
         let side = size[0] < size[2];
         let band = if side { [p[0] - p[0].signum() * 0.11, 1.35, p[2]] }
@@ -23,14 +25,14 @@ pub fn shop(v: &mut Vec<Vertex>) {
             }
         }
     }
-    box_mesh(v, [0.0, 2.05, 10.0], [32.0, 0.10, 30.0], [0.53, 0.54, 0.56]);
-    for x in -8..8 {
+    box_mesh(v, [center, 2.05, 10.0], [width, 0.10, 30.0], [0.53, 0.54, 0.56]);
+    for x in -8..14 {
         for z in -2..13 {
             box_mesh(v, [x as f32 * 2.0 + 1.0, 1.988, z as f32 * 2.0],
                 [1.96, 0.02, 1.96], [0.65, 0.65, 0.62]);
         }
     }
-    for x in [-14.0, -10.0, -6.0, -2.0, 2.0, 6.0, 10.0, 14.0] {
+    for x in [-14.0, -10.0, -6.0, -2.0, 2.0, 6.0, 10.0, 14.0,18.0,22.0,26.0] {
         for z in [-2.5, 1.5, 5.5, 9.5, 13.5, 17.5, 21.5] {
             box_mesh(v, [x, 1.91, z], [1.5, 0.055, 0.35], [0.82, 0.87, 0.96]);
         }

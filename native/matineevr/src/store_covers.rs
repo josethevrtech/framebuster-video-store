@@ -14,8 +14,18 @@ pub struct StoreCovers {
 impl StoreCovers {
     pub fn new(device: Rc<Graphics>) -> Result<Self> {
         let texture = StoreTexture::new(device.clone())?;
+        Self::with_texture(device,texture)
+    }
+    fn with_texture(device: Rc<Graphics>,texture: StoreTexture) -> Result<Self> {
         Ok(Self { pipeline:ControllerPipeline::textured(device.clone(),texture.layout)?,texture,
             vertices:Buffer::new(device.clone(),crate::store_cover_mesh::mesh(54).len()*48)?,count:0,device })
+    }
+    pub fn panel(device: Rc<Graphics>,pixels: &[u8],size: (u32,u32),vertices: Vec<crate::store_geometry::Vertex>) -> Result<Self> {
+        let mut texture=StoreTexture::with_size(device.clone(),size)?;
+        texture.upload(pixels)?;
+        let mut result=Self::with_texture(device,texture)?;
+        result.set_mesh(vertices)?;
+        Ok(result)
     }
     pub fn update(&mut self,movies: &[Movie]) -> Result<()> {
         self.update_mesh(movies,crate::store_cover_mesh::mesh(movies.len()))
@@ -24,6 +34,9 @@ impl StoreCovers {
         unsafe { self.device.api.device_wait_idle()?; }
         let canvas = crate::store_poster::atlas(movies);
         self.texture.upload(&canvas.pixels)?;
+        self.set_mesh(vertices)
+    }
+    fn set_mesh(&mut self,vertices: Vec<crate::store_geometry::Vertex>) -> Result<()> {
         let size = std::mem::size_of_val(vertices.as_slice());
         ensure!(size <= self.vertices.size,"Cover geometry exceeds capacity");
         unsafe { std::ptr::copy_nonoverlapping(vertices.as_ptr() as *const u8,self.vertices.pointer,size); }

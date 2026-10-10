@@ -1,14 +1,14 @@
 use crate::store_geometry::{Vertex,box_mesh};
 
-pub const CENTER: [f32;3] = [15.50,-0.5,22.20];
-pub const COVER: [f32;3] = [15.255,-0.10,22.20];
+pub const CENTER: [f32;3] = [crate::store_bounds::RIGHT-0.50,-0.5,22.20];
+pub const COVER: [f32;3] = [CENTER[0]-0.245,-0.10,22.20];
 pub fn place(p: [f32;3]) -> [f32;3] { [CENTER[0]+p[2],p[1],CENTER[2]-p[0]] }
 pub fn rotate(n: [f32;3]) -> [f32;3] { [n[2],n[1],-n[0]] }
 pub const SPEAKERS: [[f32;3];6] = [
     [-6.0,1.45,0.0],[6.0,1.45,0.0],[-6.0,1.45,11.0],
     [6.0,1.45,11.0],[-6.0,1.45,22.0],[6.0,1.45,22.0],
 ];
-pub fn obstacle() -> [f32;4] { [15.16,15.82,21.67,22.73] }
+pub fn obstacle() -> [f32;4] { [CENTER[0]-0.34,CENTER[0]+0.32,21.67,22.73] }
 pub fn append(v: &mut Vec<Vertex>) {
     let chrome=[0.61,0.67,0.72];
     for (i,x) in [-0.23,0.0,0.23].into_iter().enumerate() {

@@ -9,16 +9,18 @@ pub const EXTRA_RACKS: [[f32; 2]; 12] = [
 pub fn obstacles() -> Vec<[f32; 4]> {
     let mut boxes = vec![[-4.25, -2.15, 1.55, 2.45], [2.15, 4.25, 1.55, 2.45],
         [-2.6,2.6,22.35,23.9],[6.35,7.25,23.55,24.35],
-        [-15.35,-14.2,18.85,21.75],[-13.3,-12.3,19.65,20.85],
+        [-15.35,-14.2,18.85,21.75],
         [-4.3,-3.3,21.85,22.75],[3.3,4.3,21.85,22.75]];
     boxes.extend(crate::store_arcade::obstacles());
+    boxes.extend(crate::store_game_racks::obstacles());
     boxes.push(crate::store_jukebox::obstacle());
     for [x, z] in EXTRA_RACKS { boxes.push([x - 1.04, x + 1.04, z - 0.39, z + 0.39]); }
     boxes
 }
 
 pub fn free(p: [f32; 3], radius: f32) -> bool {
-    if p[0].abs() > 15.75 - radius || p[2] < -4.4 + radius || p[2] > 24.7 - radius { return false; }
+    if p[0]<crate::store_bounds::LEFT+0.25+radius || p[0]>crate::store_bounds::RIGHT-0.25-radius
+        || p[2] < -4.4 + radius || p[2] > 24.7 - radius { return false; }
     !obstacles().iter().any(|b| {
         let x = p[0] - p[0].clamp(b[0], b[1]);
         let z = p[2] - p[2].clamp(b[2], b[3]);
@@ -27,6 +29,7 @@ pub fn free(p: [f32; 3], radius: f32) -> bool {
 }
 
 pub fn append(v: &mut Vec<Vertex>) {
+    crate::store_game_racks::append(v);
     let black = [0.035, 0.035, 0.04];
     for [x, z] in EXTRA_RACKS {
         box_mesh(v, [x, -0.49, z], [2.02, 1.65, 0.09], black);
@@ -52,6 +55,7 @@ mod tests {
             for z in [18.0,19.0,20.0,21.0] { assert!(free([x,0.15,z],0.22)); }
         }
         assert!(!free([0.0,0.15,23.0],0.22));
+        assert!(free([-12.8,0.15,20.2],0.22));
         for z in [5.0,9.0,13.0,17.0,20.0] { assert!(free([9.0,0.15,z],0.22)); }
     }
     #[test]

@@ -49,7 +49,6 @@ impl StoreRuntime {
         controls: Controls, selection: Option<usize>, active: bool) -> Result<bool> {
         if active { video.store_trailer(&self.directory); }
         if active {
-            if let Some((action,index))=video.game_action() {self.selected=None;self.command(action,index)?;}
             if let Some(action)=video.music_action() { self.selected=None; self.command(action,0)?; }
             if let Some(index) = selection.filter(|i| *i < self.movies.len()) {
                 self.selected = Some(index);
@@ -79,11 +78,10 @@ impl StoreRuntime {
         fs::write(self.directory.join("music-volume"),format!("[{left:.5},{right:.5}]"))?;
         if let Ok(path)=fs::read_to_string(self.directory.join("game-catalog-path")) {
             if path!=self.game_catalog_path && PathBuf::from(&path).parent()==Some(self.directory.as_path()) {
-                let games=store_catalog::read(std::path::Path::new(&path))?;
-                let types=fs::read(format!("{path}.types"))?;
-                video.store_games(&games,&types)?;self.game_catalog_path=path;
+                video.store_games(std::path::Path::new(&path))?;self.game_catalog_path=path;
             }
         }
+        if active {video.poll_store_games()?;}
         if let Ok(path)=fs::read_to_string(self.directory.join("music-art-path")) {
             let file=PathBuf::from(&path);
             if path!=self.music_art && file.parent()==Some(self.directory.as_path())

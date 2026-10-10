@@ -134,7 +134,7 @@ private import plans are not committed to this public repository.
 ## Shared game lounge and ceiling trailers
 
 The gaming area now has one textured CRT, a wood media cabinet, two vintage
-sofas, a coffee table and three worn game bookcases. Furniture is CC0 Poly Haven;
+sofas and a coffee table. Furniture is CC0 Poly Haven;
 source assets and attribution are retained in native/matineevr/assets/lounge.
 The cabinet's five physical input buttons swap licensed textured console meshes:
 NES, SNES, Genesis, PS1 and N64, left to right.
@@ -142,23 +142,33 @@ Point and squeeze the trigger; the active input has a green indicator.
 This selects the physical display model. Emulator sessions and playable ROM
 selection on this shared screen remain separate integration work.
 
-The private game catalog supplies 54 physical rentals per page. Each rental uses
-its own stable game identity and independent cover atlas, separate from movies
-and jukebox artwork. Selecting a cabinet input filters the game shelves; the
-two physical arrows on the first game bookcase browse game pages. NES, SNES,
-Genesis and N64 use their licensed cartridge meshes, and PS1 uses a jewel case
-adapted from a licensed open-case model. Cartridge meshes retain physical metre
-dimensions and use baked diffuse, roughness, metallic and normal maps. They are
-display items at this stage, not playable selection controls.
+The right game wing extends the room from 32 to 44 metres wide while retaining
+physical scale, floor height and ceiling height. It has a separate teal carpet,
+a hanging printed VIDEO GAMES board, and 32 black shelf bays with printed console
+headers. Every imported game has one boxed cover in its console section; the
+current private library occupies 27 bays with 1,043 games across eleven systems.
+There is no game shelf pagination or filtering. Cabinet inputs change only the
+console on the lounge cabinet. Game covers are display items at this stage,
+not playable selection controls. The former standalone computer kiosk is gone
+from the room; its computer and keyboard now rest on the checkout counter.
+
+Each bay has at most 54 covers with a stable game identity and its own artwork
+atlas, independent of movies and music. The native renderer loads one bay per
+250ms while the store is active, then keeps all loaded covers visible. This
+avoids one large startup upload and allows full-library console sections. The
+manifest reader validates section allocation, capacity and private file paths.
 
 `prepare-game-art.py` builds a private catalog and cover cache from an import
 plan, using exact ROM names or unambiguous regional title matches from the
 Libretro thumbnail collections. Place its catalog.json and artwork directory
-inside the headset's private game-library directory. Missing cover matches use
-an opaque blank label. Game box art is applied to cartridge label panels; these
-are not scanned original cartridge labels. ROMs, game-cover caches and source
-plans remain private and are not redistributed with the application. The other
-imported console families await suitable models and shelf integration.
+inside the headset's private game-library directory. prepare-rental-covers.py
+adds original store-branded sleeves with titles and years for unmatched covers,
+preserving every existing artwork file. import-private-artwork.py safely copies
+an artwork ZIP into that private library and rejects conflicting existing files.
+The installed library has 946 matched box-art images and 97 original rental
+sleeves. ROMs, game-cover caches and source plans remain private and are not
+redistributed with the application. Console meshes for the other six systems
+and live game playback still need integration.
 
 Hardware attribution is recorded in assets/rental-hardware/README.md. Download
 source archives with download-hardware-assets.py, bake with Blender using

@@ -34,11 +34,12 @@ impl Video {
     pub fn music_action(&mut self) -> Option<&'static str> {
         self.controllers.store.as_mut().and_then(|s| s.music_action.take())
     }
-    pub fn game_action(&mut self) -> Option<(&'static str,usize)> {
-        self.controllers.store.as_mut().and_then(|s| s.game_action.take())
+    pub fn store_games(&mut self,path: &std::path::Path) -> Result<()> {
+        if let Some(store)=self.controllers.store.as_mut() {store.games.begin(path)?;}
+        Ok(())
     }
-    pub fn store_games(&mut self,games: &[crate::store_catalog::Movie],types: &[u8]) -> Result<()> {
-        if let Some(store)=self.controllers.store.as_mut() {store.games.update(games,types)?;}
+    pub fn poll_store_games(&mut self) -> Result<()> {
+        if let Some(store)=self.controllers.store.as_mut() {store.games.poll()?;}
         Ok(())
     }
     pub fn store_covers(&mut self, movies: &[crate::store_catalog::Movie]) -> Result<()> {

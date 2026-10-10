@@ -29,9 +29,6 @@ impl MaterialProps {
         mesh.extend(counts.iter().sum::<u32>().to_le_bytes()); mesh.extend(&source[28..]);
         Ok((Self::create_size(device,&mesh,include_bytes!("../assets/console-materials.rgba"),false,(3072,1536))?,counts))
     }
-    pub fn rentals(device: Rc<Graphics>,mesh: &[u8]) -> Result<Self> {
-        Self::create_size(device,mesh,include_bytes!("../assets/cartridge-materials.rgba"),false,(3072,1536))
-    }
     fn create(device: Rc<Graphics>,data: &[u8],pixels: &[u8],jukebox: bool) -> Result<Self> {
         Self::create_size(device,data,pixels,jukebox,(3072,1024))
     }

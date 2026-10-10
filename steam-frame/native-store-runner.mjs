@@ -24,8 +24,6 @@ const child = spawn(join(base, 'native-player/framebuster-video-store'), [join(d
     HALCYON_FRAME_PROGRESS_FILE: join(directory, 'progress.json') },
 });
 let active = true, playback = null, music = null, trailers = null;
-let games=null;
-try {games=await createGameShelves(base,directory);} catch(error) {console.error(`Game shelves unavailable: ${error.message}`);}
 const exit = new Promise(resolve => {
   child.once('error', () => { active = false; resolve(1); });
   child.once('exit', code => { active = false; resolve(code ?? 1); });
@@ -36,6 +34,8 @@ for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => {
   trailers?.close();
   setTimeout(() => process.exit(0), 3000).unref();
 });
+try {await createGameShelves(base,directory);} catch(error) {console.error(`Game shelves unavailable: ${error.message}`);}
+if (!active) process.exit(await exit);
 let server = process.env.FRAMEBUSTER_JELLYFIN_URL;
 if (!server) {
   try { server = (await readFile(join(state, 'server'), 'utf8')).trim(); } catch {}
@@ -89,7 +89,6 @@ try {
     console.log(`Store command: ${action}, index ${value}`);
     try {
       if (action === 'music-toggle') music?.toggle();
-      else if (action.startsWith('game-')) await games?.command(action,Number(value));
       else if (action === 'music-next') music?.next();
       else if (action === 'music-previous') music?.previous();
       else if (action === 'play' && catalog.items[Number(value)]) {

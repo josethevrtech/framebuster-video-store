@@ -1,0 +1,13 @@
+[
+  {"id":"nes","label":"NINTENDO NES"},
+  {"id":"snes","label":"SUPER NINTENDO"},
+  {"id":"genesis","label":"SEGA GENESIS"},
+  {"id":"psx","label":"PLAYSTATION"},
+  {"id":"n64","label":"NINTENDO 64"},
+  {"id":"gb","label":"GAME BOY"},
+  {"id":"gbc","label":"GAME BOY COLOR"},
+  {"id":"mastersystem","label":"SEGA MASTER SYSTEM"},
+  {"id":"gamegear","label":"SEGA GAME GEAR"},
+  {"id":"atari2600","label":"ATARI 2600"},
+  {"id":"pcengine","label":"PC ENGINE"}
+]

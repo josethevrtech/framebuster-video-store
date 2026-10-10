@@ -11,10 +11,7 @@ placements = [
     ('sofa_02', (12.1, -1.5, 8.7), 0),
     ('modern_wooden_cabinet', (12.1, -1.5, 13.3), math.pi),
     ('modern_coffee_table_01', (12.1, -1.5, 10.5), 0),
-    ('wooden_bookshelf_worn', (14.7, -1.5, 12.0), -math.pi/2),
     ('sofa_02', (9.8, -1.5, 10.5), math.pi/2),
-    ('wooden_bookshelf_worn', (14.7, -1.5, 16.0), -math.pi/2),
-    ('wooden_bookshelf_worn', (12.3, -1.5, 17.5), math.pi),
 ]
 result = bytearray()
 for tile, (name, origin, yaw) in enumerate(placements):
