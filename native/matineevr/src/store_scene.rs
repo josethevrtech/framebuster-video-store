@@ -20,6 +20,11 @@ pub struct StoreScene {
     pub music_cover: crate::store_music_cover::MusicCover,
     pub material_props: crate::store_material_props::MaterialProps,
     pub jukebox_props: crate::store_material_props::MaterialProps,
+    pub lounge_props: crate::store_material_props::MaterialProps,
+    pub console: crate::store_console::StoreConsole,
+    pub games: crate::store_games::StoreGames,
+    pub game_action: Option<(&'static str,usize)>,
+    pub trailer: crate::store_trailer::StoreTrailer,
     pub music_action: Option<&'static str>,
     pub audio: [f32;2],
 }
@@ -37,7 +42,11 @@ impl StoreScene {
             covers: crate::store_covers::StoreCovers::new(device.clone())?, catalog_count: 54,
             music_cover: crate::store_music_cover::MusicCover::new(device.clone())?,
             material_props: crate::store_material_props::MaterialProps::new(device.clone())?,
-            jukebox_props: crate::store_material_props::MaterialProps::jukebox(device)?,music_action:None,audio:[0.0;2] })
+            jukebox_props: crate::store_material_props::MaterialProps::jukebox(device.clone())?,
+            lounge_props: crate::store_material_props::MaterialProps::lounge(device.clone())?,
+            console: crate::store_console::StoreConsole::new(device.clone())?,
+            games: crate::store_games::StoreGames::new(device.clone())?,game_action:None,
+            trailer: crate::store_trailer::StoreTrailer::new(device)?,music_action:None,audio:[0.0;2] })
     }
 
     pub fn set_catalog(&mut self, movies: &[crate::store_catalog::Movie]) -> Result<()> {
@@ -79,10 +88,18 @@ impl StoreScene {
                     .min_by(|a, b| a.1.total_cmp(&b.1));
                 let music=crate::store_jukebox::hit(origin,direction)
                     .filter(|m| hit.is_none_or(|h| m.1<h.1));
-                let color = if hit.is_some() || music.is_some() { [1.0, 0.65, 0.12] } else { [0.25, 0.65, 1.0] };
+                let console=crate::store_console::hit(origin,direction)
+                    .filter(|m| hit.is_none_or(|h| m.1<h.1) && music.is_none_or(|h| m.1<h.1));
+                let games=crate::store_game_controls::hit(origin,direction)
+                    .filter(|m| hit.is_none_or(|h| m.1<h.1) && music.is_none_or(|h| m.1<h.1) && console.is_none_or(|h| m.1<h.1));
+                let color = if hit.is_some() || music.is_some() || console.is_some() || games.is_some() { [1.0, 0.65, 0.12] } else { [0.25, 0.65, 1.0] };
                 store_geometry::beam(&mut self.dynamic, origin, direction,
-                    music.map_or_else(|| hit.map_or(4.0,|h| h.1),|m| m.1), color);
-                if let Some((action,_))=music {
+                    games.map_or_else(|| console.map_or_else(|| music.map_or_else(|| hit.map_or(4.0,|h| h.1),|m| m.1),|m| m.1),|m| m.1), color);
+                if let Some((action,_))=games {
+                    if pressed && !self.held[hand] {self.game_action=Some((action,0));self.selected=None;}
+                } else if let Some((index,_))=console {
+                    if pressed && !self.held[hand] { self.console.selected=index; self.selected=None;self.game_action=Some(("game-console",index)); }
+                } else if let Some((action,_))=music {
                     if pressed && !self.held[hand] { self.music_action=Some(action); self.selected=None; }
                 } else if let Some((i, _)) = hit {
                     crate::store_display::outline(&mut self.dynamic, i, color);
@@ -92,6 +109,7 @@ impl StoreScene {
             self.held[hand] = pressed;
         }
         if active && let Some(i) = self.selected { crate::store_display::outline(&mut self.dynamic, i, [0.2, 1.0, 0.4]); }
+        if active { self.console.lights(&mut self.dynamic); }
         crate::store_scale::vertices(&mut self.dynamic, self.scale);
         if active && (launch || controls.a) {
             self.selected.and_then(|i| crate::store_display::catalog_index(i,self.catalog_count))

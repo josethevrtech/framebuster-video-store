@@ -130,3 +130,49 @@ The importer prepares a library, not a compatibility certification. Actual
 native CRT game playback, N64/Dreamcast performance testing and the separate
 checked-out/home room still require emulator integration. ROMs, BIOS files and
 private import plans are not committed to this public repository.
+
+## Shared game lounge and ceiling trailers
+
+The gaming area now has one textured CRT, a wood media cabinet, two vintage
+sofas, a coffee table and three worn game bookcases. Furniture is CC0 Poly Haven;
+source assets and attribution are retained in native/matineevr/assets/lounge.
+The cabinet's five physical input buttons swap licensed textured console meshes:
+NES, SNES, Genesis, PS1 and N64, left to right.
+Point and squeeze the trigger; the active input has a green indicator.
+This selects the physical display model. Emulator sessions and playable ROM
+selection on this shared screen remain separate integration work.
+
+The private game catalog supplies 54 physical rentals per page. Each rental uses
+its own stable game identity and independent cover atlas, separate from movies
+and jukebox artwork. Selecting a cabinet input filters the game shelves; the
+two physical arrows on the first game bookcase browse game pages. NES, SNES,
+Genesis and N64 use their licensed cartridge meshes, and PS1 uses a jewel case
+adapted from a licensed open-case model. Cartridge meshes retain physical metre
+dimensions and use baked diffuse, roughness, metallic and normal maps. They are
+display items at this stage, not playable selection controls.
+
+`prepare-game-art.py` builds a private catalog and cover cache from an import
+plan, using exact ROM names or unambiguous regional title matches from the
+Libretro thumbnail collections. Place its catalog.json and artwork directory
+inside the headset's private game-library directory. Missing cover matches use
+an opaque blank label. Game box art is applied to cartridge label panels; these
+are not scanned original cartridge labels. ROMs, game-cover caches and source
+plans remain private and are not redistributed with the application. The other
+imported console families await suitable models and shelf integration.
+
+Hardware attribution is recorded in assets/rental-hardware/README.md. Download
+source archives with download-hardware-assets.py, bake with Blender using
+prepare-hardware-assets.py and prepare-cartridge-assets.py, then pack the maps
+with pack-hardware-materials.py (append `cartridges` for the cartridge atlas).
+
+The four hanging CRTs share a muted 512x384, 12-fps trailer feed. Candidates
+come only from Jellyfin movies/series, preferring local trailers and otherwise
+using their RemoteTrailers YouTube links. Run install-trailers.sh to install
+the pinned official yt-dlp Python ZIP utility; Python 3, FFmpeg and the bundled
+Node runtime are required. yt-dlp uses its official EJS helper through GitHub.
+These are streamed native video textures, with no browser interface, website
+overlays, downloaded trailer collection or committed private media. Network
+trailers require internet access; unavailable sources are skipped. Local
+trailers require the Jellyfin server. Decoding pauses during cinema playback.
+The jukebox now faces inward from the entrance wall, and its album art and
+physical controls use the same transformed position as its model.

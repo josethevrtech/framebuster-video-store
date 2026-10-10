@@ -14,13 +14,14 @@ pub fn mesh(count: usize) -> Vec<Vertex> {
     }
     for (i,&p) in crate::store_arcade::CEILING_TVS.iter().enumerate() {
         if count == 0 { break; }
-        quad(&mut result,[p[0],p[1]+0.09,p[2]-0.285],std::f32::consts::PI,
-            [0.1933,0.29],i%count);
+        let (mut center,size)=crate::store_crt_screen::ceiling(p);
+        center[2]-=0.001;
+        quad(&mut result,center,0.0,[size[1]*2.0/3.0,size[1]],i%count);
     }
     result
 }
 
-fn quad(v: &mut Vec<Vertex>, p: [f32;3], yaw: f32, size: [f32;2], index: usize) {
+pub fn quad(v: &mut Vec<Vertex>, p: [f32;3], yaw: f32, size: [f32;2], index: usize) {
     let left = 24+(index%6)*240;
     let bottom = (index/18)*1080+56+((index%18)/6)*360;
     let uv = [[left as f32/1440.0,(3240-bottom) as f32/3240.0],

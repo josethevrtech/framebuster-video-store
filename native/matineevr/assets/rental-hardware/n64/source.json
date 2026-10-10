@@ -1,0 +1,162 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "d7cebaeca8604ebab1480e413404b679",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics-gadgets",
+      "uri": "https://api.sketchfab.com/v3/categories/d7cebaeca8604ebab1480e413404b679",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/336c224334b7e53e277d236a8355e90a-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 2,
+  "createdAt": "2019-12-02T18:06:39.867093",
+  "embedUrl": "https://sketchfab.com/models/816d53eca00e4f3192a8d23f62388472/embed",
+  "faceCount": 32062,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 44,
+  "name": "Nintendo 64",
+  "publishedAt": "2019-12-02T18:44:28.132909",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "substancepainter",
+      "slug": "substancepainter",
+      "uri": "https://api.sketchfab.com/v3/tags/substancepainter"
+    },
+    {
+      "name": "substance",
+      "slug": "substance",
+      "uri": "https://api.sketchfab.com/v3/tags/substance"
+    },
+    {
+      "name": "maya",
+      "slug": "maya",
+      "uri": "https://api.sketchfab.com/v3/tags/maya"
+    },
+    {
+      "name": "retroelectronicschallenge",
+      "slug": "retroelectronicschallenge",
+      "uri": "https://api.sketchfab.com/v3/tags/retroelectronicschallenge"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "abfd2420ebc04932884c790aa656c88c",
+        "width": 1920,
+        "height": 1080,
+        "size": 48516,
+        "url": "https://media.sketchfab.com/models/816d53eca00e4f3192a8d23f62388472/thumbnails/b5c53c24a5a94f958c268b2d49487459/14a96350fcf3412596badeb48726e77d.jpeg"
+      },
+      {
+        "uid": "2805f25cf4864e0bbdd3999ff6a04324",
+        "width": 1024,
+        "height": 576,
+        "size": 17778,
+        "url": "https://media.sketchfab.com/models/816d53eca00e4f3192a8d23f62388472/thumbnails/b5c53c24a5a94f958c268b2d49487459/bbce01d2eafc40d1ae739567fca365a1.jpeg"
+      },
+      {
+        "uid": "a0bb7c18bf6b43a493e9ec7009dfd2d0",
+        "width": 720,
+        "height": 405,
+        "size": 10907,
+        "url": "https://media.sketchfab.com/models/816d53eca00e4f3192a8d23f62388472/thumbnails/b5c53c24a5a94f958c268b2d49487459/f4d24e5a2ec947b59b13ada0b1510ecc.jpeg"
+      },
+      {
+        "uid": "ae72df7516424a88b4c3d49a9aceb92b",
+        "width": 256,
+        "height": 144,
+        "size": 2604,
+        "url": "https://media.sketchfab.com/models/816d53eca00e4f3192a8d23f62388472/thumbnails/b5c53c24a5a94f958c268b2d49487459/b0a7f1da157640a3967883501b26dcc8.jpeg"
+      },
+      {
+        "uid": "92b4d78dfa1f442ab72333bac7ea3084",
+        "width": 64,
+        "height": 36,
+        "size": 641,
+        "url": "https://media.sketchfab.com/models/816d53eca00e4f3192a8d23f62388472/thumbnails/b5c53c24a5a94f958c268b2d49487459/672f0bf2c7f745c2a5ce034e4b05d6f7.jpeg"
+      }
+    ]
+  },
+  "uid": "816d53eca00e4f3192a8d23f62388472",
+  "uri": "https://api.sketchfab.com/v3/models/816d53eca00e4f3192a8d23f62388472",
+  "user": {
+    "uid": "9e90e437fb964c47a93dc966705217f7",
+    "username": "Ethanboor",
+    "displayName": "Ethanboor",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/Ethanboor",
+    "avatar": {
+      "uid": "47a2ef02672145a0b0bad86ee49ddf6d",
+      "uri": "https://api.sketchfab.com/v3/avatars/47a2ef02672145a0b0bad86ee49ddf6d",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 845,
+          "url": "https://media.sketchfab.com/avatars/47a2ef02672145a0b0bad86ee49ddf6d/d2167283432b4886bdba3adb8a3a981b.jpeg"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 1403,
+          "url": "https://media.sketchfab.com/avatars/47a2ef02672145a0b0bad86ee49ddf6d/7abe900f0615499391c7f3a9776bdf23.jpeg"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 3735,
+          "url": "https://media.sketchfab.com/avatars/47a2ef02672145a0b0bad86ee49ddf6d/84cfc62e07c34e33a315abb7706a6842.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 4462,
+          "url": "https://media.sketchfab.com/avatars/47a2ef02672145a0b0bad86ee49ddf6d/49ceea358efe42a6982a4cdfee526e04.jpeg"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/9e90e437fb964c47a93dc966705217f7"
+  },
+  "vertexCount": 16402,
+  "viewCount": 3476,
+  "viewerUrl": "https://sketchfab.com/3d-models/nintendo-64-816d53eca00e4f3192a8d23f62388472",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "decided to challenge myself and model this classic console, a little rough around the edges but havent done something this complex yet.",
+  "price": null,
+  "downloadCount": 1269,
+  "editorUrl": "https://sketchfab.com/models/816d53eca00e4f3192a8d23f62388472/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "SubstancePainter",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2022-07-21T04:41:19.247830",
+  "pbrType": "metalness",
+  "textureCount": 78,
+  "materialCount": 16
+}

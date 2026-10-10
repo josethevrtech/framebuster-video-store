@@ -61,6 +61,11 @@ mod store_controls;
 mod store_layout;
 mod store_decor;
 mod store_arcade;
+mod store_console;
+mod store_games;
+mod store_game_mesh;
+mod store_game_controls;
+mod store_crt_screen;
 mod store_jukebox;
 mod store_audio;
 mod store_music_cover;
@@ -88,3 +93,4 @@ fn main() -> anyhow::Result<()> {
     }
 }
 mod store_night_frontage;
+mod store_trailer;

@@ -37,7 +37,7 @@ def bake(folder, placements):
 
 if __name__ == '__main__':
     folder, output = map(Path, sys.argv[1:3])
-    placements = [([11.5, -.47, z], 2.0, 0) for z in [8, 12, 16]]
+    placements = [([12.1, -.82, 13.3], 2.0, math.pi)]
     placements += [([x, 1.01, z+.015], 1.3, 0)
                    for x, z in [(-10, 4), (-5.5, 9), (-1, 14), (3.5, 19)]]
     placements += [([-1.25, -.42, 23], 1.35, math.pi)]

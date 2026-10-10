@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nintendo NES original
+* source:	https://sketchfab.com/3d-models/nintendo-nes-original-6de5054340184509af6f301c7f3fac57
+* author:	A.stark (https://sketchfab.com/a.stark)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nintendo NES original" (https://sketchfab.com/3d-models/nintendo-nes-original-6de5054340184509af6f301c7f3fac57) by A.stark (https://sketchfab.com/a.stark) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

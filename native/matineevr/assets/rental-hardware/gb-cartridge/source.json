@@ -1,0 +1,211 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "d7cebaeca8604ebab1480e413404b679",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics-gadgets",
+      "uri": "https://api.sketchfab.com/v3/categories/d7cebaeca8604ebab1480e413404b679",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/336c224334b7e53e277d236a8355e90a-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/800x450.png"
+        }
+      ]
+    },
+    {
+      "uid": "17d20ca7b35243d4a45171838b50704c",
+      "name": "Science & Technology",
+      "slug": "science-technology",
+      "uri": "https://api.sketchfab.com/v3/categories/17d20ca7b35243d4a45171838b50704c",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/86b1bae49e0ed3f43b2d59b26700234e-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/17d20ca7b35243d4a45171838b50704c/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/17d20ca7b35243d4a45171838b50704c/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 1,
+  "createdAt": "2022-07-26T18:54:25.113492",
+  "embedUrl": "https://sketchfab.com/models/8b9728eab16c4056ac2636ae7f0f038f/embed",
+  "faceCount": 510,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 45,
+  "name": "Gameboy Cartridge lowpoly",
+  "publishedAt": "2022-07-26T19:35:39.890483",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "gameboy",
+      "slug": "gameboy",
+      "uri": "https://api.sketchfab.com/v3/tags/gameboy"
+    },
+    {
+      "name": "2k",
+      "slug": "2k",
+      "uri": "https://api.sketchfab.com/v3/tags/2k"
+    },
+    {
+      "name": "Cartridge",
+      "slug": "cartridge",
+      "uri": "https://api.sketchfab.com/v3/tags/cartridge"
+    },
+    {
+      "name": "downloadable",
+      "slug": "downloadable",
+      "uri": "https://api.sketchfab.com/v3/tags/downloadable"
+    },
+    {
+      "name": "highquality",
+      "slug": "highquality",
+      "uri": "https://api.sketchfab.com/v3/tags/highquality"
+    },
+    {
+      "name": "freemodel",
+      "slug": "freemodel",
+      "uri": "https://api.sketchfab.com/v3/tags/freemodel"
+    },
+    {
+      "name": "game",
+      "slug": "game",
+      "uri": "https://api.sketchfab.com/v3/tags/game"
+    },
+    {
+      "name": "texture",
+      "slug": "texture",
+      "uri": "https://api.sketchfab.com/v3/tags/texture"
+    },
+    {
+      "name": "low",
+      "slug": "low",
+      "uri": "https://api.sketchfab.com/v3/tags/low"
+    },
+    {
+      "name": "free",
+      "slug": "free",
+      "uri": "https://api.sketchfab.com/v3/tags/free"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "a858e722a2414c34b3827e86cd83ef9b",
+        "width": 1920,
+        "height": 1080,
+        "size": 203470,
+        "url": "https://media.sketchfab.com/models/8b9728eab16c4056ac2636ae7f0f038f/thumbnails/199c069685ff476cb41f2b685b8ce20f/a3dac021cee941b5894114ae3a67a46c.jpeg"
+      },
+      {
+        "uid": "1b32479fb67a44fbaa7fc95b8e9c63fa",
+        "width": 1024,
+        "height": 576,
+        "size": 58296,
+        "url": "https://media.sketchfab.com/models/8b9728eab16c4056ac2636ae7f0f038f/thumbnails/199c069685ff476cb41f2b685b8ce20f/2fe30a4841024c2a992d2a2ddc14e866.jpeg"
+      },
+      {
+        "uid": "09c549b706e14c8db0047260af8be96b",
+        "width": 720,
+        "height": 405,
+        "size": 31549,
+        "url": "https://media.sketchfab.com/models/8b9728eab16c4056ac2636ae7f0f038f/thumbnails/199c069685ff476cb41f2b685b8ce20f/53c0a82815774c5491e38fd7321c7f6d.jpeg"
+      },
+      {
+        "uid": "a70ba9f5698c4f368dae6d444cde66fe",
+        "width": 256,
+        "height": 144,
+        "size": 5261,
+        "url": "https://media.sketchfab.com/models/8b9728eab16c4056ac2636ae7f0f038f/thumbnails/199c069685ff476cb41f2b685b8ce20f/9650efb283e0456ebf368fb919ea630f.jpeg"
+      },
+      {
+        "uid": "e88f8ecbe6614a46b04904c528ab7f98",
+        "width": 64,
+        "height": 36,
+        "size": 1108,
+        "url": "https://media.sketchfab.com/models/8b9728eab16c4056ac2636ae7f0f038f/thumbnails/199c069685ff476cb41f2b685b8ce20f/d6cbf882143d46b8b49dc3b072f31e83.jpeg"
+      }
+    ]
+  },
+  "uid": "8b9728eab16c4056ac2636ae7f0f038f",
+  "uri": "https://api.sketchfab.com/v3/models/8b9728eab16c4056ac2636ae7f0f038f",
+  "user": {
+    "uid": "f6c73d6f47cb4977a4f1dd76ab4d55ae",
+    "username": "MeBob",
+    "displayName": "Bob",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/MeBob",
+    "avatar": {
+      "uid": "3ef1bd11d3eb4b57a0b353e8f2e5fc3e",
+      "uri": "https://api.sketchfab.com/v3/avatars/3ef1bd11d3eb4b57a0b353e8f2e5fc3e",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 680,
+          "url": "https://media.sketchfab.com/avatars/3ef1bd11d3eb4b57a0b353e8f2e5fc3e/116042a0854e40538adab302b593683d.jpeg"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 1253,
+          "url": "https://media.sketchfab.com/avatars/3ef1bd11d3eb4b57a0b353e8f2e5fc3e/efea16be51d04eb7a00cb9ea0b43b87f.jpeg"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 2797,
+          "url": "https://media.sketchfab.com/avatars/3ef1bd11d3eb4b57a0b353e8f2e5fc3e/ac9b469ccec74caf923a81fb2f0be3ed.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 3215,
+          "url": "https://media.sketchfab.com/avatars/3ef1bd11d3eb4b57a0b353e8f2e5fc3e/a075e1d43d2f446c949b5967b470c757.jpeg"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/f6c73d6f47cb4977a4f1dd76ab4d55ae"
+  },
+  "vertexCount": 257,
+  "viewCount": 2828,
+  "viewerUrl": "https://sketchfab.com/3d-models/gameboy-cartridge-lowpoly-8b9728eab16c4056ac2636ae7f0f038f",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "Lowpoly Gameboy  Super Mario Land 2 Cartridge.\n1x 2K Texture.\nMade with Blender 3.0 / Zbrush 2021 and Substance Painter.\nFree to Download.",
+  "price": null,
+  "downloadCount": 994,
+  "editorUrl": "https://sketchfab.com/models/8b9728eab16c4056ac2636ae7f0f038f/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "website",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2022-07-26T19:36:41.082726",
+  "pbrType": "metalness",
+  "textureCount": 6,
+  "materialCount": 1
+}

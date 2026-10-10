@@ -89,7 +89,7 @@ for triangle in mesh.loop_triangles:
         position = mesh.vertices[loop.vertex_index].co
         normal = mesh.corner_normals[loop_index].vector
         uv = mesh.uv_layers.active.data[loop_index].uv
-        p = [7.8+position.x*.74, -1.5+(position.z+.169)*.74, 3+(position.y-.98)*.74]
+        p = [position.x*.74, -1.5+(position.z+.169)*.74, (position.y-.98)*.74]
         n = [normal.x,normal.z,normal.y]
         data.extend(struct.pack('<12f',*p,1,*n,0,uv.x,1-uv.y,0,1))
 (output / 'jukebox-model.bin').write_bytes(b'FBPROP01'+struct.pack('<I',len(data)//48)+data)

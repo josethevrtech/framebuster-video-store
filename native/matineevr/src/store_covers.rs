@@ -18,10 +18,12 @@ impl StoreCovers {
             vertices:Buffer::new(device.clone(),crate::store_cover_mesh::mesh(54).len()*48)?,count:0,device })
     }
     pub fn update(&mut self,movies: &[Movie]) -> Result<()> {
+        self.update_mesh(movies,crate::store_cover_mesh::mesh(movies.len()))
+    }
+    pub fn update_mesh(&mut self,movies: &[Movie],vertices: Vec<crate::store_geometry::Vertex>) -> Result<()> {
         unsafe { self.device.api.device_wait_idle()?; }
         let canvas = crate::store_poster::atlas(movies);
         self.texture.upload(&canvas.pixels)?;
-        let vertices = crate::store_cover_mesh::mesh(movies.len());
         let size = std::mem::size_of_val(vertices.as_slice());
         ensure!(size <= self.vertices.size,"Cover geometry exceeds capacity");
         unsafe { std::ptr::copy_nonoverlapping(vertices.as_ptr() as *const u8,self.vertices.pointer,size); }

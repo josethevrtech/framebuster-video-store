@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nintendo 64
+* source:	https://sketchfab.com/3d-models/nintendo-64-816d53eca00e4f3192a8d23f62388472
+* author:	Ethanboor (https://sketchfab.com/Ethanboor)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nintendo 64" (https://sketchfab.com/3d-models/nintendo-64-816d53eca00e4f3192a8d23f62388472) by Ethanboor (https://sketchfab.com/Ethanboor) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

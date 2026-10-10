@@ -17,7 +17,7 @@ impl MusicCover {
         let vertices=Buffer::new(device.clone(),6*48)?;
         let p=crate::store_jukebox::COVER;
         let points: [crate::store_geometry::Vertex;4]=std::array::from_fn(|i| {
-            [[p[0]+[-0.16,0.16,0.16,-0.16][i],p[1]+[-0.16,-0.16,0.16,0.16][i],p[2],1.0],
+            [[p[0],p[1]+[-0.16,-0.16,0.16,0.16][i],p[2]-[-0.16,0.16,0.16,-0.16][i],1.0],
                 [if i==1 || i==2 { 1.0 } else { 0.0 },if i<2 { 1.0 } else { 0.0 },0.0,0.0],[1.0;4]]
         });
         let mesh=[0,1,2,0,2,3].map(|i| points[i]);

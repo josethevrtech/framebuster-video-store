@@ -48,6 +48,10 @@ impl ControllerDraw {
             room.covers.prepare(command); room.music_cover.prepare(command);
             room.material_props.prepare(command);
             room.jukebox_props.prepare(command);
+            room.lounge_props.prepare(command);
+            room.console.prepare(command);
+            room.games.prepare(command);
+            room.trailer.prepare(command,slot)?;
         }
         let room = self.store.as_ref().filter(|s| s.active);
         let d = &self.device.api;
@@ -105,6 +109,10 @@ impl ControllerDraw {
                 room.covers.draw(command,p); room.music_cover.draw(command,p);
                 room.material_props.draw(command,p,&self.device);
                 room.jukebox_props.draw(command,p,&self.device);
+                room.lounge_props.draw(command,p,&self.device);
+                room.console.draw(command,p,&self.device);
+                room.games.draw(command,p);
+                room.trailer.draw(command,p,slot);
             }
             d.cmd_end_rendering(command);
         }
