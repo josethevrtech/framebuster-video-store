@@ -8,6 +8,7 @@ import sys
 from mathutils import Matrix, Vector
 
 repo=Path(__file__).resolve().parent.parent
+room=json.loads((repo/'steam-frame/room-layout.json').read_text())
 source,output=map(Path,sys.argv[sys.argv.index('--')+1:])
 spec=importlib.util.spec_from_file_location('materials',Path(__file__).with_name('hardware-materials.py'))
 helper=importlib.util.module_from_spec(spec)
@@ -86,7 +87,7 @@ for obj in counter:
                 tree.links.new(tex.outputs['Color'],normal.inputs['Color'])
                 tree.links.new(normal.outputs[0],bsdf.inputs['Normal'])
             else: tree.links.new(tex.outputs['Color'],bsdf.inputs['Roughness'])
-place(counter,(0,-1.5,23.3),.3048)
+place(counter,room['checkoutOrigin'],.3048)
 bake(counter,'counter',0)
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -95,7 +96,8 @@ apex=-14.9+1.5*math.sqrt(2)
 for side in [-1,1]:
     x=side*3.0
     normal=Vector((-side/math.sqrt(2),0,1/math.sqrt(2)))
-    center=Vector((x*.3048,-1.5+2.82*.3048,23.3+(apex+abs(x)+.8*math.sqrt(2))*.3048))
+    origin=room['checkoutOrigin']
+    center=Vector((origin[0]+x*.3048,origin[1]+2.82*.3048,origin[2]+(apex+abs(x)+.8*math.sqrt(2))*.3048))
     yaw=math.pi-side*math.pi/4
     terminal=import_model(repo/'public/models/rental-terminal.glb')
     for obj in terminal:
@@ -120,11 +122,13 @@ bake(stations,'registers',1)
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 cabinet=import_model(repo/'native/matineevr/assets/lounge/modern_wooden_cabinet/modern_wooden_cabinet_1k.gltf')
+for o in cabinet: o.scale.y*=1.4
+bpy.context.view_layer.update()
 points=[o.matrix_world@v.co for o in cabinet for v in o.data.vertices]
 floor=min(p.z for p in points)
 center=Vector([(min(p[i] for p in points)+max(p[i] for p in points))/2 for i in range(2)]+[floor])
 for obj in cabinet: obj.matrix_world=Matrix.Translation(-center)@obj.matrix_world
-place(cabinet,(-11.5,-1.5,24.0),1,math.pi)
+place(cabinet,room['musicCabinet'],1,math.pi)
 top=max((o.matrix_world@v.co).z for o in cabinet for v in o.data.vertices)
 bake(cabinet,'music-cabinet',3)
 
@@ -143,12 +147,26 @@ for obj in stereo:
             tree.links.new(base.links[0].from_socket,mix.inputs[1])
             tree.links.new(emission.links[0].from_socket,mix.inputs[2])
             tree.links.new(mix.outputs[0],base)
-place(stereo,(-11.70,top,24.0),1,math.pi)
+stereo_x=room['stereoCenterX']
+stereo_z=room['musicCabinet'][2]
+scale=room['stereoScale']
+place(stereo,(stereo_x,top,stereo_z),scale,math.pi)
+for p in room['cornerSpeakers']:
+    copies=import_model(source/'panasonic/scene.gltf')
+    speaker=[o for o in copies if 'speaker-l' in o.name][0]
+    world=[speaker.matrix_world@v.co for v in speaker.data.vertices]
+    center=Vector([(min(v[i] for v in world)+max(v[i] for v in world))/2 for i in [0,1]]+[min(v.z for v in world)])
+    speaker.matrix_world=Matrix.Translation(-center)@speaker.matrix_world
+    yaw=math.atan2(6-p[0],10-p[2])
+    place([speaker],(p[0],p[1]-.111*1.5,p[2]),1.5,yaw)
+    stereo.append(speaker)
 bake(stereo,'cd-stereo',2)
-layout={'cover':[-11.05,top+.11,23.82],'buttons':[[-11.765,top+.065,23.889],[-11.73,top+.065,23.889],[-11.695,top+.065,23.889]],'top':top}
+layout={'cover':[stereo_x+.84,top+.11,stereo_z-.18],
+    'buttons':[[stereo_x+x*scale,top+.065*scale,stereo_z-.111*scale] for x in [-.065,-.030,.005]],'top':top}
 (output/'inspection.json').write_text(json.dumps({'models':report,'layout':layout},indent=2)+'\n')
 (repo/'native/matineevr/assets/retail-models.bin').write_bytes(b'FBPROP01'+struct.pack('<I',len(vertices)//48)+vertices)
 bounds=report['music-cabinet']['bounds']
 obstacle=[bounds[0][0],bounds[1][0],bounds[0][2],bounds[1][2]]
 layout_source='pub const COVER: [f32;3]='+str(layout['cover']).replace(' ', '')+';\npub const BUTTONS: [[f32;3];3]='+str(layout['buttons']).replace(' ', '')+';\npub const CABINET: [f32;4]='+str(obstacle).replace(' ', '')+';\n'
+layout_source+='pub const STEREO_SPEAKERS: [[f32;3];2]='+str([[stereo_x+x*scale,top+.11*scale,stereo_z] for x in [-.18,.18]]).replace(' ', '')+';\n'
 (repo/'native/matineevr/src/store_retail_layout.rs').write_text(layout_source)

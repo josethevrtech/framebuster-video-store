@@ -21,6 +21,9 @@ pub struct Video {
 }
 
 impl Video {
+    pub fn store_statistics(&mut self,enabled: bool) {
+        self.controllers.stats=enabled.then(matineevr::statistics::Statistics::default);
+    }
     pub fn store_trailer(&mut self,directory: &std::path::Path) {
         if let Some(store)=self.controllers.store.as_mut() { store.trailer.poll(directory); }
     }

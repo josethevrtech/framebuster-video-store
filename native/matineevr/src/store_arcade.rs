@@ -1,11 +1,10 @@
 use crate::store_geometry::{Vertex,box_mesh};
 
-pub const TV: [f32;3] = [12.1,-0.82,13.3];
+pub use crate::store_room_layout::TV;
 pub const CEILING_TVS: [[f32;3];4] = [[-10.0,1.27,4.0],[-5.5,1.27,9.0],[-1.0,1.27,14.0],[3.5,1.27,19.0]];
 
 pub fn obstacles() -> Vec<[f32;4]> {
-    vec![[10.86,13.34,12.96,13.64], [11.18,13.02,8.27,9.13],
-        [9.36,10.24,9.58,11.42], [11.47,12.73,10.17,10.83]]
+    crate::store_room_layout::LOUNGE_OBSTACLES.to_vec()
 }
 
 pub fn append(v: &mut Vec<Vertex>) {

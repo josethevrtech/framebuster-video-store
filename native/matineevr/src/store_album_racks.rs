@@ -65,14 +65,14 @@ pub fn hit(p: [f32;3],d: [f32;3],bay: usize,index: usize) -> Option<f32> {
 }
 pub fn deck(v: &mut Vec<Vertex>) {
     let p=crate::store_retail_layout::COVER;
-    box_mesh(v,[p[0],p[1],p[2]+0.005],[0.17,0.17,0.010],[0.12,0.13,0.14]);
+    box_mesh(v,[p[0],p[1],p[2]+0.010],[0.17,0.17,0.010],[0.12,0.13,0.14]);
     box_mesh(v,[p[0],p[1]-0.097,p[2]+0.025],[0.19,0.024,0.07],[0.035,0.035,0.04]);
 }
 pub fn controls(p: [f32;3],d: [f32;3]) -> Option<(&'static str,f32)> {
     if d[2]<=0.001 {return None;}
     crate::store_retail_layout::BUTTONS.into_iter().enumerate().find_map(|(i,q)| {
         let t=(q[2]-p[2])/d[2];
-        (t>0.0 && (p[0]+t*d[0]-q[0]).abs()<0.016 && (p[1]+t*d[1]-q[1]).abs()<0.025)
+        (t>0.0 && (p[0]+t*d[0]-q[0]).abs()<0.035 && (p[1]+t*d[1]-q[1]).abs()<0.05)
             .then_some((["music-previous","music-toggle","music-next"][i],t))
     })
 }
@@ -89,6 +89,12 @@ mod tests {
             assert!(controls([q[0],q[1],q[2]+1.0],[0.0,0.0,-1.0]).is_none());
             assert!(controls([q[0],q[1]+0.1,q[2]-1.0],[0.0,0.0,1.0]).is_none());
         }
+    }
+    #[test]
+    fn cd_cover_has_clearance_in_front_of_its_case() {
+        let mut mesh=Vec::new();deck(&mut mesh);
+        let front=mesh[..36].iter().map(|v| v[0][2]).fold(f32::INFINITY,f32::min);
+        assert!(front-crate::store_retail_layout::COVER[2]>0.004);
     }
     #[test]
     fn every_cd_has_square_art_and_selects_its_own_case_from_the_front() {

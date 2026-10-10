@@ -1,15 +1,1 @@
-use crate::store_geometry::{Vertex,box_mesh};
-pub const SPEAKERS: [[f32;3];8]=[
-    [-6.0,1.45,0.0],[6.0,1.45,0.0],[-6.0,1.45,11.0],[6.0,1.45,11.0],
-    [-6.0,1.45,22.0],[6.0,1.45,22.0],[-13.5,1.45,1.0],[-13.5,1.45,15.0],
-];
-pub fn append(v: &mut Vec<Vertex>) {
-    for p in SPEAKERS {
-        box_mesh(v,[p[0],1.83,p[2]],[0.08,0.40,0.08],[0.61,0.67,0.72]);
-        box_mesh(v,p,[0.48,0.42,0.32],[0.025,0.025,0.03]);
-        for row in 0..14 {for col in 0..18 {
-            box_mesh(v,[p[0]-0.215+col as f32*0.025,p[1]-0.175+row as f32*0.025,p[2]-0.164],
-                [0.005,0.005,0.003],[0.14,0.15,0.16]);
-        }}
-    }
-}
+pub use crate::store_room_layout::SPEAKERS;

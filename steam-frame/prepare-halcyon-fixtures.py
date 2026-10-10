@@ -59,7 +59,8 @@ def bake(path, origin, scale, selected=None, black=False):
 
 
 folder, output = map(Path, sys.argv[1:3])
-result = bake(folder/'checkout-counter-shield-rounded.glb', [0, -1.5, 23.3], [.3048]*3)
+origin=json.loads(Path(__file__).with_name('room-layout.json').read_text())['checkoutOrigin']
+result = bake(folder/'checkout-counter-shield-rounded.glb', origin, [.3048]*3)
 assert len(result) < 4 * 1024 * 1024
 output.write_bytes(b'FBPROP01' + struct.pack('<I', len(result)//48) + result)
 print(f'Baked {len(result)//144} upstream fixture triangles')

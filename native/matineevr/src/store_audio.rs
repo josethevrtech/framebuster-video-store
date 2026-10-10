@@ -3,7 +3,7 @@ use crate::store_speakers::SPEAKERS;
 pub fn mix(listener: [f32;3], right: [f32;3], active: bool) -> [f32;2] {
     if !active { return [0.0;2]; }
     let mut sources=Vec::new();
-    for source in SPEAKERS.into_iter().chain([[-11.88,-0.71,24.0],[-11.52,-0.71,24.0]]) {
+    for source in SPEAKERS.into_iter().chain(crate::store_retail_layout::STEREO_SPEAKERS) {
         let d: [f32;3]=std::array::from_fn(|i| source[i]-listener[i]);
         let distance=d.iter().map(|x| x*x).sum::<f32>().sqrt();
         let gain=1.0/(1.0+(distance/7.5).powi(2));
@@ -22,8 +22,8 @@ mod tests {
     use super::*;
     #[test]
     fn proximity_grows_near_sources_and_head_rotation_swaps_channels() {
-        let near=mix([7.8,-0.2,2.3],[1.0,0.0,0.0],true);
-        let far=mix([-15.0,-0.2,6.0],[1.0,0.0,0.0],true);
+        let near=mix([-15.0,1.5,-4.0],[1.0,0.0,0.0],true);
+        let far=mix([6.0,-0.2,10.0],[1.0,0.0,0.0],true);
         assert!(near[0].max(near[1])>far[0].max(far[1]));
         let a=mix([0.0,0.15,3.0],[1.0,0.0,0.0],true);
         let b=mix([0.0,0.15,3.0],[-1.0,0.0,0.0],true);

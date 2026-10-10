@@ -22,6 +22,7 @@ pub struct StoreScene {
     pub albums: crate::store_albums::StoreAlbums,
     pub lounge_props: crate::store_material_props::MaterialProps,
     pub retail_props: crate::store_material_props::MaterialProps,
+    pub lounge_tv: crate::store_material_props::MaterialProps,
     pub console: crate::store_console::StoreConsole,
     pub games: crate::store_games::StoreGames,
     pub trailer: crate::store_trailer::StoreTrailer,
@@ -46,6 +47,7 @@ impl StoreScene {
             albums: crate::store_albums::StoreAlbums::new(device.clone())?,
             lounge_props: crate::store_material_props::MaterialProps::lounge(device.clone())?,
             retail_props: crate::store_material_props::MaterialProps::retail(device.clone())?,
+            lounge_tv: crate::store_material_props::MaterialProps::lounge_tv(device.clone())?,
             console: crate::store_console::StoreConsole::new(device.clone())?,
             games: crate::store_games::StoreGames::new(device.clone())?,
             trailer: crate::store_trailer::StoreTrailer::new(device)?,music_action:None,album_action:None,audio:[0.0;2] })

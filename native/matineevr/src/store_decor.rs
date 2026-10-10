@@ -17,19 +17,4 @@ pub fn append(v: &mut Vec<Vertex>) {
             }
         }
     }
-    let furniture_start = v.len();
-    for x in [-3.8,3.8] {
-        box_mesh(v,[x,-0.97,14.3],[0.86,1.0,0.65],[0.19,0.15,0.12]);
-        box_mesh(v,[x,-0.43,14.3],[0.98,0.08,0.76],[0.39,0.31,0.22]);
-        for i in 0..4 {
-            let y = -0.365+i as f32*0.045;
-            box_mesh(v,[x+0.12,y,14.3],[0.31,0.04,0.18],[0.045,0.045,0.055]);
-            box_mesh(v,[x+0.12,y+0.022,14.3],[0.21,0.006,0.09],[0.59,0.52,0.39]);
-        }
-    }
-    for vertex in &mut v[furniture_start..] {
-        vertex[0][2] += 8.0;
-        if vertex[0][0] < -8.0 { vertex[0][0] -= 6.0; }
-        else if vertex[0][0] > 8.0 { vertex[0][0] -= 21.6; }
-    }
 }

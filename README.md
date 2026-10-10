@@ -17,10 +17,17 @@ Launch **Devkit Game: FrameBusterVideoStore** in Steam. Trigger selects a case; 
 The room has no floating status, details, section sign or generated case captions. Four browsing-rack ends display Jellyfin posters on black panels. All cover artwork is rendered as depth-tested Vulkan geometry, so solid fixtures and controllers occlude it. The Frame stick axes are corrected only for store controls. The store shows up to 54 movies/series or episodes across a continuous wall and double-sided racks. Posters and movie playback are owner-verified; the corrected eye-relative scale is owner-verified; the latest continuous display layout, atlas correction and episode navigation need headset verification. Unicode text rendering, subtitle selection, a polished VR keyboard, configurable comfort controls and a complete installer remain unfinished. Valve controller assets are prepared from installed SteamVR files and are not redistributed. Offline shop props include CC0 Kenney furniture; see [store design and asset credits](docs/store-design.md).
 
 The enlarged room is 44 × 30 metres with twelve parallel scenery racks,
-a single-CRT game lounge, fourteen double-sided game racks and four
+a combined music/game lounge near the entrance, fourteen double-sided game racks and four
 hanging CRTs playing library trailers. These game displays are preparation for
 emulator integration; live VR game playback and the separate “take it home”
 room are not connected yet.
+
+The front lounge uses licensed textured seating, an oversized professional
+Sony CRT model and an enlarged CD stereo. Four corner speakers provide
+proximity audio. Checkout is set back from the entrance, and its side tables
+are removed. Native fixtures use normal/roughness/metallic maps and baked
+local occlusion; [graphics notes](docs/frame-graphics.md) describe the material
+shader, device measurements and remaining lighting work.
 
 Movies and music allow every year. Store music shuffles Jellyfin audio tracks
 and pauses during cinema playback. A dedicated music area displays 614 albums

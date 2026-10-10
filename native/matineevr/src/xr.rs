@@ -25,6 +25,7 @@ pub fn run(options: &Options) -> Result<()> {
     video.store_floor(floor_offset);
     let mut store = crate::store_runtime::StoreRuntime::new(&session, graphics.clone())?;
     video.renderer.stats = options.stats.then(Statistics::default);
+    video.store_statistics(options.stats);
     let mut overlays = Overlays::new(&session, graphics.clone())?;
     let mut performance = Performance::new(options.stats);
     let mut hud_snapshot = options.hud_snapshot.clone();

@@ -20,6 +20,9 @@ impl MaterialProps {
     pub fn retail(device: Rc<Graphics>) -> Result<Self> {
         Self::create_size(device,include_bytes!("../assets/retail-models.bin"),include_bytes!("../assets/retail-materials.rgba"),(6144,2048))
     }
+    pub fn lounge_tv(device: Rc<Graphics>) -> Result<Self> {
+        Self::create(device,include_bytes!("../assets/lounge-tv-model.bin"),include_bytes!("../assets/lounge-tv-materials.rgba"))
+    }
     pub fn consoles(device: Rc<Graphics>) -> Result<(Self,[u32;5])> {
         let source=include_bytes!("../assets/console-models-v2.bin");
         ensure!(&source[..8]==b"FBCONS01","Invalid console mesh header");

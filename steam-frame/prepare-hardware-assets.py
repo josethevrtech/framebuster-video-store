@@ -2,6 +2,7 @@ from pathlib import Path
 import bpy
 import importlib.util
 import math
+import json
 import struct
 import sys
 
@@ -10,6 +11,7 @@ spec=importlib.util.spec_from_file_location('hardware_materials',Path(__file__).
 helper=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(helper)
 root,output=map(Path,sys.argv[sys.argv.index('--')+1:])
+origin=json.loads(Path(__file__).with_name('room-layout.json').read_text())['console']
 systems=[('nes',.26),('snes',.23),('genesis',.27),('psx',.27),('n64',.26)]
 data=bytearray()
 counts=[]
@@ -37,7 +39,7 @@ for tile,(name,width) in enumerate(systems):
             p=mesh.vertices[loop.vertex_index].co
             n=mesh.corner_normals[index].vector
             u,v=mesh.uv_layers['BakeUV'].data[index].uv
-            position=[13.04-(p.x-center[0])*scale,-.802+(p.z-lo[2])*scale,13.3+(p.y-center[1])*scale]
+            position=[origin[0]-(p.x-center[0])*scale,origin[1]+(p.z-lo[2])*scale,origin[2]+(p.y-center[1])*scale]
             normal=[-n.x,n.z,n.y]
             uv=[(tile%2+u)/2,(tile//2+1-v)/3]
             data.extend(struct.pack('<12f',*position,1,*normal,0,*uv,0,1))

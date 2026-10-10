@@ -72,14 +72,14 @@ mod tests {
             let p=[(b[0]+b[1])*0.5,0.0,(b[2]+b[3])*0.5];
             assert!(crate::store_layout::free(slide(p,p),0.20),"{p:?}");
         }
-        let p=[0.0,0.0,20.0];assert!(blocked([p[0],p[2]],0.20));
+        let p=[0.0,0.0,17.0];assert!(blocked([p[0],p[2]],0.20));
         assert!(crate::store_layout::free(slide(p,p),0.20));
     }
     #[test]
     fn diagonal_motion_slides_along_corners_without_crossing_counter() {
         let hull=checkout();
         let (a,b)=hull.iter().enumerate().map(|(i,&a)| (a,hull[(i+1)%hull.len()]))
-            .find(|(a,b)| (a[1]+b[1])*0.5<21.0 && (a[0]-b[0]).hypot(a[1]-b[1])>1.0).unwrap();
+            .find(|(a,b)| (a[1]+b[1])*0.5<17.0 && (a[0]-b[0]).hypot(a[1]-b[1])>1.0).unwrap();
         let length=(b[0]-a[0]).hypot(b[1]-a[1]);
         let tangent=[(b[0]-a[0])/length,(b[1]-a[1])/length];
         let normal=[tangent[1],-tangent[0]];

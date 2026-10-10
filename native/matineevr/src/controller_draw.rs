@@ -6,6 +6,8 @@ use matineevr::{renderer::{IN_FLIGHT, Target}, vk_commands::Commands,
     vk_memory::{COLOR, Image}, vk_pipeline::FORMAT};
 use openxr as xr;
 use std::{collections::HashMap, rc::Rc};
+use matineevr::statistics::Statistics;
+use std::time::Instant;
 
 pub struct ControllerDraw {
     commands: Vec<Commands>,
@@ -15,6 +17,8 @@ pub struct ControllerDraw {
     device: Rc<Graphics>,
     sequence: usize,
     pub store: Option<crate::store_scene::StoreScene>,
+    pub stats: Option<Statistics>,
+    stats_period: Instant,
 }
 
 impl ControllerDraw {
@@ -25,7 +29,7 @@ impl ControllerDraw {
             mesh: ControllerMesh::new(device.clone())?,
             store: if std::env::var("HALCYON_FRAME_STORE").as_deref() == Ok("1") {
                 Some(crate::store_scene::StoreScene::new(device.clone())?) } else { None },
-            device, sequence: 0,
+            device, sequence: 0,stats:None,stats_period:Instant::now(),
         })
     }
 
@@ -35,7 +39,11 @@ impl ControllerDraw {
         if room.is_none() && hands.iter().all(Option::is_none) { return Ok(()); }
         let slot = self.sequence % IN_FLIGHT;
         let commands = &mut self.commands[slot];
-        commands.collect()?;
+        commands.collect_stats(self.stats.as_mut())?;
+        if self.stats_period.elapsed().as_secs_f64()>=5.0 {
+            if let Some(stats)=&mut self.stats {eprintln!("{}",stats.report("store_gpu",self.stats_period.elapsed().as_secs_f64()));}
+            self.stats_period=Instant::now();
+        }
         let dynamic = room.map(|s| s.upload(slot)).transpose()?.unwrap_or(0);
         if let std::collections::hash_map::Entry::Vacant(entry) = self.targets.entry(target.image) {
             entry.insert((Image::borrowed(self.device.clone(), vk::Image::from_raw(target.image), FORMAT)?,
@@ -50,6 +58,7 @@ impl ControllerDraw {
             room.albums.prepare(command);
             room.lounge_props.prepare(command);
             room.retail_props.prepare(command);
+            room.lounge_tv.prepare(command);
             room.console.prepare(command);
             room.games.prepare(command);
             room.trailer.prepare(command,slot)?;
@@ -112,6 +121,7 @@ impl ControllerDraw {
                 room.albums.draw(command,p);
                 room.lounge_props.draw(command,p,&self.device);
                 room.retail_props.draw(command,p,&self.device);
+                room.lounge_tv.draw(command,p,&self.device);
                 room.console.draw(command,p,&self.device);
                 room.games.draw(command,p);
                 room.trailer.draw(command,p,slot);

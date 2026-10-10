@@ -1,28 +1,30 @@
 from pathlib import Path
 import bpy
 import math
+import json
 import struct
 import sys
 from mathutils import Vector
 
 
 root, output = map(Path, sys.argv[sys.argv.index('--')+1:])
-placements = [
-    ('sofa_02', (12.1, -1.5, 8.7), 0),
-    ('modern_wooden_cabinet', (12.1, -1.5, 13.3), math.pi),
-    ('modern_coffee_table_01', (12.1, -1.5, 10.5), 0),
-    ('sofa_02', (9.8, -1.5, 10.5), math.pi/2),
-]
+placements=json.loads(Path(__file__).with_name('room-layout.json').read_text())['lounge']
 result = bytearray()
+obstacles=[]
 for tile, (name, origin, yaw) in enumerate(placements):
     tile={'sofa_02':0,'modern_wooden_cabinet':1,'modern_coffee_table_01':2,'wooden_bookshelf_worn':3}[name]
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=str(root / name / f'{name}_1k.gltf'))
     objects = [o for o in bpy.context.scene.objects if o.type == 'MESH']
+    if name=='modern_wooden_cabinet':
+        for o in objects: o.scale.y*=3.0
+        bpy.context.view_layer.update()
     world = [(o.matrix_world @ v.co) for o in objects for v in o.data.vertices]
     center = [(min(p[i] for p in world)+max(p[i] for p in world))/2 for i in [0, 1]]
     floor = min(p.z for p in world)
     c, s = math.cos(yaw), math.sin(yaw)
+    placed=[(origin[0]+c*(p.x-center[0])-s*(p.y-center[1]),origin[2]-s*(p.x-center[0])-c*(p.y-center[1])) for p in world]
+    obstacles.append([min(p[0] for p in placed),max(p[0] for p in placed),min(p[1] for p in placed),max(p[1] for p in placed)])
     for obj in objects:
         mesh = obj.data
         mesh.calc_loop_triangles()
@@ -42,4 +44,9 @@ for tile, (name, origin, yaw) in enumerate(placements):
                 atlas_uv = [(tile % 2+u)/2, (tile//2+1-v)/2]
                 result.extend(struct.pack('<12f', *position, 1, *normal, 0, *atlas_uv, 0, 1))
 output.write_bytes(b'FBPROP01'+struct.pack('<I', len(result)//48)+result)
+constants='pub const LOUNGE_OBSTACLES: [[f32;4];4]='+str(obstacles).replace(' ', '')+';\n'
+room=json.loads(Path(__file__).with_name('room-layout.json').read_text())
+for name,key in [('TV','tv'),('SELECTOR','selector')]: constants+=f'pub const {name}: [f32;3]='+str(room[key]).replace(' ', '')+';\n'
+constants+='pub const SPEAKERS: [[f32;3];4]='+str(room['cornerSpeakers']).replace(' ', '')+';\n'
+(Path(__file__).resolve().parent.parent/'native/matineevr/src/store_room_layout.rs').write_text(constants)
 print(f'Baked lounge: {len(result)//144} triangles')

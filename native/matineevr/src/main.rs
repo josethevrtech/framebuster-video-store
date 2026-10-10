@@ -78,6 +78,7 @@ mod store_album_signs;
 mod store_audio;
 mod store_music_cover;
 mod store_retail_layout;
+mod store_room_layout;
 mod store_material_props;
 mod swapchains;
 mod thumbnail;

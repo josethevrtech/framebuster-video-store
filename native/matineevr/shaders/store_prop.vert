@@ -19,6 +19,8 @@ void main() {
     gl_Position=vec4((2.*eye.x+(p.fov.y+p.fov.x)*eye.z)/(p.fov.y-p.fov.x),
         (2.*eye.y+(p.fov.w+p.fov.z)*eye.z)/(p.fov.w-p.fov.z),
         (-eye.z*farPlane-nearPlane*farPlane)/(farPlane-nearPlane),-eye.z);
-    surfaceNormal=normalize(rotate(p.roomRotation,normal.xyz));
-    surfacePosition=world; eyeDirection=p.eyePosition.xyz-world; textureUV=uv.xy;
+    surfaceNormal=normalize(normal.xyz);
+    surfacePosition=position.xyz;
+    eyeDirection=rotate(vec4(-p.roomRotation.xyz,p.roomRotation.w),p.eyePosition.xyz-world);
+    textureUV=uv.xy;
 }

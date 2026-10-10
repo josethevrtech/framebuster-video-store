@@ -48,14 +48,14 @@ mod tests {
     use super::*;
     #[test]
     fn aisles_are_open_but_shelves_and_checkout_block_walking() {
-        for z in [0.0,2.0,6.0,10.0,14.0,18.0] { assert!(free([0.0,0.15,z],0.22)); }
+        for z in [0.0,2.0,6.0,10.0,14.0,21.0,23.0,24.0] { assert!(free([0.0,0.15,z],0.22)); }
         for [x,z] in EXTRA_RACKS { assert!(!free([x,0.15,z],0.22)); }
         for x in [-6.0,-3.0,6.0] {
             for z in [18.0,19.0,20.0,21.0] { assert!(free([x,0.15,z],0.22)); }
         }
-        assert!(!free([0.0,0.15,23.0],0.22));
-        assert!(!free([0.0,0.15,19.2],0.22));
-        assert!(free([0.0,0.15,18.0],0.22));
+        assert!(!free([0.0,0.15,17.0],0.22));
+        assert!(!free([0.0,0.15,18.0],0.22));
+        assert!(free([0.0,0.15,20.0],0.22));
         assert!(free([-12.8,0.15,20.2],0.22));
         assert!(free([-3.8,0.15,22.3],0.22));
         assert!(free([3.8,0.15,22.3],0.22));

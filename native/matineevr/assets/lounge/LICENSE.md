@@ -12,7 +12,9 @@ Publisher license: https://polyhaven.com/license
 Downloaded 2026-10-09 through the Poly Haven public API. The source glTF,
 buffers, 1K material maps and creator metadata are retained in each subfolder.
 The fork places two copies of the sofa in an L-shaped lounge, preserves
-physical metre dimensions and combines the diffuse, AO/roughness/metallic
+physical metre dimensions for the seats and table. The TV cabinet depth is
+increased three times to support the enlarged professional CRT. Furniture
+is relocated together to the front lounge. The build combines diffuse, AO/roughness/metallic
 and OpenGL normal maps into a 512-pixel-per-model atlas for the headset.
 The runtime console and cartridge meshes have separate CC BY 4.0 attribution
 in ../rental-hardware/README.md. They are not included in this CC0 furniture
