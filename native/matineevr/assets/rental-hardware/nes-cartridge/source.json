@@ -1,0 +1,167 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "d7cebaeca8604ebab1480e413404b679",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics-gadgets",
+      "uri": "https://api.sketchfab.com/v3/categories/d7cebaeca8604ebab1480e413404b679",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/336c224334b7e53e277d236a8355e90a-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 0,
+  "createdAt": "2019-07-06T15:23:55.195930",
+  "embedUrl": "https://sketchfab.com/models/e3c8de99be1740ae8fa551aa9b2596d2/embed",
+  "faceCount": 1454,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 27,
+  "name": "NES Cartridge",
+  "publishedAt": "2019-07-06T15:31:55.273468",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "console",
+      "slug": "console",
+      "uri": "https://api.sketchfab.com/v3/tags/console"
+    },
+    {
+      "name": "nintendo",
+      "slug": "nintendo",
+      "uri": "https://api.sketchfab.com/v3/tags/nintendo"
+    },
+    {
+      "name": "nes",
+      "slug": "nes",
+      "uri": "https://api.sketchfab.com/v3/tags/nes"
+    },
+    {
+      "name": "Cartridge",
+      "slug": "cartridge",
+      "uri": "https://api.sketchfab.com/v3/tags/cartridge"
+    },
+    {
+      "name": "game",
+      "slug": "game",
+      "uri": "https://api.sketchfab.com/v3/tags/game"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "4c9f27ae61a24c44a8a2cb940fb6e65b",
+        "width": 64,
+        "height": 36,
+        "size": 677,
+        "url": "https://media.sketchfab.com/models/e3c8de99be1740ae8fa551aa9b2596d2/thumbnails/8104cea974fe4fd585d01953c25a45ed/7319458d8dad4b369277c67fef04c938.jpeg"
+      },
+      {
+        "uid": "7ae4005ef19b4d60ae9c8b75856b4a6b",
+        "width": 256,
+        "height": 144,
+        "size": 3305,
+        "url": "https://media.sketchfab.com/models/e3c8de99be1740ae8fa551aa9b2596d2/thumbnails/8104cea974fe4fd585d01953c25a45ed/cfb8575f20104f7bac624fd1bdda3c4f.jpeg"
+      },
+      {
+        "uid": "e0b548e3ea074f86a23fbbe7d4656440",
+        "width": 720,
+        "height": 405,
+        "size": 14683,
+        "url": "https://media.sketchfab.com/models/e3c8de99be1740ae8fa551aa9b2596d2/thumbnails/8104cea974fe4fd585d01953c25a45ed/d24955f4d6d0482aaf8cf9b4353ef703.jpeg"
+      },
+      {
+        "uid": "b739e6981fa748208bcf7890119624cc",
+        "width": 1024,
+        "height": 576,
+        "size": 26541,
+        "url": "https://media.sketchfab.com/models/e3c8de99be1740ae8fa551aa9b2596d2/thumbnails/8104cea974fe4fd585d01953c25a45ed/f62a9bd64f804b419d8d25cde5946b94.jpeg"
+      },
+      {
+        "uid": "0a7a056f779e4227985a52a71de3f7c3",
+        "width": 1920,
+        "height": 1080,
+        "size": 89211,
+        "url": "https://media.sketchfab.com/models/e3c8de99be1740ae8fa551aa9b2596d2/thumbnails/8104cea974fe4fd585d01953c25a45ed/feb68fd3f6c54c7e8cacf6069145acec.jpeg"
+      }
+    ]
+  },
+  "uid": "e3c8de99be1740ae8fa551aa9b2596d2",
+  "uri": "https://api.sketchfab.com/v3/models/e3c8de99be1740ae8fa551aa9b2596d2",
+  "user": {
+    "uid": "98d1698168894c40ab20ffe90d0628de",
+    "username": "hippostance",
+    "displayName": "HippoStance",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/hippostance",
+    "avatar": {
+      "uid": "8be953b252844efe88cee6490b911782",
+      "uri": "https://api.sketchfab.com/v3/avatars/8be953b252844efe88cee6490b911782",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 640,
+          "url": "https://media.sketchfab.com/avatars/8be953b252844efe88cee6490b911782/573b3708bc82479bb69b7c3e670fac30.jpeg"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 876,
+          "url": "https://media.sketchfab.com/avatars/8be953b252844efe88cee6490b911782/6161fc547212432c8962fdcd4482ff51.jpeg"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 1712,
+          "url": "https://media.sketchfab.com/avatars/8be953b252844efe88cee6490b911782/91f31c4f280544c9b9ce6e9505c6d4ea.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 1947,
+          "url": "https://media.sketchfab.com/avatars/8be953b252844efe88cee6490b911782/daec4b8a249a43e09858f07dc35d1245.jpeg"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/98d1698168894c40ab20ffe90d0628de"
+  },
+  "vertexCount": 825,
+  "viewCount": 1547,
+  "viewerUrl": "https://sketchfab.com/3d-models/nes-cartridge-e3c8de99be1740ae8fa551aa9b2596d2",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "NES Cartridge",
+  "price": null,
+  "downloadCount": 605,
+  "editorUrl": "https://sketchfab.com/models/e3c8de99be1740ae8fa551aa9b2596d2/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "website",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2022-07-19T11:12:11.439357",
+  "pbrType": "metalness",
+  "textureCount": 5,
+  "materialCount": 1
+}

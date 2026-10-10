@@ -15,6 +15,7 @@
 // custom properties (never a hardcoded house color — see CLAUDE.md signage
 // rule 2), each with a fallback for the case where the theme never applied.
 import { getSetting, setSetting } from './settings';
+import { isFrameLibrary } from './frame-platform';
 
 /** Remembered answer, so a returning visitor is never asked twice. */
 const ANSWER_KEY = 'bb_device_gate';
@@ -138,6 +139,10 @@ function styleTag(): HTMLStyleElement {
  * no reload and no 3D scene built just to tear it down.
  */
 export function runDeviceGate(): Promise<void> {
+  if (isFrameLibrary()) {
+    setSetting('bb_render_mode', 'flat');
+    return Promise.resolve();
+  }
   const reason = detectGateReason();
   if (!reason) return Promise.resolve();
 

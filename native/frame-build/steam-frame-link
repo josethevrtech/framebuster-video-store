@@ -1,0 +1,2 @@
+#!/bin/sh
+exec clang "$@" -Wl,--no-as-needed -l:ld-linux-aarch64.so.1 -lgcc

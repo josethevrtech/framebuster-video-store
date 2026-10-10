@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Halcyon Frame cinema test</title>
+<style>body{background:#15192a;color:#f5f2e8;font:20px system-ui;max-width:800px;margin:5vh auto;padding:24px}video{width:100%;max-height:50vh}a{color:#ffd582}button{background:#ffd582;color:#171b29;border:0;border-radius:10px;padding:16px 24px;font:inherit;margin:20px 0}</style></head>
+<body><h1>Your headset cinema</h1><p>This sample video is stored and played on the Frame. Trigger pauses, the right stick skips ten seconds, and grip returns here.</p>
+<video id="sample" controls playsinline crossorigin="anonymous" src="/demo-clip/big-buck-bunny.webm" loop></video>
+<button id="enter">Watch in VR</button><p id="status" role="status"></p>
+<p><a href="/frame-check.html">Return to Halcyon</a></p>
+<small>Big Buck Bunny © Blender Foundation / Peach Open Movie Project, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. The bundled 30-second excerpt is unchanged. <a href="/demo-clip/ATTRIBUTION.md">Full attribution</a>.</small>
+<script type="module" src="/src/frame-cinema-test.ts"></script></body></html>

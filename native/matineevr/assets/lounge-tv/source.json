@@ -1,0 +1,276 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "d7cebaeca8604ebab1480e413404b679",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics-gadgets",
+      "uri": "https://api.sketchfab.com/v3/categories/d7cebaeca8604ebab1480e413404b679",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/336c224334b7e53e277d236a8355e90a-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/800x450.png"
+        }
+      ]
+    },
+    {
+      "uid": "17d20ca7b35243d4a45171838b50704c",
+      "name": "Science & Technology",
+      "slug": "science-technology",
+      "uri": "https://api.sketchfab.com/v3/categories/17d20ca7b35243d4a45171838b50704c",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/86b1bae49e0ed3f43b2d59b26700234e-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/17d20ca7b35243d4a45171838b50704c/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/17d20ca7b35243d4a45171838b50704c/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 23,
+  "createdAt": "2025-01-12T14:12:02.494686",
+  "embedUrl": "https://sketchfab.com/models/5f80311f1a4646ef9673f20ee6dc6245/embed",
+  "faceCount": 240414,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 825,
+  "name": "Sony PVM-1341 || Sony Playstation",
+  "publishedAt": "2025-01-12T16:28:26.693999",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "computer",
+      "slug": "computer",
+      "uri": "https://api.sketchfab.com/v3/tags/computer"
+    },
+    {
+      "name": "tv",
+      "slug": "tv",
+      "uri": "https://api.sketchfab.com/v3/tags/tv"
+    },
+    {
+      "name": "vintage",
+      "slug": "vintage",
+      "uri": "https://api.sketchfab.com/v3/tags/vintage"
+    },
+    {
+      "name": "retro",
+      "slug": "retro",
+      "uri": "https://api.sketchfab.com/v3/tags/retro"
+    },
+    {
+      "name": "console",
+      "slug": "console",
+      "uri": "https://api.sketchfab.com/v3/tags/console"
+    },
+    {
+      "name": "tech",
+      "slug": "tech",
+      "uri": "https://api.sketchfab.com/v3/tags/tech"
+    },
+    {
+      "name": "monitor",
+      "slug": "monitor",
+      "uri": "https://api.sketchfab.com/v3/tags/monitor"
+    },
+    {
+      "name": "playstation",
+      "slug": "playstation",
+      "uri": "https://api.sketchfab.com/v3/tags/playstation"
+    },
+    {
+      "name": "sony",
+      "slug": "sony",
+      "uri": "https://api.sketchfab.com/v3/tags/sony"
+    },
+    {
+      "name": "psx",
+      "slug": "psx",
+      "uri": "https://api.sketchfab.com/v3/tags/psx"
+    },
+    {
+      "name": "80's",
+      "slug": "80s",
+      "uri": "https://api.sketchfab.com/v3/tags/80s"
+    },
+    {
+      "name": "crt",
+      "slug": "crt",
+      "uri": "https://api.sketchfab.com/v3/tags/crt"
+    },
+    {
+      "name": "PVM",
+      "slug": "pvm",
+      "uri": "https://api.sketchfab.com/v3/tags/pvm"
+    },
+    {
+      "name": "90s",
+      "slug": "90s",
+      "uri": "https://api.sketchfab.com/v3/tags/90s"
+    },
+    {
+      "name": "retrogaming",
+      "slug": "retrogaming",
+      "uri": "https://api.sketchfab.com/v3/tags/retrogaming"
+    },
+    {
+      "name": "retrogame",
+      "slug": "retrogame",
+      "uri": "https://api.sketchfab.com/v3/tags/retrogame"
+    },
+    {
+      "name": "game",
+      "slug": "game",
+      "uri": "https://api.sketchfab.com/v3/tags/game"
+    },
+    {
+      "name": "history",
+      "slug": "history",
+      "uri": "https://api.sketchfab.com/v3/tags/history"
+    },
+    {
+      "name": "retrotech",
+      "slug": "retrotech",
+      "uri": "https://api.sketchfab.com/v3/tags/retrotech"
+    },
+    {
+      "name": "sonyplaystation",
+      "slug": "sonyplaystation",
+      "uri": "https://api.sketchfab.com/v3/tags/sonyplaystation"
+    },
+    {
+      "name": "crt-tv",
+      "slug": "crt-tv",
+      "uri": "https://api.sketchfab.com/v3/tags/crt-tv"
+    },
+    {
+      "name": "crt-monitor",
+      "slug": "crt-monitor",
+      "uri": "https://api.sketchfab.com/v3/tags/crt-monitor"
+    },
+    {
+      "name": "pvm1341",
+      "slug": "pvm1341",
+      "uri": "https://api.sketchfab.com/v3/tags/pvm1341"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "2c841d9b584e49d088e43fd96cfa587b",
+        "width": 1920,
+        "height": 1080,
+        "size": 304576,
+        "url": "https://media.sketchfab.com/models/5f80311f1a4646ef9673f20ee6dc6245/thumbnails/be1969f72e3b4421aa9d77e4a25815f7/1e000a5d30dc42fb8fc9b9efd02c767b.jpeg"
+      },
+      {
+        "uid": "fe9e392e85254b16a5cd87ee8b01959c",
+        "width": 1024,
+        "height": 576,
+        "size": 54940,
+        "url": "https://media.sketchfab.com/models/5f80311f1a4646ef9673f20ee6dc6245/thumbnails/be1969f72e3b4421aa9d77e4a25815f7/0c145617af724a2bb18dc8182826a232.jpeg"
+      },
+      {
+        "uid": "798dedb015d64c7c8b59ebd9ebcefb9e",
+        "width": 720,
+        "height": 405,
+        "size": 29010,
+        "url": "https://media.sketchfab.com/models/5f80311f1a4646ef9673f20ee6dc6245/thumbnails/be1969f72e3b4421aa9d77e4a25815f7/b8c6d0d55d64495484c32d2bdac254a1.jpeg"
+      },
+      {
+        "uid": "8d71f761cdd448d59fa38347835b5f65",
+        "width": 256,
+        "height": 144,
+        "size": 5998,
+        "url": "https://media.sketchfab.com/models/5f80311f1a4646ef9673f20ee6dc6245/thumbnails/be1969f72e3b4421aa9d77e4a25815f7/fffedba0a30f4b14abaf836af99af875.jpeg"
+      },
+      {
+        "uid": "eed9c6492cd64c5d8c24dc9471194484",
+        "width": 64,
+        "height": 36,
+        "size": 1294,
+        "url": "https://media.sketchfab.com/models/5f80311f1a4646ef9673f20ee6dc6245/thumbnails/be1969f72e3b4421aa9d77e4a25815f7/f4531db2b0fa4e84aae93e28c3e01a84.jpeg"
+      }
+    ]
+  },
+  "uid": "5f80311f1a4646ef9673f20ee6dc6245",
+  "uri": "https://api.sketchfab.com/v3/models/5f80311f1a4646ef9673f20ee6dc6245",
+  "user": {
+    "uid": "ead1fe93a69d42f092485c645c06cea4",
+    "username": "dark_igorek",
+    "displayName": "dark_igorek",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/dark_igorek",
+    "avatar": {
+      "uid": "795b0f2d873d4591a4c079643880c5e8",
+      "uri": "https://api.sketchfab.com/v3/avatars/795b0f2d873d4591a4c079643880c5e8",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 1079,
+          "url": "https://media.sketchfab.com/avatars/795b0f2d873d4591a4c079643880c5e8/fb5ff2ce7d47422fad97c545f7cc20c9.jpeg"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 1538,
+          "url": "https://media.sketchfab.com/avatars/795b0f2d873d4591a4c079643880c5e8/951e70b07e7e430ca4ae3868e7b68933.jpeg"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 3469,
+          "url": "https://media.sketchfab.com/avatars/795b0f2d873d4591a4c079643880c5e8/29665930ca8c4f758b54bc167d553f26.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 3898,
+          "url": "https://media.sketchfab.com/avatars/795b0f2d873d4591a4c079643880c5e8/00aad2073fbf4322b9c557d0b59bf96b.jpeg"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/ead1fe93a69d42f092485c645c06cea4"
+  },
+  "vertexCount": 129055,
+  "viewCount": 22579,
+  "viewerUrl": "https://sketchfab.com/3d-models/sony-pvm-1341-sony-playstation-5f80311f1a4646ef9673f20ee6dc6245",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "# Sony PVM-1341\n\n13\" professional monitor from the late '80s and early '90s, among their first to feature the \"box\" design that would become standard. The PVM-1341 is a more economical equivalent to the PVM-1342Q and PVM-1343MD. Unlike those models, the 1341 is NTSC only and does not have support for PAL or Secam. It also uses a coarser pitch A class tube rated for 450 TVL.\n\n# Sony Playstation\n\nThe PlayStation (codenamed PSX, abbreviated as PS, and later PS1/PS one) is a home video game console developed and marketed by Sony Computer Entertainment. It was released in Japan on 3 December 1994, followed by North America on 9 September 1995, Europe on 29 September 1995, and other regions following thereafter. As a fifth-generation console, the PlayStation primarily competed with the Nintendo 64 and the Sega Saturn.\n\n![](https://bit.ly/4akk9JQ)\n![](https://bit.ly/4hii7fD)\n![](https://bit.ly/40zaGLx)",
+  "price": null,
+  "downloadCount": 5359,
+  "editorUrl": "https://sketchfab.com/models/5f80311f1a4646ef9673f20ee6dc6245/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "website",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2025-01-24T07:58:53.249320",
+  "pbrType": "metalness",
+  "textureCount": 31,
+  "materialCount": 9
+}

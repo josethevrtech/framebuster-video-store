@@ -1,0 +1,187 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "d7cebaeca8604ebab1480e413404b679",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics-gadgets",
+      "uri": "https://api.sketchfab.com/v3/categories/d7cebaeca8604ebab1480e413404b679",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/336c224334b7e53e277d236a8355e90a-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 0,
+  "createdAt": "2023-10-21T19:12:03.188812",
+  "embedUrl": "https://sketchfab.com/models/b2076d8a65d648ff99bf51ca9d5fca2a/embed",
+  "faceCount": 33839,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 38,
+  "name": "Super Nintendo Cartridge",
+  "publishedAt": "2023-10-21T19:22:54.828320",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "nintendo",
+      "slug": "nintendo",
+      "uri": "https://api.sketchfab.com/v3/tags/nintendo"
+    },
+    {
+      "name": "snes",
+      "slug": "snes",
+      "uri": "https://api.sketchfab.com/v3/tags/snes"
+    },
+    {
+      "name": "Cartridge",
+      "slug": "cartridge",
+      "uri": "https://api.sketchfab.com/v3/tags/cartridge"
+    },
+    {
+      "name": "royalty",
+      "slug": "royalty",
+      "uri": "https://api.sketchfab.com/v3/tags/royalty"
+    },
+    {
+      "name": "cc0",
+      "slug": "cc0",
+      "uri": "https://api.sketchfab.com/v3/tags/cc0"
+    },
+    {
+      "name": "pal",
+      "slug": "pal",
+      "uri": "https://api.sketchfab.com/v3/tags/pal"
+    },
+    {
+      "name": "free",
+      "slug": "free",
+      "uri": "https://api.sketchfab.com/v3/tags/free"
+    },
+    {
+      "name": "super",
+      "slug": "super",
+      "uri": "https://api.sketchfab.com/v3/tags/super"
+    },
+    {
+      "name": "royal",
+      "slug": "royal",
+      "uri": "https://api.sketchfab.com/v3/tags/royal"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "f57cd44e914a4e6b90f1b832a94a36f6",
+        "width": 1920,
+        "height": 1080,
+        "size": 200001,
+        "url": "https://media.sketchfab.com/models/b2076d8a65d648ff99bf51ca9d5fca2a/thumbnails/9a89ea92352e4d6eb2898de703c93c2e/3b459da85d9a48aba77cb330be0d39e2.jpeg"
+      },
+      {
+        "uid": "c53b5d8d524d44bb9738353906b78132",
+        "width": 1024,
+        "height": 576,
+        "size": 31753,
+        "url": "https://media.sketchfab.com/models/b2076d8a65d648ff99bf51ca9d5fca2a/thumbnails/9a89ea92352e4d6eb2898de703c93c2e/e74d359735db4128b66b995439f438e9.jpeg"
+      },
+      {
+        "uid": "fd79ae0ceab14dc8b56a2949fae345d7",
+        "width": 720,
+        "height": 405,
+        "size": 19135,
+        "url": "https://media.sketchfab.com/models/b2076d8a65d648ff99bf51ca9d5fca2a/thumbnails/9a89ea92352e4d6eb2898de703c93c2e/1b613f1374dd4bd091050b6fb0275e51.jpeg"
+      },
+      {
+        "uid": "69b884867fed4cfd8d7a0100fe993309",
+        "width": 256,
+        "height": 144,
+        "size": 4777,
+        "url": "https://media.sketchfab.com/models/b2076d8a65d648ff99bf51ca9d5fca2a/thumbnails/9a89ea92352e4d6eb2898de703c93c2e/428860ea923b49059bc662ed1e7b5aed.jpeg"
+      },
+      {
+        "uid": "a1913cf6e8534bd59c0d5eeb35d48a8a",
+        "width": 64,
+        "height": 36,
+        "size": 1214,
+        "url": "https://media.sketchfab.com/models/b2076d8a65d648ff99bf51ca9d5fca2a/thumbnails/9a89ea92352e4d6eb2898de703c93c2e/ba984af3bf8b4505a9c032227468dba0.jpeg"
+      }
+    ]
+  },
+  "uid": "b2076d8a65d648ff99bf51ca9d5fca2a",
+  "uri": "https://api.sketchfab.com/v3/models/b2076d8a65d648ff99bf51ca9d5fca2a",
+  "user": {
+    "uid": "ec6d4f041fb6440bb109376aa1788197",
+    "username": "SomeKevin",
+    "displayName": "SomeKevin",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/SomeKevin",
+    "avatar": {
+      "uid": "31e0c93e33f9485ea24ecf6592c5324e",
+      "uri": "https://api.sketchfab.com/v3/avatars/31e0c93e33f9485ea24ecf6592c5324e",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 2994,
+          "url": "https://media.sketchfab.com/avatars/31e0c93e33f9485ea24ecf6592c5324e/618d412bb99843db954840c30d25050a.png"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 3199,
+          "url": "https://media.sketchfab.com/avatars/31e0c93e33f9485ea24ecf6592c5324e/d50e4a83990d4b13b8c78ae883e9dce0.png"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 3803,
+          "url": "https://media.sketchfab.com/avatars/31e0c93e33f9485ea24ecf6592c5324e/dca8443abc184193ab1a968f798f08b4.png"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 3949,
+          "url": "https://media.sketchfab.com/avatars/31e0c93e33f9485ea24ecf6592c5324e/87944bce5808479d8146dce3d190f94f.png"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/ec6d4f041fb6440bb109376aa1788197"
+  },
+  "vertexCount": 17030,
+  "viewCount": 1164,
+  "viewerUrl": "https://sketchfab.com/3d-models/super-nintendo-cartridge-b2076d8a65d648ff99bf51ca9d5fca2a",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "I made dis super nintendo cartridge with love. it was eyeballed in plasticity and textured in substance painter. thanks to cpt.brotzeit for uv unwrapping this beast. \n\nyou can use this unconditionally. be creative, have fun and have a nice day\n\ni love you all\n\nxoxo \n\nsomekewin",
+  "price": null,
+  "downloadCount": 418,
+  "editorUrl": "https://sketchfab.com/models/b2076d8a65d648ff99bf51ca9d5fca2a/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "website",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2023-10-21T19:22:54.882464",
+  "pbrType": "metalness",
+  "textureCount": 4,
+  "materialCount": 1
+}

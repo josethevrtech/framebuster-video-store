@@ -1,0 +1,231 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "d7cebaeca8604ebab1480e413404b679",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics-gadgets",
+      "uri": "https://api.sketchfab.com/v3/categories/d7cebaeca8604ebab1480e413404b679",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/336c224334b7e53e277d236a8355e90a-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/800x450.png"
+        }
+      ]
+    },
+    {
+      "uid": "357487fbb30a44ee8a0adf9b24829919",
+      "name": "Music",
+      "slug": "music",
+      "uri": "https://api.sketchfab.com/v3/categories/357487fbb30a44ee8a0adf9b24829919",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/e46cf538674d8594fad0292580efcf5b-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/357487fbb30a44ee8a0adf9b24829919/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/357487fbb30a44ee8a0adf9b24829919/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 4,
+  "createdAt": "2020-05-13T03:32:26.419846",
+  "embedUrl": "https://sketchfab.com/models/f6c8386e76e54918b551ebdd276479dd/embed",
+  "faceCount": 2577,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 274,
+  "name": "CD + Jewel Case",
+  "publishedAt": "2020-05-13T03:51:19.787468",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "music",
+      "slug": "music",
+      "uri": "https://api.sketchfab.com/v3/tags/music"
+    },
+    {
+      "name": "jewel",
+      "slug": "jewel",
+      "uri": "https://api.sketchfab.com/v3/tags/jewel"
+    },
+    {
+      "name": "standard",
+      "slug": "standard",
+      "uri": "https://api.sketchfab.com/v3/tags/standard"
+    },
+    {
+      "name": "case",
+      "slug": "case",
+      "uri": "https://api.sketchfab.com/v3/tags/case"
+    },
+    {
+      "name": "media",
+      "slug": "media",
+      "uri": "https://api.sketchfab.com/v3/tags/media"
+    },
+    {
+      "name": "optical",
+      "slug": "optical",
+      "uri": "https://api.sketchfab.com/v3/tags/optical"
+    },
+    {
+      "name": "cd",
+      "slug": "cd",
+      "uri": "https://api.sketchfab.com/v3/tags/cd"
+    },
+    {
+      "name": "promotional",
+      "slug": "promotional",
+      "uri": "https://api.sketchfab.com/v3/tags/promotional"
+    },
+    {
+      "name": "album",
+      "slug": "album",
+      "uri": "https://api.sketchfab.com/v3/tags/album"
+    },
+    {
+      "name": "digipak",
+      "slug": "digipak",
+      "uri": "https://api.sketchfab.com/v3/tags/digipak"
+    },
+    {
+      "name": "coverart",
+      "slug": "coverart",
+      "uri": "https://api.sketchfab.com/v3/tags/coverart"
+    },
+    {
+      "name": "low",
+      "slug": "low",
+      "uri": "https://api.sketchfab.com/v3/tags/low"
+    },
+    {
+      "name": "poly",
+      "slug": "poly",
+      "uri": "https://api.sketchfab.com/v3/tags/poly"
+    },
+    {
+      "name": "simple",
+      "slug": "simple",
+      "uri": "https://api.sketchfab.com/v3/tags/simple"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "feae6ad597044cbbaf7d33015a06803f",
+        "width": 1920,
+        "height": 1080,
+        "size": 78174,
+        "url": "https://media.sketchfab.com/models/f6c8386e76e54918b551ebdd276479dd/thumbnails/abc5849e6fed428abb176cb2b2936fe8/bacd6f5eb0b04cca9951ba7923238c34.jpeg"
+      },
+      {
+        "uid": "8a49e07f009048dbba60c752a205685b",
+        "width": 1024,
+        "height": 576,
+        "size": 28451,
+        "url": "https://media.sketchfab.com/models/f6c8386e76e54918b551ebdd276479dd/thumbnails/abc5849e6fed428abb176cb2b2936fe8/452fe872840d4c879536727e51e33c88.jpeg"
+      },
+      {
+        "uid": "fce467ed20fe4f20871847d24e7fb99b",
+        "width": 720,
+        "height": 405,
+        "size": 17412,
+        "url": "https://media.sketchfab.com/models/f6c8386e76e54918b551ebdd276479dd/thumbnails/abc5849e6fed428abb176cb2b2936fe8/09b6de56eca1469b979936faae69c22f.jpeg"
+      },
+      {
+        "uid": "6920944e51a94da48935184409a22c5c",
+        "width": 256,
+        "height": 144,
+        "size": 4116,
+        "url": "https://media.sketchfab.com/models/f6c8386e76e54918b551ebdd276479dd/thumbnails/abc5849e6fed428abb176cb2b2936fe8/906ee9701b6a48ff9603ab424d01a012.jpeg"
+      },
+      {
+        "uid": "2902d11a8606493f9e9848f779bb5337",
+        "width": 64,
+        "height": 36,
+        "size": 836,
+        "url": "https://media.sketchfab.com/models/f6c8386e76e54918b551ebdd276479dd/thumbnails/abc5849e6fed428abb176cb2b2936fe8/3696cb2dbb8f4bacac49e2c96289f716.jpeg"
+      }
+    ]
+  },
+  "uid": "f6c8386e76e54918b551ebdd276479dd",
+  "uri": "https://api.sketchfab.com/v3/models/f6c8386e76e54918b551ebdd276479dd",
+  "user": {
+    "uid": "3606267e233a4264b771206e55b1962d",
+    "username": "bloobloo",
+    "displayName": "blue man group",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/bloobloo",
+    "avatar": {
+      "uid": "41fbf2a1fed341c2bf170a0e0072bcab",
+      "uri": "https://api.sketchfab.com/v3/avatars/41fbf2a1fed341c2bf170a0e0072bcab",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 1844,
+          "url": "https://media.sketchfab.com/avatars/41fbf2a1fed341c2bf170a0e0072bcab/1987faa2b10c4b0a95112fa6daab06fc.png"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 4568,
+          "url": "https://media.sketchfab.com/avatars/41fbf2a1fed341c2bf170a0e0072bcab/3396bf0012dd450fa46dd4cef865676a.png"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 16953,
+          "url": "https://media.sketchfab.com/avatars/41fbf2a1fed341c2bf170a0e0072bcab/32e9c3be309a42318b0621ee71293396.png"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 21031,
+          "url": "https://media.sketchfab.com/avatars/41fbf2a1fed341c2bf170a0e0072bcab/82e111aa1d18416c9ead205efa28bccb.png"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/3606267e233a4264b771206e55b1962d"
+  },
+  "vertexCount": 1765,
+  "viewCount": 41643,
+  "viewerUrl": "https://sketchfab.com/3d-models/cd-jewel-case-f6c8386e76e54918b551ebdd276479dd",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "CD jewel case, with CD and stand-in coverart - any nice 1:1 coverart could replace it. \n\nAlso known as: Compact Disc or Disk case, DVD case, AOL disc receptacle, non-digipak or music album.",
+  "price": null,
+  "downloadCount": 10904,
+  "editorUrl": "https://sketchfab.com/models/f6c8386e76e54918b551ebdd276479dd/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "website",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2022-07-21T05:06:29.354027",
+  "pbrType": null,
+  "textureCount": 3,
+  "materialCount": 8
+}

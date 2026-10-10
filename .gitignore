@@ -43,3 +43,5 @@ public/user-assets/*
 # Remote Play: kiosk-donated media-server credentials for private instances
 .remote-play-seed.json
 .mcp.json
+/native-store/
+/framebuster.env

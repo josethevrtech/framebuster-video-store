@@ -1,0 +1,24 @@
+[package]
+name = "framebuster-video-store"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+publish = false
+
+[lib]
+name = "matineevr"
+path = "src/lib.rs"
+
+[[bin]]
+name = "framebuster-video-store"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "=1.0.104"
+openxr = "=0.21.1"
+
+ash = "=0.38.0"
+
+[profile.release]
+strip = "debuginfo"
+lto = "thin"

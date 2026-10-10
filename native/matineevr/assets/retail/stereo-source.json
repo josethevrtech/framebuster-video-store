@@ -1,0 +1,241 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "d7cebaeca8604ebab1480e413404b679",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics-gadgets",
+      "uri": "https://api.sketchfab.com/v3/categories/d7cebaeca8604ebab1480e413404b679",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/336c224334b7e53e277d236a8355e90a-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/800x450.png"
+        }
+      ]
+    },
+    {
+      "uid": "357487fbb30a44ee8a0adf9b24829919",
+      "name": "Music",
+      "slug": "music",
+      "uri": "https://api.sketchfab.com/v3/categories/357487fbb30a44ee8a0adf9b24829919",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/e46cf538674d8594fad0292580efcf5b-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/357487fbb30a44ee8a0adf9b24829919/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/357487fbb30a44ee8a0adf9b24829919/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 8,
+  "createdAt": "2023-03-25T15:12:07.668622",
+  "embedUrl": "https://sketchfab.com/models/e6b0d376c49d4d4c9ce7c1502661c8e4/embed",
+  "faceCount": 12312,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 270,
+  "name": "Panasonic SA-PM02 Stereo System",
+  "publishedAt": "2023-03-25T15:35:06.196410",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "music",
+      "slug": "music",
+      "uri": "https://api.sketchfab.com/v3/tags/music"
+    },
+    {
+      "name": "computer",
+      "slug": "computer",
+      "uri": "https://api.sketchfab.com/v3/tags/computer"
+    },
+    {
+      "name": "tape",
+      "slug": "tape",
+      "uri": "https://api.sketchfab.com/v3/tags/tape"
+    },
+    {
+      "name": "gadget",
+      "slug": "gadget",
+      "uri": "https://api.sketchfab.com/v3/tags/gadget"
+    },
+    {
+      "name": "sound",
+      "slug": "sound",
+      "uri": "https://api.sketchfab.com/v3/tags/sound"
+    },
+    {
+      "name": "usb",
+      "slug": "usb",
+      "uri": "https://api.sketchfab.com/v3/tags/usb"
+    },
+    {
+      "name": "stereo",
+      "slug": "stereo",
+      "uri": "https://api.sketchfab.com/v3/tags/stereo"
+    },
+    {
+      "name": "electronics",
+      "slug": "electronics",
+      "uri": "https://api.sketchfab.com/v3/tags/electronics"
+    },
+    {
+      "name": "speakers",
+      "slug": "speakers",
+      "uri": "https://api.sketchfab.com/v3/tags/speakers"
+    },
+    {
+      "name": "audio",
+      "slug": "audio",
+      "uri": "https://api.sketchfab.com/v3/tags/audio"
+    },
+    {
+      "name": "disc",
+      "slug": "disc",
+      "uri": "https://api.sketchfab.com/v3/tags/disc"
+    },
+    {
+      "name": "record",
+      "slug": "record",
+      "uri": "https://api.sketchfab.com/v3/tags/record"
+    },
+    {
+      "name": "cd",
+      "slug": "cd",
+      "uri": "https://api.sketchfab.com/v3/tags/cd"
+    },
+    {
+      "name": "panasonic",
+      "slug": "panasonic",
+      "uri": "https://api.sketchfab.com/v3/tags/panasonic"
+    },
+    {
+      "name": "cdplayer",
+      "slug": "cdplayer",
+      "uri": "https://api.sketchfab.com/v3/tags/cdplayer"
+    },
+    {
+      "name": "discman",
+      "slug": "discman",
+      "uri": "https://api.sketchfab.com/v3/tags/discman"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "82fce625824745da841fd51030a4fd82",
+        "width": 1920,
+        "height": 1080,
+        "size": 124106,
+        "url": "https://media.sketchfab.com/models/e6b0d376c49d4d4c9ce7c1502661c8e4/thumbnails/d5e9a49a923c4cf9913aed85641a6244/de30ed64aaed4595bf3612bc395d3e89.jpeg"
+      },
+      {
+        "uid": "a651c89bab3a4801b83c27c2b6f8856d",
+        "width": 1024,
+        "height": 576,
+        "size": 32364,
+        "url": "https://media.sketchfab.com/models/e6b0d376c49d4d4c9ce7c1502661c8e4/thumbnails/d5e9a49a923c4cf9913aed85641a6244/87f547ca6e3448a685b5e0b3acc457cf.jpeg"
+      },
+      {
+        "uid": "22c2f2f9f960432897064eaad50d3cc2",
+        "width": 720,
+        "height": 405,
+        "size": 18553,
+        "url": "https://media.sketchfab.com/models/e6b0d376c49d4d4c9ce7c1502661c8e4/thumbnails/d5e9a49a923c4cf9913aed85641a6244/b81dca918cd34676834dfa9726abb706.jpeg"
+      },
+      {
+        "uid": "6b1c1b5d596442149f9369de50524655",
+        "width": 256,
+        "height": 144,
+        "size": 4421,
+        "url": "https://media.sketchfab.com/models/e6b0d376c49d4d4c9ce7c1502661c8e4/thumbnails/d5e9a49a923c4cf9913aed85641a6244/0d984b55c68444d9b0964d0e722d6310.jpeg"
+      },
+      {
+        "uid": "7370fceb925a4fc6a3b8f1fa81827038",
+        "width": 64,
+        "height": 36,
+        "size": 1250,
+        "url": "https://media.sketchfab.com/models/e6b0d376c49d4d4c9ce7c1502661c8e4/thumbnails/d5e9a49a923c4cf9913aed85641a6244/363fa119f4684c06873ae9cfb6556cfc.jpeg"
+      }
+    ]
+  },
+  "uid": "e6b0d376c49d4d4c9ce7c1502661c8e4",
+  "uri": "https://api.sketchfab.com/v3/models/e6b0d376c49d4d4c9ce7c1502661c8e4",
+  "user": {
+    "uid": "9ce7b3319acb4f24b2c8c5b99e81d7ce",
+    "username": "AleixoAlonso",
+    "displayName": "AleixoAlonso",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/AleixoAlonso",
+    "avatar": {
+      "uid": "c88da1d37a3b43f48c652499779510fa",
+      "uri": "https://api.sketchfab.com/v3/avatars/c88da1d37a3b43f48c652499779510fa",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 973,
+          "url": "https://media.sketchfab.com/avatars/c88da1d37a3b43f48c652499779510fa/76fd1a86a37a4a61bfe8e9bc823664db.jpeg"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 1267,
+          "url": "https://media.sketchfab.com/avatars/c88da1d37a3b43f48c652499779510fa/12dc367842d94d6598fb530cd26caa19.jpeg"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 2429,
+          "url": "https://media.sketchfab.com/avatars/c88da1d37a3b43f48c652499779510fa/7528b63ad38d4bfda73a64f54044ed9f.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 2732,
+          "url": "https://media.sketchfab.com/avatars/c88da1d37a3b43f48c652499779510fa/67e10b38719741df83b57e7ae7a7addb.jpeg"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/9ce7b3319acb4f24b2c8c5b99e81d7ce"
+  },
+  "vertexCount": 6904,
+  "viewCount": 8221,
+  "viewerUrl": "https://sketchfab.com/3d-models/panasonic-sa-pm02-stereo-system-e6b0d376c49d4d4c9ce7c1502661c8e4",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "<h1>Panasonic SA-PM02</h1>\nThe Panasonic SA-PM02 is a compact stereo system designed for playing CDs and digital music from USB devices. The system features a sleek, all-in-one design with two front-facing speakers that deliver clear and dynamic sound. The CD player supports both CD-R and CD-RW formats, and the USB port allows you to play MP3 files from your USB flash drive. The system also has an FM tuner With its easy-to-use controls and versatile playback options, the Panasonic SA-PM02 is a great choice for anyone who wants a simple and reliable stereo system for their home or office. This 3D model is to scale.\n<h2>Textures:</h2>\n<ul>\n  <li>2k, and 4k Textures</li>\n  <li>2 texture sets/ materials</li>\n  <li>OpenGL + DirectX Normal Maps</li>\n  <li>Baked Ambient Occlusion</li>\n  <li>PBR workflow</li>\n  <li>JPG format</li>\n</ul>\n<h2>File Formats:</h2>\n<ul>\n  <li>.blend (Native)</li>\n  <li>.fbx</li>\n</ul>",
+  "price": null,
+  "downloadCount": 3569,
+  "editorUrl": "https://sketchfab.com/models/e6b0d376c49d4d4c9ce7c1502661c8e4/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "website",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2023-03-25T20:12:25.894652",
+  "pbrType": "metalness",
+  "textureCount": 12,
+  "materialCount": 2
+}

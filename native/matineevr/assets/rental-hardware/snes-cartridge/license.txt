@@ -1,0 +1,11 @@
+Model Information:
+* title:	Super Nintendo Cartridge
+* source:	https://sketchfab.com/3d-models/super-nintendo-cartridge-b2076d8a65d648ff99bf51ca9d5fca2a
+* author:	SomeKevin (https://sketchfab.com/SomeKevin)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Super Nintendo Cartridge" (https://sketchfab.com/3d-models/super-nintendo-cartridge-b2076d8a65d648ff99bf51ca9d5fca2a) by SomeKevin (https://sketchfab.com/SomeKevin) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

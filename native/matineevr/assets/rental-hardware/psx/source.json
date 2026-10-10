@@ -1,0 +1,162 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "d7cebaeca8604ebab1480e413404b679",
+      "name": "Electronics & Gadgets",
+      "slug": "electronics-gadgets",
+      "uri": "https://api.sketchfab.com/v3/categories/d7cebaeca8604ebab1480e413404b679",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/336c224334b7e53e277d236a8355e90a-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/d7cebaeca8604ebab1480e413404b679/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 3,
+  "createdAt": "2014-10-01T13:46:10",
+  "embedUrl": "https://sketchfab.com/models/314a3d6565994565a7272223bd965348/embed",
+  "faceCount": 14440,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 24,
+  "name": "Playstation 1",
+  "publishedAt": "2014-10-01T13:46:10",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "ancient",
+      "slug": "ancient",
+      "uri": "https://api.sketchfab.com/v3/tags/ancient"
+    },
+    {
+      "name": "console",
+      "slug": "console",
+      "uri": "https://api.sketchfab.com/v3/tags/console"
+    },
+    {
+      "name": "playstation",
+      "slug": "playstation",
+      "uri": "https://api.sketchfab.com/v3/tags/playstation"
+    },
+    {
+      "name": "sony",
+      "slug": "sony",
+      "uri": "https://api.sketchfab.com/v3/tags/sony"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "27d29787fd62499a867c21deab224b69",
+        "width": 1920,
+        "height": 1080,
+        "size": 93372,
+        "url": "https://media.sketchfab.com/models/314a3d6565994565a7272223bd965348/thumbnails/fceb6fd29e9447e6923c318c3b69f448/f01c17e9cb0d43349a0000d29bc933e3.jpeg"
+      },
+      {
+        "uid": "bd6749737efe4993ba89d661e5372976",
+        "width": 1024,
+        "height": 576,
+        "size": 25786,
+        "url": "https://media.sketchfab.com/models/314a3d6565994565a7272223bd965348/thumbnails/fceb6fd29e9447e6923c318c3b69f448/90610abbe81848e798768883f78f2727.jpeg"
+      },
+      {
+        "uid": "8bfc6b59443e49e5a6c281af546786ff",
+        "width": 720,
+        "height": 405,
+        "size": 14849,
+        "url": "https://media.sketchfab.com/models/314a3d6565994565a7272223bd965348/thumbnails/fceb6fd29e9447e6923c318c3b69f448/1d29d1cc9908495f861877ecd4e5c467.jpeg"
+      },
+      {
+        "uid": "bc3c16048e7d4d3985b2041f3331b68c",
+        "width": 256,
+        "height": 144,
+        "size": 3662,
+        "url": "https://media.sketchfab.com/models/314a3d6565994565a7272223bd965348/thumbnails/fceb6fd29e9447e6923c318c3b69f448/6ca34ad0e33f41eaa8c5f0ae4e8d9fd3.jpeg"
+      },
+      {
+        "uid": "0b5b54c51a9c4916a2220f81c1a75ced",
+        "width": 64,
+        "height": 36,
+        "size": 827,
+        "url": "https://media.sketchfab.com/models/314a3d6565994565a7272223bd965348/thumbnails/fceb6fd29e9447e6923c318c3b69f448/0b4a2fd7fccb475d8551194a17eebc5a.jpeg"
+      }
+    ]
+  },
+  "uid": "314a3d6565994565a7272223bd965348",
+  "uri": "https://api.sketchfab.com/v3/models/314a3d6565994565a7272223bd965348",
+  "user": {
+    "uid": "1a08a7b0e34e4c69ae8d2c8b4eb56cfc",
+    "username": "noitanigami",
+    "displayName": "imgvertex",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/noitanigami",
+    "avatar": {
+      "uid": "7bba67461ede48b081f64277154603e1",
+      "uri": "https://api.sketchfab.com/v3/avatars/7bba67461ede48b081f64277154603e1",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 773,
+          "url": "https://media.sketchfab.com/avatars/7bba67461ede48b081f64277154603e1/e63650bee7024cf89067e61ca20caacb.jpeg"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 1258,
+          "url": "https://media.sketchfab.com/avatars/7bba67461ede48b081f64277154603e1/f534ffd9b599479cbd0df7ef05f2ba29.jpeg"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 2900,
+          "url": "https://media.sketchfab.com/avatars/7bba67461ede48b081f64277154603e1/f9df5b9873f04b11991a096163214a9c.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 3319,
+          "url": "https://media.sketchfab.com/avatars/7bba67461ede48b081f64277154603e1/ef85f28bac624f37b7a01106ef593ef4.jpeg"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/1a08a7b0e34e4c69ae8d2c8b4eb56cfc"
+  },
+  "vertexCount": 9531,
+  "viewCount": 2657,
+  "viewerUrl": "https://sketchfab.com/3d-models/playstation-1-314a3d6565994565a7272223bd965348",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "Model by Vertex",
+  "price": null,
+  "downloadCount": 481,
+  "editorUrl": "https://sketchfab.com/models/314a3d6565994565a7272223bd965348/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "unknown",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2022-07-07T12:48:07.870990",
+  "pbrType": null,
+  "textureCount": 1,
+  "materialCount": 8
+}
