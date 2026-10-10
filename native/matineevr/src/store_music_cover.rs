@@ -15,9 +15,9 @@ impl MusicCover {
     pub fn new(device: Rc<Graphics>) -> Result<Self> {
         let texture=StoreTexture::with_size(device.clone(),(384,384))?;
         let vertices=Buffer::new(device.clone(),6*48)?;
-        let p=crate::store_jukebox::COVER;
+        let p=crate::store_album_racks::COVER;
         let points: [crate::store_geometry::Vertex;4]=std::array::from_fn(|i| {
-            [[p[0],p[1]+[-0.16,-0.16,0.16,0.16][i],p[2]-[-0.16,0.16,0.16,-0.16][i],1.0],
+            [[p[0]-[-0.29,0.29,0.29,-0.29][i],p[1]+[-0.29,-0.29,0.29,0.29][i],p[2],1.0],
                 [if i==1 || i==2 { 1.0 } else { 0.0 },if i<2 { 1.0 } else { 0.0 },0.0,0.0],[1.0;4]]
         });
         let mesh=[0,1,2,0,2,3].map(|i| points[i]);
@@ -27,7 +27,7 @@ impl MusicCover {
     }
     pub fn update(&mut self,path: &Path) -> Result<()> {
         let bytes=std::fs::read(path)?;
-        ensure!(bytes.len()==384*384*4,"Invalid jukebox cover dimensions");
+        ensure!(bytes.len()==384*384*4,"Invalid now-playing cover dimensions");
         unsafe { self.device.api.device_wait_idle()?; }
         self.texture.upload(&bytes)?; self.visible=true;
         Ok(())

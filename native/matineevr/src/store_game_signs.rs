@@ -4,8 +4,9 @@ pub const ROWS: usize=HEIGHT as usize/128;
 
 pub fn mesh(bays: &[GameBay]) -> Vec<Vertex> {
     let mut vertices=Vec::new();
-    quad(&mut vertices,[22.0,1.15,21.042],0.0,[4.8,0.60],0);
-    quad(&mut vertices,[22.0,1.15,20.958],std::f32::consts::PI,[4.8,0.60],0);
+    let p=crate::store_game_racks::SIGN;
+    quad(&mut vertices,[p[0],p[1],p[2]+0.042],0.0,[4.8,0.60],0);
+    quad(&mut vertices,[p[0],p[1],p[2]-0.042],std::f32::consts::PI,[4.8,0.60],0);
     for section in bays {
         let p=crate::store_game_racks::center(section.bay);
         let side=crate::store_game_racks::side(section.bay);

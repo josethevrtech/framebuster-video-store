@@ -34,6 +34,15 @@ impl Video {
     pub fn music_action(&mut self) -> Option<&'static str> {
         self.controllers.store.as_mut().and_then(|s| s.music_action.take())
     }
+    pub fn album_action(&mut self) -> Option<usize> {
+        self.controllers.store.as_mut().and_then(|s| s.album_action.take())
+    }
+    pub fn store_albums(&mut self,path: &std::path::Path) -> Result<()> {
+        if let Some(store)=self.controllers.store.as_mut() {store.albums.begin(path)?;}Ok(())
+    }
+    pub fn poll_store_albums(&mut self) -> Result<()> {
+        if let Some(store)=self.controllers.store.as_mut() {store.albums.poll()?;}Ok(())
+    }
     pub fn store_games(&mut self,path: &std::path::Path) -> Result<()> {
         if let Some(store)=self.controllers.store.as_mut() {store.games.begin(path)?;}
         Ok(())

@@ -27,7 +27,9 @@ pub fn room() -> Vec<Vertex> {
     crate::store_props::append(&mut v);
     crate::store_display::shelves(&mut v);
     crate::store_layout::append(&mut v);
-    crate::store_jukebox::append(&mut v);
+    crate::store_speakers::append(&mut v);
+    crate::store_album_racks::deck(&mut v);
+    crate::store_album_signs::board(&mut v);
     v
 }
 

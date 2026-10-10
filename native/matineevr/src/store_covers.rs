@@ -36,7 +36,7 @@ impl StoreCovers {
         self.texture.upload(&canvas.pixels)?;
         self.set_mesh(vertices)
     }
-    fn set_mesh(&mut self,vertices: Vec<crate::store_geometry::Vertex>) -> Result<()> {
+    pub(crate) fn set_mesh(&mut self,vertices: Vec<crate::store_geometry::Vertex>) -> Result<()> {
         let size = std::mem::size_of_val(vertices.as_slice());
         ensure!(size <= self.vertices.size,"Cover geometry exceeds capacity");
         unsafe { std::ptr::copy_nonoverlapping(vertices.as_ptr() as *const u8,self.vertices.pointer,size); }

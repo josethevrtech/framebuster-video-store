@@ -2,6 +2,7 @@ use crate::store_geometry::{Vertex,box_mesh};
 
 pub const CAPACITY: usize=54;
 pub const MAX_BAYS: usize=28;
+pub const SIGN: [f32;3]=[22.0,1.52,8.5];
 pub fn side(bay: usize) -> f32 { if bay%2==0 {1.0} else {-1.0} }
 pub fn yaw(bay: usize) -> f32 { if bay%2==0 {0.0} else {std::f32::consts::PI} }
 pub fn center(bay: usize) -> [f32;3] {
@@ -30,8 +31,8 @@ pub fn append(v: &mut Vec<Vertex>) {
         for x in [-0.91,0.91] {box_mesh(v,[p[0]+x,-0.46,p[2]],[0.035,1.90,0.72],black);}
         for side in [-1.0,1.0] {box_mesh(v,[p[0],0.47,p[2]+side*0.25],[1.84,0.23,0.055],black);}
     }
-    box_mesh(v,[22.0,1.15,21.0],[4.94,0.66,0.08],black);
-    for x in [20.5,23.5] {box_mesh(v,[x,1.745,21.0],[0.018,0.53,0.018],black);}
+    box_mesh(v,SIGN,[4.94,0.66,0.08],black);
+    for x in [20.5,23.5] {box_mesh(v,[x,1.95,SIGN[2]],[0.018,0.20,0.018],black);}
 }
 
 #[cfg(test)]

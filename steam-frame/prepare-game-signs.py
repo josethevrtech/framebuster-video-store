@@ -4,9 +4,12 @@ import sys
 import json
 
 
-output,font_path=map(Path,sys.argv[1:])
-systems=json.loads(Path(__file__).with_name('game-systems.json').read_text())
-titles=['VIDEO GAMES']+[system['label'] for system in systems]
+output,font_path=map(Path,sys.argv[1:3])
+if '--music' in sys.argv:
+    titles=['MUSIC']+json.loads(Path(__file__).with_name('music-genres.json').read_text())+['NOW PLAYING','PREVIOUS','PAUSE / PLAY','NEXT']
+else:
+    systems=json.loads(Path(__file__).with_name('game-systems.json').read_text())
+    titles=['VIDEO GAMES']+[system['label'] for system in systems]
 image=Image.new('RGBA',(1024,len(titles)*128),(13,13,18,255))
 draw=ImageDraw.Draw(image)
 font=ImageFont.truetype(str(font_path),54)

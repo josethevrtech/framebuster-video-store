@@ -1,9 +1,9 @@
-use crate::store_jukebox::{CENTER,SPEAKERS};
+use crate::store_speakers::SPEAKERS;
 
 pub fn mix(listener: [f32;3], right: [f32;3], active: bool) -> [f32;2] {
     if !active { return [0.0;2]; }
     let mut sources=Vec::new();
-    for source in SPEAKERS.into_iter().chain(std::iter::once(CENTER)) {
+    for source in SPEAKERS {
         let d: [f32;3]=std::array::from_fn(|i| source[i]-listener[i]);
         let distance=d.iter().map(|x| x*x).sum::<f32>().sqrt();
         let gain=1.0/(1.0+(distance/7.5).powi(2));
@@ -28,6 +28,6 @@ mod tests {
         let a=mix([0.0,0.15,3.0],[1.0,0.0,0.0],true);
         let b=mix([0.0,0.15,3.0],[-1.0,0.0,0.0],true);
         assert!((a[0]-b[1]).abs()<0.0001 && (a[1]-b[0]).abs()<0.0001);
-        assert_eq!(mix(CENTER,[1.0,0.0,0.0],false),[0.0;2]);
+        assert_eq!(mix(SPEAKERS[0],[1.0,0.0,0.0],false),[0.0;2]);
     }
 }

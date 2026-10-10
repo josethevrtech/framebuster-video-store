@@ -47,7 +47,7 @@ impl ControllerDraw {
         if let Some(room) = self.store.as_mut().filter(|s| s.active) {
             room.covers.prepare(command); room.music_cover.prepare(command);
             room.material_props.prepare(command);
-            room.jukebox_props.prepare(command);
+            room.albums.prepare(command);
             room.lounge_props.prepare(command);
             room.console.prepare(command);
             room.games.prepare(command);
@@ -108,7 +108,7 @@ impl ControllerDraw {
                 let p=parameters(view,&room.navigation.pose);
                 room.covers.draw(command,p); room.music_cover.draw(command,p);
                 room.material_props.draw(command,p,&self.device);
-                room.jukebox_props.draw(command,p,&self.device);
+                room.albums.draw(command,p);
                 room.lounge_props.draw(command,p,&self.device);
                 room.console.draw(command,p,&self.device);
                 room.games.draw(command,p);

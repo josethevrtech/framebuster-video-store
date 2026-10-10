@@ -109,7 +109,8 @@ Official platform setup: https://partner.steamgames.com/doc/steamhardware/steamf
 See the repository README for the current FrameBuster runtime; the historical
 browser experiments above are preserved as development records. The enlarged
 native store has a CRT corner and hanging TVs. Store music uses Jellyfin audio
-items with ProductionYear before 1999 and pauses while watching a movie.
+items from any year and pauses while watching a movie. Movies and music have
+no release-year restriction; the pre-2000 limit applies to the imported games.
 The headset must have its native `ffplay` available. The native companion never
 passes Jellyfin tokens in audio-player command arguments.
 
@@ -143,8 +144,8 @@ This selects the physical display model. Emulator sessions and playable ROM
 selection on this shared screen remain separate integration work.
 
 The right game wing extends the room from 32 to 44 metres wide while retaining
-physical scale, floor height and ceiling height. It has a separate teal carpet,
-a hanging printed VIDEO GAMES board, and fourteen double-sided black racks with printed console
+physical scale, floor height and ceiling height. It uses the same arcade carpet
+throughout, a raised central VIDEO GAMES board, and fourteen double-sided black racks with printed console
 headers. Every imported game has one boxed cover in its console section; the
 current private library occupies 27 bays with 1,043 games across eleven systems.
 There is no game shelf pagination or filtering. Cabinet inputs change only the
@@ -189,5 +190,13 @@ These are streamed native video textures, with no browser interface, website
 overlays, downloaded trailer collection or committed private media. Network
 trailers require internet access; unavailable sources are skipped. Local
 trailers require the Jellyfin server. Decoding pauses during cinema playback.
-The jukebox now faces inward from the entrance wall, and its album art and
-physical controls use the same transformed position as its model.
+The jukebox is removed from the scene. A dedicated music area along the left
+wall and rear corner displays Jellyfin albums as square CD cases grouped by
+genre, with printed physical headers. Triggering a CD plays that album in track
+order through the store speakers. A listening cabinet near the entrance has
+now-playing album art and previous, pause/play and next buttons. Background
+shuffle and manually selected albums allow every year. Album covers are cached
+privately on the headset and loaded independently of movie and game artwork.
+The current library contains 614 albums in 22 sections; the native music area
+supports up to 24 sections of 54 albums each. Empty sections are not rendered
+and have no collisions. Genre aliases are grouped using music-genres.json.

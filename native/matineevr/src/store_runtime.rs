@@ -15,6 +15,7 @@ pub struct StoreRuntime {
     resume: Option<(PathBuf, f64)>,
     music_art: String,
     game_catalog_path: String,
+    album_catalog_path: String,
 }
 
 pub fn update(runtime: &mut Option<StoreRuntime>,
@@ -36,7 +37,7 @@ impl StoreRuntime {
         Ok(Some(Self { directory: directory.into(),
             movies: Vec::new(), selected: None,
             catalog_path: String::new(), request: String::new(), next: Instant::now(), sequence: 0,
-            stick: false, resume: None,music_art:String::new(),game_catalog_path:String::new() }))
+            stick: false, resume: None,music_art:String::new(),game_catalog_path:String::new(),album_catalog_path:String::new() }))
     }
 
     fn command(&mut self, action: &str, value: usize) -> Result<()> {
@@ -50,6 +51,7 @@ impl StoreRuntime {
         if active { video.store_trailer(&self.directory); }
         if active {
             if let Some(action)=video.music_action() { self.selected=None; self.command(action,0)?; }
+            if let Some(index)=video.album_action() {self.selected=None;self.command("music-album",index)?;}
             if let Some(index) = selection.filter(|i| *i < self.movies.len()) {
                 self.selected = Some(index);
             }
@@ -82,6 +84,12 @@ impl StoreRuntime {
             }
         }
         if active {video.poll_store_games()?;}
+        if let Ok(path)=fs::read_to_string(self.directory.join("album-catalog-path")) {
+            if path!=self.album_catalog_path && PathBuf::from(&path).parent()==Some(self.directory.as_path()) {
+                video.store_albums(std::path::Path::new(&path))?;self.album_catalog_path=path;
+            }
+        }
+        if active {video.poll_store_albums()?;}
         if let Ok(path)=fs::read_to_string(self.directory.join("music-art-path")) {
             let file=PathBuf::from(&path);
             if path!=self.music_art && file.parent()==Some(self.directory.as_path())

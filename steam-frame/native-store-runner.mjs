@@ -10,6 +10,7 @@ import { systemEnvironment } from './store-process.mjs';
 import { createStoreMusic } from './store-music.mjs';
 import { createStoreTrailers } from './store-trailers.mjs';
 import { createGameShelves } from './store-games.mjs';
+import { createAlbumShelves } from './store-albums.mjs';
 
 const base = join(dirname(fileURLToPath(import.meta.url)), '..');
 const state = join(base, 'native-store');
@@ -23,7 +24,7 @@ const child = spawn(join(base, 'native-player/framebuster-video-store'), [join(d
   stdio: 'inherit', env: { ...process.env, LD_PRELOAD: process.env.FRAMEBUSTER_PLAYER_PRELOAD || '', HALCYON_FRAME_STORE_IPC: directory,
     HALCYON_FRAME_PROGRESS_FILE: join(directory, 'progress.json') },
 });
-let active = true, playback = null, music = null, trailers = null;
+let active = true, playback = null, music = null, trailers = null, albums=[],mediaPaused=false;
 const exit = new Promise(resolve => {
   child.once('error', () => { active = false; resolve(1); });
   child.once('exit', code => { active = false; resolve(code ?? 1); });
@@ -51,10 +52,14 @@ try {
   await writeFile(join(state, 'server'), api.server.href, { mode: 0o600 });
   await connectAccount(api, state, status, () => active);
   trailers = createStoreTrailers(api,directory,base);
-  try { music = await createStoreMusic(api, directory); }
-  catch { console.error('Store music unavailable; continuing without background audio'); }
+  void createStoreMusic(api,directory).then(player=>{
+    if(!active){player.close();return;}music=player;music.setPaused(mediaPaused);
+  }).catch(()=>console.error('Store music unavailable; continuing without background audio'));
+  void createAlbumShelves(api,base,directory,()=>active).then(result=>{
+    albums=result.albums;return result.ready;
+  }).catch(error=>console.error(`Music shelves unavailable: ${error.message}`));
   let returnedFromMovie = false;
-  playback = await createStorePlayback(api, directory, status, paused => { music?.setPaused(paused); trailers?.setPaused(paused); },
+  playback = await createStorePlayback(api, directory, status, paused => {mediaPaused=paused;music?.setPaused(paused);trailers?.setPaused(paused);},
     () => { returnedFromMovie = true; });
   let page = 0, search = '', series = null, storeContext = null, revision = 0, lastCommand = '', catalog;
   const showCatalog = () => status(`FrameBuster Video Store\n${series ? `${series.Name} | Episodes` : 'Movies and Series'}\nPage ${page + 1} of ${Math.max(1, Math.ceil(catalog.total / SHELF_CAPACITY))}${search ? ` | Search: ${search}` : ''}`);
@@ -88,7 +93,11 @@ try {
     const [, action, value] = command.split('\n');
     console.log(`Store command: ${action}, index ${value}`);
     try {
-      if (action === 'music-toggle') music?.toggle();
+      if(action==='music-album' && albums[Number(value)]) {
+        if(!music)throw new Error('Music player is still loading. Please try this CD again in a moment.');
+        await music.album(albums[Number(value)].Id);
+      }
+      else if (action === 'music-toggle') music?.toggle();
       else if (action === 'music-next') music?.next();
       else if (action === 'music-previous') music?.previous();
       else if (action === 'play' && catalog.items[Number(value)]) {
